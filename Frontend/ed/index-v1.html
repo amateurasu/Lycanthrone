@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <link href="../assets/img/favicon.ico" rel="shortcut icon"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Decode &amp; Encode</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Decode &amp; Encode</h2>
+        <div class="panel panel-danger hidden" id="noti">
+            <div class="panel-heading">Error!</div>
+            <div class="panel-body">
+                <p id="mess"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="input">Input:</label>
+            <textarea class="form-control" id="input" name="input" rows="7"></textarea>
+        </div>
+        <div class="form-group" id="script">
+            <label class="control-label" for="script">Crypt type:</label>
+            <label class="radio-inline">
+                <input name="script" type="radio" value="Base64"/>Base64
+            </label>
+            <label class="radio-inline">
+                <input name="script" type="radio" value="Binary">Binary
+            </label>
+            <label class="radio-inline">
+                <input checked="" name="script" type="radio" value="Hex">Hex
+            </label>
+            <label class="radio-inline">
+                <input name="script" type="radio" value="URI">URI
+            </label>
+            <label class="radio-inline">
+                <input name="script" type="radio" value="Viet">New Vietnamese
+            </label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary code" id="en" type="button">Encode</button>
+            <button class="btn btn-primary code" id="de" type="button">Decode</button>
+            <button class="btn btn-success hidden" id="go" type="button">Go!</button>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="output">Output:</label>
+            <textarea class="form-control" id="output" name="output" readonly="" rows="7"></textarea>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    'use strict';
+
+    $(".code").on("click", function() {
+        const script = $("#script").find(':checked').val();
+        if (script !== "null") {
+            let $output = $('#output');
+            $output.val(eval(this.id + script + "($('#input').val().trim())"));
+            $output.select();
+            noError();
+            if (isValidURL($output.val())) {
+                $("#go").removeClass("hidden");
+            } else {
+                $("#go").addClass("hidden");
+            }
+        } else {
+            error(0);
+        }
+    });
+
+    $("#go").on("click", function() {
+        window.open($output.val(), '_blank');
+    });
+
+    function deHex(input) {
+        const s = split(input, 2);
+        let str = '';
+        for (let i = 0; i < s.length; i++) {
+            str += String.fromCharCode(parseInt(s[i], 16));
+        }
+        return str;
+    }
+
+    function enHex(input) {
+        const s = unescape(encodeURIComponent(input));
+        let h = '';
+        for (let i = 0; i < s.length; i++) {
+            h += s.charCodeAt(i).toString(16);
+        }
+        return h.toUpperCase();
+    }
+
+    function deBase64(input) {
+        try {
+            return atob(input);
+        } catch (e) {
+            error(1);
+        }
+    }
+
+    function enBase64(input) {
+        return btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g,
+            function toSolidBytes(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+    }
+
+    function deURI(input) {
+        return decodeURIComponent(input.replace(/\+/g, " "));
+    }
+
+    function enURI(input) {
+        return encodeURIComponent(input).replace(/'/g, "%27").replace(/"/g, "%22");
+    }
+
+    function deBinary(input) {
+        const arr = split(input, 8);
+        let finalStr = '';
+        for (let i = 0; i < arr.length; i++) {
+            finalStr += String.fromCharCode(parseInt(arr[i], 2));
+        }
+        return finalStr;
+    }
+
+    function enBinary(input) {
+        const output = [];
+        for (let i = 0; i < input.length; i++) {
+            const pad = "00000000";
+            const str = input[i].charCodeAt(0).toString(2);
+            output.push(pad.substring(0, pad.length - str.length) + str);
+        }
+        return output.join(" ");
+    }
+
+    function split(input, i) {
+        let arr;
+        if (input.search(" ") !== -1) {
+            arr = input.split(" ");
+        } else {
+            const reg = [".{", i, "}"].join("");
+            console.log(reg);
+            arr = input.match(new RegExp(reg, "g"));
+        }
+        return arr;
+    }
+
+    function error(code) {
+        $("#noti").removeClass("hidden");
+        let $mess= $("#mess");
+        switch (code) {
+            case 0:
+                $mess.val("Please choose a crypt type");
+                break;
+            case 1:
+                $mess.html("The string to be decoded is not correctly encoded.");
+        }
+    }
+
+    function noError() {
+        let $noti = $("#noti");
+        if (!$noti.hasClass("hidden")) $noti.addClass("hidden");
+    }
+
+    function isValidURL(str) {
+        const pattern = new RegExp("^(https?|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z0-9]{2,5}(:[0-9]{1,5})?(\/.*)?$", 'i');
+        return pattern.test(str);
+    }
+    const enMaps = [
+        ['kh', 'x'],
+        ['nh', 'n\''],
+        ['c(?!h)', 'k'],
+        ['th', 'w'],
+        ['q', 'k'],
+        ['ngh?', 'q'],
+        ['gh', 'g'],
+        ['ph', 'f'],
+        ['tr', 'c'],
+        ['ch', 'c'],
+        ['d', 'z'],
+        ['gi', 'z'],
+        ['r', 'z'],
+        ['đ', 'd']
+    ];
+    const deMaps = [
+        ['n\'', 'nh'],
+        ['w', 'th'],
+        ['q(i|e|ê)', 'ngh'],
+        ['q', 'ng'],
+        ['ku', 'qu'],
+        ['g(i|e|ê)', 'gh$1'],
+        ['f', 'ph'],
+        ['x', '(kh)x'],
+        ['c', 'ch'],
+        ['k', 'c(h)'],
+        ['z', '(r|gi)d'],
+        ['d', 'd(đ)']
+    ];
+
+    function capitalize(string) {
+        return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+    }
+
+    function convert(input, map) {
+        return input
+            .replace(new RegExp(map[0], 'g'), map[1])
+            .replace(new RegExp(capitalize(map[0]), 'g'), capitalize(map[1]));
+    }
+
+    function enViet(input) {
+        return () => {
+            enMaps.forEach(map => {
+                input = convert(input, map);
+            });
+            return input;
+        };
+    }
+
+    function deViet(input) {
+        return "Bạn đùa à? Cái thứ tiếng này thì dịch thế đ** nào được!"
+    }
+    </script>
+</body>
+
+</html>

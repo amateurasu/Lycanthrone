@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./icon/favicon.ico" rel="shortcut icon">
+    <link href="css/scrollbar.css" rel="stylesheet">
+    <link href="css/index-v3.css" rel="stylesheet">
+    <title>Encode &amp; Decode</title>
+</head>
+
+<body>
+<!--region HTML -->
+<noscript>Dẹp mịa đi, không JavaScript thì chơi bời éo gì nữa?</noscript>
+<div id="side-nav" class="side-nav">
+    <a class="close-nav no-select">&times;</a>
+    <a href="./index-v3.html?q=wtf" class="no-select">Suprise, madafaka?</a>
+</div>
+
+<div id="container" class="container">
+    <span class="open-nav no-select">&#9776;</span>
+    <div class="overlay hidden"></div>
+    <h1>Encode &amp; Decode</h1>
+    <div class="ed">
+        <div class="group upper">
+            <div id="encrypt" class="group crypt col-5 col-s-5"></div>
+            <div class="col-2 col-s-2">
+                <i id="swap" class="icon swap"></i>
+            </div>
+            <div id="decrypt" class="group crypt col-5 col-s-5"></div>
+        </div>
+
+        <div class="group under">
+            <div class="div-input col-6 col-m-6">
+                <textarea id="input" class="txt input" title="input" name="input" autofocus></textarea>
+                <i id="clear" class="btn float top-right icon cross hidden"></i>
+            </div>
+            <div class="div-output col-6 col-m-6">
+                <div id="output" class="txt output wordwrap" title="output" readonly></div>
+                <i id="go" class="float top-right icon right-arrow hidden"></i>
+                <i id="copy" class="float bottom-left icon copy hidden"></i>
+            </div>
+
+            <div id="drop-ctn" class="drop-ctn hidden">
+                <div>
+                    <input type="text" id="search" title="search" class="search" placeholder="Search...">
+                    <i id="drop-close" class="btn float right-center icon cross"></i>
+                </div>
+                <div class="choices">
+                    <h3>Recent Crypts</h3>
+                    <ul id="recent-crypt" class="group"></ul>
+                    <h3>All Crypts</h3>
+                    <ul id="all-crypt" class="group"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="notify" class="alert hidden">
+        <span class="btn-close no-select">&times;</span>
+        <p id="msg-content"></p>
+    </div>
+</div>
+<footer id="info" class="info group">
+    <a href="#about" id="about">About</a>
+    <a href="#blog" id="blog">Blog</a>
+    <a href="#projects" id="projects">Projects</a>
+    <a href="#contact" id="contact">Contact</a>
+</footer>
+<!-- endregion -->
+
+<script type="text/javascript" src="./js/jquery-3.4.1.js"></script>
+<script type="text/javascript" src="./js/scrollbar.js"></script>
+<script type="text/javascript" src="./js/core-v3.js"></script>
+<script type="text/javascript" src="./js/index-v3.js"></script>
+</body>
+
+</html>

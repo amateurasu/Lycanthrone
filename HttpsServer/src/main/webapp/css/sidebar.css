@@ -1,0 +1,114 @@
+body {
+    display: flex;
+    align-items: center;
+}
+
+
+@-webkit-keyframes messageUp {
+    0% {
+        top: 0;
+    }
+    25% {
+        top: 15px;
+    }
+    50% {
+        top: -5px;
+    }
+    75% {
+        top: -5px;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+@keyframes messageUp {
+    0% {
+        top: 0;
+    }
+    25% {
+        top: 15px;
+    }
+    50% {
+        top: -5px;
+    }
+    75% {
+        top: -5px;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+.sidebar {
+    padding: 0;
+}
+
+#merchantList {
+    position: absolute;
+    width: 100%;
+    top: 3rem;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+#contactChangeContainer input[type=radio]:checked + label {
+    font-weight: 700;
+}
+
+.filter__tree {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    position: relative;
+}
+
+.filter__tree .filter__tree {
+    padding-left: 15px;
+    display: none;
+}
+
+.filter__tree .filter__tree .filter__tree-item {
+    position: relative;
+}
+
+.filter__tree .filter__tree .filter__tree-item:before {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 2px;
+    background: #CFD0D4;
+    left: -10px;
+}
+
+.filter__tree .filter__tree .filter__tree-item .filter__link:hover:before,
+.filter__tree .filter__tree .filter__tree-item .filter__link:focus:before {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 2px;
+    left: -10px;
+    background: currentColor;
+}
+
+.filter__link {
+    text-align: left;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: block;
+    color: #77787C;
+    -webkit-animation: fade 350ms ease forwards;
+    animation: fade 350ms ease forwards;
+    cursor: pointer;
+}
+
+.filter__link:hover, .filter__link:focus {
+    color: #3870C4;
+    background: rgba(237, 241, 245, 0.6);
+}
+
+.filter__link.active {
+    font-weight: 700;
+    color: #3870C4;
+}

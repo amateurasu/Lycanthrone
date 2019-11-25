@@ -1,0 +1,13 @@
+{
+    "properties": [
+        {
+            "name": "bitlySettings.baseUrl",
+            "type": "java.lang.String",
+            "description": "Description for bitlySettings.baseUrl."
+        }, {
+            "name": "bitlySettings.accessToken",
+            "type": "java.lang.String",
+            "description": "Description for bitlySettings.accessToken."
+        }
+    ]
+}

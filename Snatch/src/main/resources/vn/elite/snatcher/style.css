@@ -1,0 +1,17 @@
+.download {
+    -fx-border-color: #AAAAAA;
+    -fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+}
+
+.close {
+    -fx-background-color: transparent;
+}
+
+.close:hover {
+    -fx-text-fill: red;
+}
+
+.close:pressed {
+    -fx-background-color: #aa141499;
+}

@@ -1,0 +1,16 @@
+@startuml
+package "EMS" {
+  package "EMS Web" {
+    [Fault Management]
+    [Configuration Management]
+    [Maintenance Management]
+    [Performance Management]
+    [Security Management]
+    [Remote NE]
+  }
+
+  package "Message queue" {
+  }
+}
+
+@enduml

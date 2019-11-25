@@ -1,0 +1,16 @@
+Postfix         () [] . (toán tử dot)              Trái sang phải
+Tính nhân       * / %                              Trái sang phải
+Tính cộng       + -                                Trái sang phải
+Dịch chuyển     >> >>> <<                          Trái sang phải
+Quan hệ         > >= < <=                          Trái sang phải
+Cân bằng        == !=                              Trái sang phải
+Phép AND bit    &                                  Trái sang phải
+Phép XOR bit    ^                                  Trái sang phải
+Phép OR bit     |                                  Trái sang phải
+Phép AND logic  &&                                 Trái sang phải
+Phép OR logic   ||                                 Trái sang phải
+Dấu phảy        ,                                  Trái sang phải
+
+Điều kiện       ?:                                 Phải sang trái
+Gán             = += -= *= /= %= >>= <<= &= ^= |=  Phải sang trái
+Unary           ++ -- ! ~                          Phải sang trái

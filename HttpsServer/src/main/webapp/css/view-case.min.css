@@ -1,0 +1,409 @@
+pre {
+    padding: 20px;
+    border: 1px solid #cfd0d4;
+    background-color: rgba(237, 241, 245, .65);
+    margin: 1rem 0
+}
+
+hr {
+    margin: 35px 0;
+    border-top: 1px solid #cfd0d4
+}
+
+p {
+    line-height: 22px
+}
+
+b, strong {
+    font-weight: 700
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllToggleContainer span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.goBackToCaseManagement {
+    position: absolute;
+    left: 10px;
+    top: 5px
+}
+
+.caseUpload {
+    color: #8f398f !important
+}
+
+#topbar {
+    border-bottom: 1px solid #2f3036
+}
+
+.tagOverlayText {
+    text-align: center;
+    font-size: 13px;
+    padding: 5px;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(11, 43, 14, .66);
+    border-bottom: 1px solid #2f3036;
+    color: #fff;
+    width: 100%;
+    font-weight: 700
+}
+
+.modal {
+    position: absolute
+}
+
+.alert {
+    margin-bottom: 0
+}
+
+.evidence {
+    width: 100%;
+    list-style-type: none;
+    display: block;
+    padding: 0
+}
+
+.evidence__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 5px
+}
+
+.evidence__title {
+    font-size: 1.2em;
+    font-weight: 700
+}
+
+.evidence__title i, .evidence__title small {
+    margin-left: 5px
+}
+
+.evidence__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between
+}
+
+.evidence__item {
+    display: inline-block;
+    position: relative;
+    width: 48%;
+    cursor: pointer;
+    margin: 0
+}
+
+@media screen and (max-width: 700px) {
+    .evidence__item {
+        width: 100%;
+        margin-bottom: 5px
+    }
+}
+
+.evidence__item:before {
+    content: attr(data-tooltip);
+    font-size: 12px;
+    position: absolute;
+    z-index: 999;
+    white-space: nowrap;
+    bottom: 9999px;
+    left: 50%;
+    background: #000;
+    color: #e0e0e0;
+    padding: 0 7px;
+    line-height: 24px;
+    height: 24px;
+    opacity: 0;
+    transition: opacity .4s ease-out
+}
+
+.evidence__item:focus label, .evidence__item:hover label {
+    border-color: #bdbdbd;
+    background-color: #f5f5f5
+}
+
+.evidence__item:focus:before, .evidence__item:hover:before {
+    opacity: 1;
+    bottom: -35px
+}
+
+.evidence__item.not-valid input[type=checkbox]:checked + label {
+    background: rgba(230, 41, 44, .16) !important;
+    border-color: rgba(230, 41, 44, .7) !important;
+    color: #e6292c !important
+}
+
+.evidence__item.not-valid input[type=checkbox]:checked + label:before {
+    content: "\f00d" !important
+}
+
+.evidence__item.important label {
+    border: #0684ce 2px solid
+}
+
+.evidence__item.disabled input[type=checkbox]:checked + label, .evidence__item.disabled label {
+    background: #e0e0e0 !important;
+    color: #9e9e9e !important;
+    border-color: #bdbdbd !important
+}
+
+.evidence__item input {
+    opacity: 0;
+    position: absolute
+}
+
+.evidence__item label {
+    padding: 5px 5px 5px 50px;
+    width: 100%;
+    font-size: 13px;
+    cursor: pointer;
+    margin: 0;
+    border: 1px solid #e0e0e0;
+    height: 40px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.evidence__item label:before {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    font-size: 24px;
+    transform: translateY(-50%)
+}
+
+.evidence__item input[type=checkbox]:checked + label {
+    background: #edf1f5;
+    border-color: rgba(56, 112, 196, .7);
+    color: #3870c4
+}
+
+.evidence__item input[type=checkbox]:checked + label:before {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 24px;
+    opacity: 1
+}
+
+#viewPageModal .modal-dialog {
+    max-width: 700px
+}
+
+#viewPageModal .modal-body {
+    padding: 5px
+}
+
+#page-content {
+    padding: 0 !important
+}
+
+#pdfViewer {
+    height: 100%;
+    padding: 0
+}
+
+#pdfViewer #pdfActions {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    padding: 5px;
+    margin: 0;
+    font-size: 23px
+}
+
+#pdfViewer #pdfActions.active {
+    opacity: 1
+}
+
+#pdfViewer #pdfActions > div {
+    margin: 5px 0
+}
+
+#pdfViewer #pdfActions a {
+    cursor: pointer;
+    opacity: .5
+}
+
+#pdfViewer #pdfActions .fa, #pdfViewer #pdfActions .far, #pdfViewer #pdfActions .fas, #pdfViewer #pdfActions img {
+    cursor: pointer;
+    width: 30px
+}
+
+#pdfViewer #pdfActions .selectAllContainer {
+    text-align: right
+}
+
+#pdfViewer #pdfActions .selectAllContainer div {
+    display: inline-block
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllToggleContainer {
+    cursor: pointer
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllToggleContainer.on {
+    opacity: 1
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllToggleContainer span {
+    font-size: 16px;
+    word-wrap: break-word
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllOptions {
+    visibility: hidden
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllOptions .fa-check {
+    color: #4caf50
+}
+
+#pdfViewer #pdfActions .selectAllContainer .selectAllOptions .fa-times {
+    color: #e6292c
+}
+
+#pdfViewer #pdfActions .gridOptions {
+    text-align: center
+}
+
+#pdfViewer #pdfActions .gridOptions img {
+    opacity: .5
+}
+
+#pdfViewer #pdfActions .gridOptions img.active {
+    opacity: 1
+}
+
+#pdfViewer #pdfActions .actionsLeft {
+    text-align: left
+}
+
+#pdfViewer #pdfActions .actionsRight {
+    text-align: right
+}
+
+#pdfViewer #pdfActions .actionsRight i {
+    margin-right: 10px
+}
+
+#pdfViewer #pdfActions img {
+    margin: 0 5px;
+    padding: 5px;
+    width: 30px;
+    height: 30px
+}
+
+#pdfViewer #pdfPages {
+    padding: 20px
+}
+
+#pdfViewer .page {
+    width: 46%;
+    display: inline-block;
+    margin: 1.5%;
+    text-align: center;
+    border: 1px solid #e5e6ea;
+    position: relative
+}
+
+#pdfViewer .page .pageImageContainer {
+    cursor: pointer;
+    background-color: #e5e6ea;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%
+}
+
+#pdfViewer .page .selectedOverlay {
+    display: none;
+    position: absolute;
+    height: calc(100% - 35px);
+    width: 100%;
+    cursor: pointer;
+    background-color: rgba(76, 175, 80, .15);
+    z-index: 1
+}
+
+#pdfViewer .page .selectedOverlay .checkContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 25px solid #4caf50;
+    border-left: 25px solid transparent;
+    border-bottom: 25px solid transparent
+}
+
+#pdfViewer .page .selectedOverlay .fa {
+    position: absolute;
+    right: 0;
+    margin: 7px;
+    color: #fff;
+    z-index: 1;
+    font-size: 16px
+}
+
+#pdfViewer .page .pageInfo {
+    text-align: left;
+    background-color: #000;
+    padding: 5px;
+    height: 35px
+}
+
+#pdfViewer .page .pageInfo .pageNumber {
+    color: #fff
+}
+
+#pdfViewer .page .pageInfo .pageActions {
+    float: right;
+    color: #77787c;
+    font-size: 16px
+}
+
+#pdfViewer .page .pageInfo .pageActions .fa {
+    cursor: pointer;
+    margin-right: 5px
+}
+
+#pdfViewer .page .pageInfo .pageActions .pageTag {
+    cursor: default
+}
+
+.actionBtn, .actionBtn.fa, .actionButton, .actionButton.fa {
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: #57595f;
+    background: #e5e6ea;
+    border: 1px solid #afafaf;
+    border-radius: .15rem;
+    padding: .3rem .5rem
+}
+
+.actionBtn.fa.text-danger, .actionBtn.text-danger, .actionButton.fa.text-danger, .actionButton.text-danger {
+    border-color: #e6292c
+}
+
+.actionBtn.fa:hover, .actionBtn:hover, .actionButton.fa:hover, .actionButton:hover {
+    opacity: .7;
+    transition: all 50ms ease
+}
+
+.actionBtn.disabled, .actionBtn.fa.disabled, .actionButton.disabled, .actionButton.fa.disabled {
+    cursor: not-allowed;
+    opacity: .65
+}

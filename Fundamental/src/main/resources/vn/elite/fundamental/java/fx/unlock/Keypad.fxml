@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" id="VBox" alignment="CENTER"
+         type="javafx.scene.layout.VBox" spacing="5.0"
+         fx:controller="vn.elite.fundamental.java.fx.unlock.KeypadController">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <GridPane id="GridPane" hgap="14.0" prefWidth="210.0" vgap="11.0">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed" text="1"
+                GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <font>
+                <Font size="24.0" fx:id="x1"/>
+            </font>
+        </Button>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="2" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="3" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="4" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="5" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="6" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="7" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="8" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="9" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <Button fx:id="del" mnemonicParsing="false" onAction="#keyPressed" text="Del" GridPane.columnIndex="0"
+                GridPane.rowIndex="3"/>
+        <Button font="$x1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyPressed"
+                text="0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Button fx:id="ok" mnemonicParsing="false" onAction="#keyPressed" text="OK" GridPane.columnIndex="2"
+                GridPane.rowIndex="3"/>
+    </GridPane>
+    <PasswordField id="password" fx:id="display" alignment="CENTER" prefHeight="41.0" prefWidth="194.0"/>
+</fx:root>

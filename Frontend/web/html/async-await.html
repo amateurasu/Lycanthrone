@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Document</title>
+</head>
+<body>
+<button id="request">Get random animals</button>
+<br/>
+<img id="cat"/>
+<img id="dog"/>
+<img id="fish"/>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script>
+    $('#request').click(async () => {
+        // Asynchonous + Sequential
+        console.log('Begin run');
+        const firstLoop = randomImg('dog');
+        console.log('Dog run');
+        const secondLoop = randomImg('cat');
+        console.log('Cat run');
+
+        let a = await Promise.all([firstLoop, secondLoop]);
+        console.log(a);
+        alert('All loop finished.');
+    });
+
+    let randomImg = async (tag) => {
+        for(let i = 0; i < 3; i++) {
+            const imgUrl = await findRandomImgPromise(tag);
+            $(`#${tag}`).attr('src', imgUrl);
+            await setTimeoutPromise(3000);
+        }
+        return tag;
+    };
+
+    let findRandomImgPromise = (tag) => {
+        const apiKey = 'a89c66e48519481ab448a3f8356e635c';
+        const endpoint = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${tag}`;
+        return fetch(endpoint).then(rs => rs.json()).then(data => data.data.fixed_width_small_url);
+    };
+
+    let setTimeoutPromise = (time) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, time);
+        });
+    }
+</script>
+</body>
+</html>
