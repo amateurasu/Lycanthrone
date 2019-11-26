@@ -24,14 +24,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A basic File Manager.  Requires 1.6+ for the Desktop & SwingWorker classes, amongst other minor things. Includes
- * support classes FileTableModel & FileTreeCellRenderer. TODO Bugs
- * <li>Still throws occasional AIOOBEs and NPEs, so some update on
- * the EDT must have been missed.
- * <li>Fix keyboard focus issues - especially when functions like
- * rename/delete etc. are called that update nodes & file lists.
- * <li>Needs more testing in general.
- * TODO Functionality
+ * A basic File Manager. Requires 1.6+ for the Desktop & SwingWorker classes,
+ * amongst other minor things. Includes support classes FileTableModel &
+ * FileTreeCellRenderer. TODO Bugs
+ * <ul>
+ * <li>Still throws occasional AIOOBEs and NPEs, so some update on the EDT must
+ * have been missed.
+ * <li>Fix keyboard focus issues - especially when functions like rename/delete
+ * etc. are called that update nodes & file lists.
+ * <li>Needs more testing in general. TODO Functionality
  * <li>Implement Read/Write/Execute checkboxes
  * <li>Implement Copy
  * <li>Extra prompt for directory delete (camickr suggestion)
@@ -43,6 +44,7 @@ import java.util.List;
  * <li>Implement history/back
  * <li>Allow multiple selection
  * <li>Add file search
+ * </ul>
  */
 public class FileManager {
     /** Title of the application */
@@ -176,7 +178,7 @@ public class FileManager {
         desktop = Desktop.getDesktop();
 
         JPanel detailView = new JPanel(new BorderLayout(3, 3));
-        //fileTableModel = new FileTableModel();
+        // fileTableModel = new FileTableModel();
 
         table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -208,7 +210,7 @@ public class FileManager {
         for (File fileSystemRoot : roots) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
-            //showChildren(node);
+            // showChildren(node);
             File[] files = fileSystemView.getFiles(fileSystemRoot, true);
             for (File file : files) {
                 if (file.isDirectory()) {
@@ -266,9 +268,9 @@ public class FileManager {
         flags.add(isFile);
         fileDetailsValues.add(flags);
 
-        int count = fileDetailsLabels.getComponentCount();
+        // int count = fileDetailsLabels.getComponentCount();
         // for (int ii = 0; ii < count; ii++) {
-        //     fileDetailsLabels.getComponent(ii).setEnabled(false);
+        // fileDetailsLabels.getComponent(ii).setEnabled(false);
         // }
 
         JToolBar toolBar = new JToolBar();
@@ -341,17 +343,17 @@ public class FileManager {
 
         readable = new JCheckBox("Read  ");
         readable.setMnemonic('a');
-        //readable.setEnabled(false);
+        // readable.setEnabled(false);
         toolBar.add(readable);
 
         writable = new JCheckBox("Write  ");
         writable.setMnemonic('w');
-        //writable.setEnabled(false);
+        // writable.setEnabled(false);
         toolBar.add(writable);
 
         executable = new JCheckBox("Execute");
         executable.setMnemonic('x');
-        //executable.setEnabled(false);
+        // executable.setEnabled(false);
         toolBar.add(executable);
 
         JPanel fileView = new JPanel(new BorderLayout(3, 3));
@@ -426,8 +428,8 @@ public class FileManager {
             return;
         }
 
-        int result = JOptionPane.showConfirmDialog(gui, "Are you sure you want to delete this file?",
-            "Delete File", JOptionPane.YES_NO_OPTION);
+        int result = JOptionPane.showConfirmDialog(gui, "Are you sure you want to delete this file?", "Delete File",
+            JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             try {
                 System.out.println("currentFile: " + currentFile);
@@ -506,15 +508,15 @@ public class FileManager {
                 }
                 if (created) {
                     TreePath parentPath = findTreePath(parentFile);
-                    DefaultMutableTreeNode parentNode =
-                        (DefaultMutableTreeNode) parentPath.getLastPathComponent();
+                    DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parentPath.getLastPathComponent();
 
                     if (file.isDirectory()) {
                         // add the new node..
                         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
 
                         TreePath currentPath = findTreePath(currentFile);
-                        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) currentPath.getLastPathComponent();
+                        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) currentPath
+                            .getLastPathComponent();
 
                         treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
                     }
@@ -587,7 +589,8 @@ public class FileManager {
     }
 
     /**
-     * Add the files that are contained within the directory of this node. Thanks to Hovercraft Full Of Eels.
+     * Add the files that are contained within the directory of this node. Thanks to
+     * Hovercraft Full Of Eels.
      */
     private void showChildren(final DefaultMutableTreeNode node) {
         tree.setEnabled(false);
@@ -749,6 +752,7 @@ public class FileManager {
      * A TreeCellRenderer for a File.
      */
     static class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+        private static final long serialVersionUID = 3127344175540151990L;
         private FileSystemView fileSystemView;
         private JLabel label;
 

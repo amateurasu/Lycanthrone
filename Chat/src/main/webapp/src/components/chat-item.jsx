@@ -5,17 +5,13 @@ import {SlideDown} from "react-slidedown";
 class ChatItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showDate: false
-        };
+        this.state = {showDate: false};
         this.handleItemClick = this.handleItemClick.bind(this);
     };
 
     handleItemClick(e) {
         let newState = this.state.showDate;
-        this.setState({
-            showDate: !newState
-        });
+        this.setState({showDate: !newState});
     }
 
     render() {

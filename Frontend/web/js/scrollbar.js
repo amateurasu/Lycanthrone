@@ -22,7 +22,8 @@
 
     browser.scrolls.add = function (instance) {this.remove(instance).push(instance);};
     browser.scrolls.remove = function (instance) {
-        while ($.inArray(instance, this) >= 0) this.splice($.inArray(instance, this), 1);
+        var pos = $.inArray(instance, this);
+        while (pos >= 0) this.splice(pos, 1);
         return this;
     };
 
@@ -303,8 +304,8 @@
                                     : (data.eventOffset < data.scrollbarOffset ? -1 : 0));
                                 scrollStep = Math.round(scrollx.visible * 0.75) * scrollForward;
                                 scrollToValue = (data.eventOffset - data.scrollbarOffset -
-                                    (o.stepScrolling ? (scrollForward === 1 ? data.scrollbarSize : 0)
-                                        : Math.round(data.scrollbarSize / 2)));
+                                                 (o.stepScrolling ? (scrollForward === 1 ? data.scrollbarSize : 0)
+                                                     : Math.round(data.scrollbarSize / 2)));
                                 scrollToValue = c[scrollOffset]() + (scrollToValue / scrollx.kx);
                             }
 
@@ -571,7 +572,7 @@
         if (typeof args === "undefined") {
             args = [];
         }
-        if (!$.isArray(args)) {
+        if (!Array.isArray(args)) {
             args = [args];
         }
         this.not("body, .scroll-wrapper").each(function () {
@@ -611,8 +612,8 @@
                 scrollx = scroll.scrollx;
                 scrolly = scroll.scrolly;
                 if (force || (options.autoUpdate && wrapper && wrapper.is(":visible") &&
-                    (container.prop("scrollWidth") !== scrollx.size || container.prop("scrollHeight") !== scrolly.size
-                        || wrapper.width() !== scrollx.visible || wrapper.height() !== scrolly.visible))) {
+                              (container.prop("scrollWidth") !== scrollx.size || container.prop("scrollHeight") !== scrolly.size
+                               || wrapper.width() !== scrollx.visible || wrapper.height() !== scrolly.visible))) {
                     scroll.init();
 
                     if (options.debug) {
@@ -686,9 +687,6 @@
 
     function isVerticalScroll(event) {
         var e = event.originalEvent;
-        if (e.axis && e.axis === e.HORIZONTAL_AXIS)
-            return false;
-        return !e.wheelDeltaX;
-
+        return e.axis && e.axis === e.HORIZONTAL_AXIS ? false : !e.wheelDeltaX;
     }
 }));

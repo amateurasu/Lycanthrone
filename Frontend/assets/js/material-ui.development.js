@@ -1,4 +1,4 @@
-/** @license Material-UI v4.6.1
+/** @license Material-UI v4.7.0
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -665,24 +665,6 @@
         return obj;
     }
 
-    function _extends() {
-        _extends = Object.assign || function (target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-
-                for (var key in source) {
-                    if (Object.prototype.hasOwnProperty.call(source, key)) {
-                        target[key] = source[key];
-                    }
-                }
-            }
-
-            return target;
-        };
-
-        return _extends.apply(this, arguments);
-    }
-
     function _objectWithoutPropertiesLoose(source, excluded) {
         if (source == null) return {};
         var target = {};
@@ -722,6 +704,24 @@
         return function validate() {
             return propType1.apply(void 0, arguments) || propType2.apply(void 0, arguments);
         };
+    }
+
+    function _extends() {
+        _extends = Object.assign || function (target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+
+            return target;
+        };
+
+        return _extends.apply(this, arguments);
     }
 
     function _typeof2(obj) {
@@ -809,14 +809,14 @@
                                 switch (a = a && a.$$typeof, a) {
                                     case k:
                                     case n:
+                                    case t:
+                                    case r:
                                     case h:
                                         return a;
                                     default:
                                         return u;
                                 }
                         }
-                    case t:
-                    case r:
                     case d:
                         return u;
                 }
@@ -998,6 +998,8 @@
                                         switch ($$typeofType) {
                                             case REACT_CONTEXT_TYPE:
                                             case REACT_FORWARD_REF_TYPE:
+                                            case REACT_LAZY_TYPE:
+                                            case REACT_MEMO_TYPE:
                                             case REACT_PROVIDER_TYPE:
                                                 return $$typeofType;
 
@@ -1007,8 +1009,6 @@
 
                                 }
 
-                            case REACT_LAZY_TYPE:
-                            case REACT_MEMO_TYPE:
                             case REACT_PORTAL_TYPE:
                                 return $$typeof;
                         }
@@ -1160,9 +1160,10 @@
         }
     });
     var reactIs_1 = reactIs.ForwardRef;
-    var reactIs_2 = reactIs.isLazy;
-    var reactIs_3 = reactIs.isMemo;
-    var reactIs_4 = reactIs.isValidElementType;
+    var reactIs_2 = reactIs.isFragment;
+    var reactIs_3 = reactIs.isLazy;
+    var reactIs_4 = reactIs.isMemo;
+    var reactIs_5 = reactIs.isValidElementType;
 
     /*
      object-assign
@@ -1214,7 +1215,12 @@
             "abcdefghijklmnopqrst".split("").forEach(function (letter) {
                 test3[letter] = letter;
             });
-            return Object.keys(Object.assign({}, test3)).join("") === "abcdefghijklmnopqrst";
+            if (Object.keys(Object.assign({}, test3)).join("") !==
+                "abcdefghijklmnopqrst") {
+                return false;
+            }
+
+            return true;
         } catch (err) {
             // We don't expect any of the above to throw, but better to be safe.
             return false;
@@ -1870,8 +1876,11 @@
             }
 
             // Fallback for non-spec compliant Symbols which are polyfilled.
-            return typeof Symbol === "function" && propValue instanceof Symbol;
+            if (typeof Symbol === "function" && propValue instanceof Symbol) {
+                return true;
+            }
 
+            return false;
         }
 
         // Equivalent of `typeof` but with special handling for array and regexp.
@@ -2130,7 +2139,7 @@
         return undefined;
     }
 
-    var refType = propTypes.oneOfType([propTypes.func, propTypes.PropTypes.object]);
+    var refType = propTypes.oneOfType([propTypes.func, propTypes.object]);
 
     // Sorted ASC by size. That's important.
     // It can't be configured as it's used statically for propTypes.
@@ -2338,10 +2347,8 @@
         // and material-components-web https://github.com/material-components/material-components-web/blob/ac46b8863c4dab9fc22c4c662dc6bd1b65dd652f/packages/mdc-theme/_functions.scss#L54
 
         function getContrastText(background) {
-            {
-                if (!background) {
-                    console.error("Material-UI: missing background argument in getContrastText(".concat(background, ")."));
-                }
+            if (!background) {
+                throw new TypeError("Material-UI: missing background argument in getContrastText(".concat(background, ")."));
             }
 
             var contrastText = getContrastRatio(background, dark.text.primary) >= contrastThreshold ? dark.text.primary : light.text.primary;
@@ -2350,7 +2357,7 @@
                 var contrast = getContrastRatio(background, contrastText);
 
                 if (contrast < 3) {
-                    console.error(["Material-UI: the contrast ratio of ".concat(contrast, ":1 for ").concat(contrastText, " on ").concat(background), "falls below the WACG recommended absolute minimum contrast ratio of 3:1.", "https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast"].join("\n"));
+                    console.error(["Material-UI: the contrast ratio of ".concat(contrast, ":1 for ").concat(contrastText, " on ").concat(background), "falls below the WCAG recommended absolute minimum contrast ratio of 3:1.", "https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast"].join("\n"));
                 }
             }
 
@@ -2458,11 +2465,11 @@
 
         {
             if (typeof fontSize !== "number") {
-                console.error("Material-UI: 'fontSize' is required to be a number.");
+                console.error("Material-UI: `fontSize` is required to be a number.");
             }
 
             if (typeof htmlFontSize !== "number") {
-                console.error("Material-UI: 'htmlFontSize' is required to be a number.");
+                console.error("Material-UI: `htmlFontSize` is required to be a number.");
             }
         }
 
@@ -2724,17 +2731,15 @@
             mixinsInput = _options$mixins === void 0 ? {} : _options$mixins,
             _options$palette = options.palette,
             paletteInput = _options$palette === void 0 ? {} : _options$palette,
-            shadowsInput = options.shadows,
             spacingInput = options.spacing,
             _options$typography = options.typography,
             typographyInput = _options$typography === void 0 ? {} : _options$typography,
-            other = _objectWithoutProperties(options, ["breakpoints", "mixins", "palette", "shadows", "spacing", "typography"]);
+            other = _objectWithoutProperties(options, ["breakpoints", "mixins", "palette", "spacing", "typography"]);
 
         var palette = createPalette(paletteInput);
         var breakpoints = createBreakpoints(breakpointsInput);
         var spacing = createSpacing(spacingInput);
-
-        var muiTheme = _extends({
+        var muiTheme = deepmerge({
             breakpoints: breakpoints,
             direction: "ltr",
             mixins: createMixins(breakpoints, spacing, mixinsInput),
@@ -2742,15 +2747,22 @@
             // Inject custom styles
             palette: palette,
             props: {},
-            // Inject custom props
-            shadows: shadowsInput || shadows,
+            // Provide default props
+            shadows: shadows,
             typography: createTypography(palette, typographyInput),
-            spacing: spacing
-        }, deepmerge({
+            spacing: spacing,
             shape: shape,
             transitions: transitions,
             zIndex: zIndex
-        }, other));
+        }, other);
+
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            args[_key - 1] = arguments[_key];
+        }
+
+        muiTheme = args.reduce(function (acc, argument) {
+            return deepmerge(acc, argument);
+        }, muiTheme);
 
         {
             var pseudoClasses = ["checked", "disabled", "error", "focused", "focusVisible", "required", "expanded", "selected"];
@@ -6408,6 +6420,10 @@
 
     var ThemeContext = React__default.createContext(null);
 
+    {
+        ThemeContext.displayName = "ThemeContext";
+    }
+
     function useTheme() {
         return React__default.useContext(ThemeContext);
     }
@@ -6429,6 +6445,11 @@
         sheetsRegistry: null
     };
     var StylesContext = React__default.createContext(defaultOptions);
+
+    {
+        StylesContext.displayName = "StylesContext";
+    }
+
     var injectFirstNode;
 
     function StylesProvider(props) {
@@ -6956,7 +6977,6 @@
      * Copyright 2015, Yahoo! Inc.
      * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
      */
-
     var REACT_STATICS = {
         childContextTypes: true,
         contextType: true,
@@ -6970,7 +6990,6 @@
         propTypes: true,
         type: true
     };
-
     var KNOWN_STATICS = {
         name: true,
         length: true,
@@ -6980,7 +6999,6 @@
         arguments: true,
         arity: true
     };
-
     var FORWARD_REF_STATICS = {
         "$$typeof": true,
         render: true,
@@ -6988,7 +7006,6 @@
         displayName: true,
         propTypes: true
     };
-
     var MEMO_STATICS = {
         "$$typeof": true,
         compare: true,
@@ -6997,7 +7014,6 @@
         propTypes: true,
         type: true
     };
-
     var TYPE_STATICS = {};
     TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
 
@@ -7005,6 +7021,7 @@
         if (reactIs.isMemo(component)) {
             return MEMO_STATICS;
         }
+
         return TYPE_STATICS[component["$$typeof"]] || REACT_STATICS;
     }
 
@@ -7018,9 +7035,9 @@
     function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
         if (typeof sourceComponent !== "string") {
             // don't hoist over string (html) components
-
             if (objectPrototype) {
                 var inheritedComponent = getPrototypeOf(sourceComponent);
+
                 if (inheritedComponent && inheritedComponent !== objectPrototype) {
                     hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
                 }
@@ -7037,16 +7054,16 @@
 
             for (var i = 0; i < keys.length; ++i) {
                 var key = keys[i];
+
                 if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
                     var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
+
                     try {
                         // Avoid failures from read-only properties
                         defineProperty(targetComponent, key, descriptor);
                     } catch (e) {}
                 }
             }
-
-            return targetComponent;
         }
 
         return targetComponent;
@@ -7692,10 +7709,7 @@
             other = _objectWithoutProperties(props, ["classes", "className", "component", "square", "elevation"]);
 
         {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            var theme = useTheme$1();
-
-            if (!theme.shadows[elevation]) {
+            if (classes["elevation".concat(elevation)] === undefined) {
                 console.error("Material-UI: this elevation `".concat(elevation, "` is not implemented."));
             }
         }
@@ -8001,6 +8015,7 @@
 
         /**
          * The `srcSet` attribute for the `img` element.
+         * Use this attribute for responsive image display.
          */
         srcSet: propTypes.string,
 
@@ -9494,7 +9509,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the BottomNavigation component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -9677,8 +9692,11 @@
             return true;
         }
 
-        return !!node.isContentEditable;
+        if (node.isContentEditable) {
+            return true;
+        }
 
+        return false;
     }
 
     /**
@@ -11967,7 +11985,7 @@
 
         var allItems = React__default.Children.toArray(children).filter(function (child) {
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Breadcrumbs component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -12580,7 +12598,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the ButtonGroup component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -13060,12 +13078,6 @@
             style = props.style,
             other = _objectWithoutProperties(props, ["children", "classes", "className", "component", "image", "src", "style"]);
 
-        {
-            if (!children && !image && !src) {
-                console.error("Material-UI: either `children`, `image` or `src` prop must be specified.");
-            }
-        }
-
         var isMediaComponent = MEDIA_COMPONENTS.indexOf(Component) !== -1;
         var composedStyle = !isMediaComponent && image ? _extends({
             backgroundImage: "url(\"".concat(image, "\")")
@@ -13081,7 +13093,13 @@
         /**
          * The content of the component.
          */
-        children: propTypes.node,
+        children: chainPropTypes(propTypes.node, function (props) {
+            if (!props.children && !props.image && !props.src) {
+                return new Error("Material-UI: either `children`, `image` or `src` prop must be specified.");
+            }
+
+            return null;
+        }),
 
         /**
          * Override or extend the styles applied to the component.
@@ -13128,6 +13146,10 @@
      */
 
     var FormControlContext = React__default.createContext();
+
+    {
+        FormControlContext.displayName = "FormControlContext";
+    }
 
     function useFormControl() {
         return React__default.useContext(FormControlContext);
@@ -14190,7 +14212,7 @@
         className: propTypes.string,
 
         /**
-         * If true, the chip will appear clickable, and will raise when pressed,
+         * If `true`, the chip will appear clickable, and will raise when pressed,
          * even if the onClick prop is not defined.
          * If false, the chip will not be clickable, even if onClick prop is defined.
          * This can be used, for example,
@@ -14658,7 +14680,7 @@
             classes = props.classes,
             className = props.className,
             _props$collapsedHeigh = props.collapsedHeight,
-            collapsedHeight = _props$collapsedHeigh === void 0 ? "0px" : _props$collapsedHeigh,
+            collapsedHeightProp = _props$collapsedHeigh === void 0 ? "0px" : _props$collapsedHeigh,
             _props$component = props.component,
             Component = _props$component === void 0 ? "div" : _props$component,
             inProp = props.in,
@@ -14676,6 +14698,7 @@
         var timer = React__default.useRef();
         var wrapperRef = React__default.useRef(null);
         var autoTransitionDuration = React__default.useRef();
+        var collapsedHeight = typeof collapsedHeightProp === "number" ? "".concat(collapsedHeightProp, "px") : collapsedHeightProp;
         React__default.useEffect(function () {
             return function () {
                 clearTimeout(timer.current);
@@ -14812,7 +14835,7 @@
         /**
          * The height of the container when collapsed.
          */
-        collapsedHeight: propTypes.string,
+        collapsedHeight: propTypes.oneOfType([propTypes.string, propTypes.number]),
 
         /**
          * The component used for the root node.
@@ -15254,7 +15277,7 @@
             // https://css-tricks.com/snippets/css/force-vertical-scrollbar/
 
             var parent = container.parentElement;
-            var scrollContainer = parent.nodeName === "HTML" ? parent : container;
+            var scrollContainer = parent.nodeName === "HTML" && window.getComputedStyle(parent)["overflow-y"] === "scroll" ? parent : container;
             restoreStyle.push({
                 value: scrollContainer.style.overflow,
                 key: "overflow",
@@ -17290,6 +17313,10 @@
 
     var ExpansionPanelContext = React__default.createContext({});
 
+    {
+        ExpansionPanelContext.displayName = "ExpansionPanelContext";
+    }
+
     var styles$D = function styles(theme) {
         var transition = {
             duration: theme.transitions.duration.shortest
@@ -17441,7 +17468,7 @@
         children: chainPropTypes(propTypes.node.isRequired, function (props) {
             var summary = React__default.Children.toArray(props.children)[0];
 
-            if (summary.type === React__default.Fragment) {
+            if (reactIs_2(summary)) {
                 return new Error("Material-UI: the ExpansionPanel doesn't accept a Fragment as a child. " + "Consider providing an array instead.");
             }
 
@@ -20164,7 +20191,7 @@
             return accumulator;
         }, {}));
     };
-    var Grid = React__default.forwardRef(function (props, ref) {
+    var Grid = React__default.forwardRef(function Grid(props, ref) {
         var _props$alignContent = props.alignContent,
             alignContent = _props$alignContent === void 0 ? "stretch" : _props$alignContent,
             _props$alignItems = props.alignItems,
@@ -20205,13 +20232,6 @@
             ref: ref
         }, other));
     });
-
-    {
-        // can't use named function expression since the function body references `Grid`
-        // which would point to the render function instead of the actual component
-        Grid.displayName = "ForwardRef(Grid)";
-    }
-
     Grid.propTypes = {
         /**
          * Defines the `align-content` style property.
@@ -20379,7 +20399,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the GridList component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -21181,22 +21201,22 @@
         initialWidth: propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         lgDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         lgUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         mdDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         mdUp: propTypes.bool,
 
@@ -21206,12 +21226,12 @@
         only: propTypes.oneOfType([propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]), propTypes.arrayOf(propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]))]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         smDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         smUp: propTypes.bool,
 
@@ -21222,22 +21242,22 @@
         width: propTypes.string.isRequired,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xlDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xlUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xsDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xsUp: propTypes.bool
     };
@@ -21269,24 +21289,21 @@
         var children = props.children,
             classes = props.classes,
             className = props.className,
-            lgDown = props.lgDown,
-            lgUp = props.lgUp,
-            mdDown = props.mdDown,
-            mdUp = props.mdUp,
             only = props.only,
-            smDown = props.smDown,
-            smUp = props.smUp,
-            xlDown = props.xlDown,
-            xlUp = props.xlUp,
-            xsDown = props.xsDown,
-            xsUp = props.xsUp,
-            other = _objectWithoutProperties(props, ["children", "classes", "className", "lgDown", "lgUp", "mdDown", "mdUp", "only", "smDown", "smUp", "xlDown", "xlUp", "xsDown", "xsUp"]);
+            other = _objectWithoutProperties(props, ["children", "classes", "className", "only"]);
 
         var theme = useTheme$1();
 
         {
-            if (Object.keys(other).length !== 0 && !(Object.keys(other).length === 1 && other.hasOwnProperty("ref"))) {
-                console.error("Material-UI: unsupported props received ".concat(Object.keys(other).join(", "), " by `<Hidden />`."));
+            var unknownProps = Object.keys(other).filter(function (propName) {
+                var isUndeclaredBreakpoint = !theme.breakpoints.keys.some(function (breakpoint) {
+                    return "".concat(breakpoint, "Up") === propName || "".concat(breakpoint, "Down") === propName;
+                });
+                return isUndeclaredBreakpoint;
+            });
+
+            if (unknownProps.length > 0) {
+                console.error("Material-UI: unsupported props received by `<Hidden implementation=\"css\" />`: ".concat(unknownProps.join(", "), ". Did you forget to wrap this component in a ThemeProvider declaring these breakpoints?"));
             }
         }
 
@@ -21346,22 +21363,22 @@
         implementation: propTypes.oneOf(["js", "css"]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         lgDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         lgUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         mdDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         mdUp: propTypes.bool,
 
@@ -21371,32 +21388,32 @@
         only: propTypes.oneOfType([propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]), propTypes.arrayOf(propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]))]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         smDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         smUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xlDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xlUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xsDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xsUp: propTypes.bool
     };
@@ -21493,22 +21510,22 @@
         initialWidth: propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         lgDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         lgUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         mdDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         mdUp: propTypes.bool,
 
@@ -21518,32 +21535,32 @@
         only: propTypes.oneOfType([propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]), propTypes.arrayOf(propTypes.oneOf(["xs", "sm", "md", "lg", "xl"]))]),
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         smDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         smUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xlDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xlUp: propTypes.bool,
 
         /**
-         * If true, screens this size and down will be hidden.
+         * If `true`, screens this size and down will be hidden.
          */
         xsDown: propTypes.bool,
 
         /**
-         * If true, screens this size and up will be hidden.
+         * If `true`, screens this size and up will be hidden.
          */
         xsUp: propTypes.bool
     };
@@ -22731,6 +22748,10 @@
      */
 
     var ListContext = React__default.createContext({});
+
+    {
+        ListContext.displayName = "ListContext";
+    }
 
     var styles$10 = {
         /* Styles applied to the root element. */
@@ -24048,10 +24069,6 @@
             text = nextFocus.textContent;
         }
 
-        if (text === undefined) {
-            return false;
-        }
-
         text = text.trim().toLowerCase();
 
         if (text.length === 0) {
@@ -24221,7 +24238,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Menu component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -24398,7 +24415,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Menu component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -28104,15 +28121,10 @@
     Popper.placements = placements;
     Popper.Defaults = Defaults;
 
-    /**
-     * Flips placement if in <body dir="rtl" />
-     * @param {string} placement
-     */
+    function flipPlacement(placement, theme) {
+        var direction = theme && theme.direction || "ltr";
 
-    function flipPlacement(placement) {
-        var direction = typeof window !== "undefined" && document.body.getAttribute("dir") || "ltr";
-
-        if (direction !== "rtl") {
+        if (direction === "ltr") {
             return placement;
         }
 
@@ -28179,7 +28191,8 @@
             exited = _React$useState[0],
             setExited = _React$useState[1];
 
-        var rtlPlacement = flipPlacement(initialPlacement);
+        var theme = useTheme();
+        var rtlPlacement = flipPlacement(initialPlacement, theme);
         /**
          * placement initialized from prop but can change during lifetime if modifiers.flip.
          * modifiers.flip is essentially a flip for controlled/uncontrolled behavior
@@ -28474,6 +28487,10 @@
      */
 
     var RadioGroupContext = React__default.createContext();
+
+    {
+        RadioGroupContext.displayName = "RadioGroupContext";
+    }
 
     var styles$1f = function styles(theme) {
         return {
@@ -29126,7 +29143,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Select component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -29258,7 +29275,7 @@
         autoFocus: propTypes.bool,
 
         /**
-         * If true, the width of the popover will automatically be set according to the items inside the
+         * If `true`, the width of the popover will automatically be set according to the items inside the
          * menu, otherwise it will be at least the width of the select input.
          */
         autoWidth: propTypes.bool,
@@ -29318,7 +29335,7 @@
         MenuProps: propTypes.object,
 
         /**
-         * If true, `value` must be an array and the menu will support multiple selections.
+         * If `true`, `value` must be an array and the menu will support multiple selections.
          */
         multiple: propTypes.bool,
 
@@ -29499,7 +29516,7 @@
     });
     Select.propTypes = {
         /**
-         * If true, the width of the popover will automatically be set according to the items inside the
+         * If `true`, the width of the popover will automatically be set according to the items inside the
          * menu, otherwise it will be at least the width of the select input.
          */
         autoWidth: propTypes.bool,
@@ -29570,7 +29587,7 @@
         MenuProps: propTypes.object,
 
         /**
-         * If true, `value` must be an array and the menu will support multiple selections.
+         * If `true`, `value` must be an array and the menu will support multiple selections.
          */
         multiple: propTypes.bool,
 
@@ -29794,8 +29811,8 @@
         return decimalPart ? decimalPart.length : 0;
     }
 
-    function roundValueToStep(value, step) {
-        var nearest = Math.round(value / step) * step;
+    function roundValueToStep(value, step, min) {
+        var nearest = Math.round((value - min) / step) * step + min;
         return Number(nearest.toFixed(getDecimalPrecision(step)));
     }
 
@@ -29881,7 +29898,7 @@
                 height: 2,
                 width: "100%",
                 boxSizing: "content-box",
-                padding: "11px 0",
+                padding: "13px 0",
                 display: "inline-block",
                 position: "relative",
                 cursor: "pointer",
@@ -29897,7 +29914,7 @@
                 "&$vertical": {
                     width: 2,
                     height: "100%",
-                    padding: "0 11px"
+                    padding: "0 13px"
                 },
                 // The primary input mechanism of the device includes a pointing device of limited accuracy.
                 "@media (pointer: coarse)": {
@@ -29998,11 +30015,12 @@
                 "&::after": {
                     position: "absolute",
                     content: "\"\"",
-                    // reach 48px touch target (2 * 18 + thumb circumference)
-                    left: -18,
-                    top: -18,
-                    right: -18,
-                    bottom: -18
+                    borderRadius: "50%",
+                    // reach 42px hit target (2 * 15 + thumb diameter)
+                    left: -15,
+                    top: -15,
+                    right: -15,
+                    bottom: -15
                 },
                 "&$focusVisible,&:hover": {
                     boxShadow: "0px 0px 0px 8px ".concat(fade(theme.palette.primary.main, 0.16)),
@@ -30074,12 +30092,12 @@
             markLabel: _extends({}, theme.typography.body2, {
                 color: theme.palette.text.secondary,
                 position: "absolute",
-                top: 22,
+                top: 26,
                 transform: "translateX(-50%)",
                 whiteSpace: "nowrap",
                 "$vertical &": {
                     top: "auto",
-                    left: 22,
+                    left: 26,
                     transform: "translateY(50%)"
                 },
                 "@media (pointer: coarse)": {
@@ -30281,7 +30299,7 @@
             event.preventDefault();
 
             if (step) {
-                newValue = roundValueToStep(newValue, step);
+                newValue = roundValueToStep(newValue, step, min);
             }
 
             newValue = clamp$1(newValue, min, max);
@@ -30351,7 +30369,7 @@
             newValue = percentToValue(percent, min, max);
 
             if (step) {
-                newValue = roundValueToStep(newValue, step);
+                newValue = roundValueToStep(newValue, step, min);
             } else {
                 var marksValues = marks.map(function (mark) {
                     return mark.value;
@@ -30760,6 +30778,9 @@
 
         /**
          * The granularity with which the slider can step through values. (A "discrete" slider.)
+         * The `min` prop serves as the origin for the valid values.
+         * We recommend (max - min) to be evenly divisible by the step.
+         *
          * When step is `null`, the thumb can only be slid onto marks provided with the `marks` prop.
          */
         step: propTypes.number,
@@ -31018,35 +31039,30 @@
 
         var _React$useState = React__default.useState(true),
             exited = _React$useState[0],
-            setExited = _React$useState[1]; // Timer that controls delay before snackbar auto hides
+            setExited = _React$useState[1];
 
-        var setAutoHideTimer = React__default.useCallback(function (autoHideDurationParam) {
-            var autoHideDurationBefore = autoHideDurationParam != null ? autoHideDurationParam : autoHideDuration;
-
-            if (!onClose || autoHideDurationBefore == null) {
+        var handleClose = useEventCallback(function () {
+            onClose.apply(void 0, arguments);
+        });
+        var setAutoHideTimer = useEventCallback(function (autoHideDurationParam) {
+            if (!handleClose || autoHideDurationParam == null) {
                 return;
             }
 
             clearTimeout(timerAutoHide.current);
             timerAutoHide.current = setTimeout(function () {
-                var autoHideDurationAfter = autoHideDurationParam != null ? autoHideDurationParam : autoHideDuration;
-
-                if (!onClose || autoHideDurationAfter == null) {
-                    return;
-                }
-
-                onClose(null, "timeout");
-            }, autoHideDurationBefore);
-        }, [autoHideDuration, onClose]);
+                handleClose(null, "timeout");
+            }, autoHideDurationParam);
+        });
         React__default.useEffect(function () {
             if (open) {
-                setAutoHideTimer();
+                setAutoHideTimer(autoHideDuration);
             }
 
             return function () {
                 clearTimeout(timerAutoHide.current);
             };
-        }, [open, setAutoHideTimer]); // Pause the timer when the user is interacting with the Snackbar
+        }, [open, autoHideDuration, setAutoHideTimer]); // Pause the timer when the user is interacting with the Snackbar
         // or when the user hide the window.
 
         var handlePause = function handlePause() {
@@ -31056,12 +31072,7 @@
 
         var handleResume = React__default.useCallback(function () {
             if (autoHideDuration != null) {
-                if (resumeHideDuration != null) {
-                    setAutoHideTimer(resumeHideDuration);
-                    return;
-                }
-
-                setAutoHideTimer(autoHideDuration * 0.5);
+                setAutoHideTimer(resumeHideDuration != null ? resumeHideDuration : autoHideDuration * 0.5);
             }
         }, [autoHideDuration, resumeHideDuration, setAutoHideTimer]);
 
@@ -31254,7 +31265,7 @@
         onMouseLeave: propTypes.func,
 
         /**
-         * If true, `Snackbar` is open.
+         * If `true`, `Snackbar` is open.
          */
         open: propTypes.bool,
 
@@ -31345,7 +31356,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Step component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -32946,7 +32957,7 @@
                     duration: theme.transitions.duration.shortest
                 }),
                 "&$checked": {
-                    transform: "translateX(50%)"
+                    transform: "translateX(20px)"
                 },
                 "&$disabled": {
                     color: theme.palette.type === "light" ? theme.palette.grey[400] : theme.palette.grey[800]
@@ -33013,7 +33024,10 @@
                     height: 16
                 },
                 "& $switchBase": {
-                    padding: 4
+                    padding: 4,
+                    "&$checked": {
+                        transform: "translateX(16px)"
+                    }
                 }
             },
 
@@ -33427,6 +33441,10 @@
 
     var TableContext = React__default.createContext();
 
+    {
+        TableContext.displayName = "TableContext";
+    }
+
     var styles$1v = function styles(theme) {
         return {
             /* Styles applied to the root element. */
@@ -33525,6 +33543,10 @@
      */
 
     var Tablelvl2Context = React__default.createContext();
+
+    {
+        Tablelvl2Context.displayName = "Tablelvl2Context";
+    }
 
     var styles$1w = {
         /* Styles applied to the root element. */
@@ -34150,6 +34172,8 @@
         var _props$ActionsCompone = props.ActionsComponent,
             ActionsComponent = _props$ActionsCompone === void 0 ? TablePaginationActions : _props$ActionsCompone,
             backIconButtonProps = props.backIconButtonProps,
+            _props$backIconButton = props.backIconButtonText,
+            backIconButtonText = _props$backIconButton === void 0 ? "Previous page" : _props$backIconButton,
             classes = props.classes,
             className = props.className,
             colSpanProp = props.colSpan,
@@ -34161,6 +34185,8 @@
             _props$labelRowsPerPa = props.labelRowsPerPage,
             labelRowsPerPage = _props$labelRowsPerPa === void 0 ? "Rows per page:" : _props$labelRowsPerPa,
             nextIconButtonProps = props.nextIconButtonProps,
+            _props$nextIconButton = props.nextIconButtonText,
+            nextIconButtonText = _props$nextIconButton === void 0 ? "Next page" : _props$nextIconButton,
             onChangePage = props.onChangePage,
             onChangeRowsPerPage = props.onChangeRowsPerPage,
             page = props.page,
@@ -34169,7 +34195,7 @@
             rowsPerPageOptions = _props$rowsPerPageOpt === void 0 ? defaultRowsPerPageOptions : _props$rowsPerPageOpt,
             _props$SelectProps = props.SelectProps,
             SelectProps = _props$SelectProps === void 0 ? {} : _props$SelectProps,
-            other = _objectWithoutProperties(props, ["ActionsComponent", "backIconButtonProps", "classes", "className", "colSpan", "component", "count", "labelDisplayedRows", "labelRowsPerPage", "nextIconButtonProps", "onChangePage", "onChangeRowsPerPage", "page", "rowsPerPage", "rowsPerPageOptions", "SelectProps"]);
+            other = _objectWithoutProperties(props, ["ActionsComponent", "backIconButtonProps", "backIconButtonText", "classes", "className", "colSpan", "component", "count", "labelDisplayedRows", "labelRowsPerPage", "nextIconButtonProps", "nextIconButtonText", "onChangePage", "onChangeRowsPerPage", "page", "rowsPerPage", "rowsPerPageOptions", "SelectProps"]);
 
         var colSpan;
 
@@ -34217,9 +34243,15 @@
             page: page
         })), React__default.createElement(ActionsComponent, {
             className: classes.actions,
-            backIconButtonProps: backIconButtonProps,
+            backIconButtonProps: _extends({
+                title: backIconButtonText,
+                "aria-label": backIconButtonText
+            }, backIconButtonProps),
             count: count,
-            nextIconButtonProps: nextIconButtonProps,
+            nextIconButtonProps: _extends({
+                title: nextIconButtonText,
+                "aria-label": nextIconButtonText
+            }, nextIconButtonProps),
             onChangePage: onChangePage,
             page: page,
             rowsPerPage: rowsPerPage
@@ -34236,6 +34268,11 @@
          * Props applied to the back arrow [`IconButton`](/api/icon-button/) component.
          */
         backIconButtonProps: propTypes.object,
+
+        /**
+         * Text label for the back arrow icon button.
+         */
+        backIconButtonText: propTypes.string,
 
         /**
          * Override or extend the styles applied to the component.
@@ -34279,6 +34316,11 @@
          * Props applied to the next arrow [`IconButton`](/api/icon-button/) element.
          */
         nextIconButtonProps: propTypes.object,
+
+        /**
+         * Text label for the next arrow icon button.
+         */
+        nextIconButtonText: propTypes.string,
 
         /**
          * Callback fired when the page is changed.
@@ -35234,7 +35276,7 @@
             }
 
             {
-                if (child.type === React__default.Fragment) {
+                if (reactIs_2(child)) {
                     console.error(["Material-UI: the Tabs component doesn't accept a Fragment as a child.", "Consider providing an array instead."].join("\n"));
                 }
             }
@@ -35732,6 +35774,53 @@
         return Math.round(value * 1e5) / 1e5;
     }
 
+    function arrowGenerator() {
+        return {
+            "&[x-placement*=\"bottom\"] $arrow": {
+                top: 0,
+                left: 0,
+                marginTop: "-0.95em",
+                width: "2em",
+                height: "1em",
+                "&::before": {
+                    borderWidth: "0 1em 1em 1em",
+                    borderColor: "transparent transparent currentcolor transparent"
+                }
+            },
+            "&[x-placement*=\"top\"] $arrow": {
+                bottom: 0,
+                left: 0,
+                marginBottom: "-0.95em",
+                width: "2em",
+                height: "1em",
+                "&::before": {
+                    borderWidth: "1em 1em 0 1em",
+                    borderColor: "currentcolor transparent transparent transparent"
+                }
+            },
+            "&[x-placement*=\"right\"] $arrow": {
+                left: 0,
+                marginLeft: "-0.95em",
+                height: "2em",
+                width: "1em",
+                "&::before": {
+                    borderWidth: "1em 1em 1em 0",
+                    borderColor: "transparent currentcolor transparent transparent"
+                }
+            },
+            "&[x-placement*=\"left\"] $arrow": {
+                right: 0,
+                marginRight: "-0.95em",
+                height: "2em",
+                width: "1em",
+                "&::before": {
+                    borderWidth: "1em 0 1em 1em",
+                    borderColor: "transparent transparent transparent currentcolor"
+                }
+            }
+        };
+    }
+
     var styles$1J = function styles(theme) {
         return {
             /* Styles applied to the Popper component. */
@@ -35747,6 +35836,9 @@
                 pointerEvents: "auto"
             },
 
+            /* Styles applied to the Popper component if `arrow={true}`. */
+            popperArrow: arrowGenerator(),
+
             /* Styles applied to the tooltip (label wrapper) element. */
             tooltip: {
                 backgroundColor: fade(theme.palette.grey[700], 0.9),
@@ -35759,6 +35851,27 @@
                 maxWidth: 300,
                 wordWrap: "break-word",
                 fontWeight: theme.typography.fontWeightMedium
+            },
+
+            /* Styles applied to the tooltip (label wrapper) element if `arrow={true}`. */
+            tooltipArrow: {
+                position: "relative",
+                margin: "0"
+            },
+
+            /* Styles applied to the arrow element. */
+            arrow: {
+                position: "absolute",
+                fontSize: 6,
+                color: fade(theme.palette.grey[700], 0.9),
+                "&::before": {
+                    content: "\"\"",
+                    margin: "auto",
+                    display: "block",
+                    width: 0,
+                    height: 0,
+                    borderStyle: "solid"
+                }
             },
 
             /* Styles applied to the tooltip (label wrapper) element if the tooltip is opened by touch. */
@@ -35802,8 +35915,12 @@
             })
         };
     };
+    var hystersisOpen = false;
+    var hystersisTimer = null;
     var Tooltip = React__default.forwardRef(function Tooltip(props, ref) {
-        var children = props.children,
+        var _props$arrow = props.arrow,
+            arrow = _props$arrow === void 0 ? false : _props$arrow,
+            children = props.children,
             classes = props.classes,
             _props$disableFocusLi = props.disableFocusListener,
             disableFocusListener = _props$disableFocusLi === void 0 ? false : _props$disableFocusLi,
@@ -35815,7 +35932,7 @@
             enterDelay = _props$enterDelay === void 0 ? 0 : _props$enterDelay,
             _props$enterTouchDela = props.enterTouchDelay,
             enterTouchDelay = _props$enterTouchDela === void 0 ? 700 : _props$enterTouchDela,
-            id = props.id,
+            idProp = props.id,
             _props$interactive = props.interactive,
             interactive = _props$interactive === void 0 ? false : _props$interactive,
             _props$leaveDelay = props.leaveDelay,
@@ -35832,19 +35949,19 @@
             _props$TransitionComp = props.TransitionComponent,
             TransitionComponent = _props$TransitionComp === void 0 ? Grow : _props$TransitionComp,
             TransitionProps = props.TransitionProps,
-            other = _objectWithoutProperties(props, ["children", "classes", "disableFocusListener", "disableHoverListener", "disableTouchListener", "enterDelay", "enterTouchDelay", "id", "interactive", "leaveDelay", "leaveTouchDelay", "onClose", "onOpen", "open", "placement", "PopperProps", "title", "TransitionComponent", "TransitionProps"]);
+            other = _objectWithoutProperties(props, ["arrow", "children", "classes", "disableFocusListener", "disableHoverListener", "disableTouchListener", "enterDelay", "enterTouchDelay", "id", "interactive", "leaveDelay", "leaveTouchDelay", "onClose", "onOpen", "open", "placement", "PopperProps", "title", "TransitionComponent", "TransitionProps"]);
 
         var theme = useTheme$1();
 
-        var _React$useState = React__default.useState(0),
-            forceUpdate = _React$useState[1];
+        var _React$useState = React__default.useState(),
+            childNode = _React$useState[0],
+            setChildNode = _React$useState[1];
 
-        var _React$useState2 = React__default.useState(),
-            childNode = _React$useState2[0],
-            setChildNode = _React$useState2[1];
+        var _React$useState2 = React__default.useState(null),
+            arrowRef = _React$useState2[0],
+            setArrowRef = _React$useState2[1];
 
         var ignoreNonTouchEvents = React__default.useRef(false);
-        var defaultId = React__default.useRef();
         var closeTimer = React__default.useRef();
         var enterTimer = React__default.useRef();
         var leaveTimer = React__default.useRef();
@@ -35877,20 +35994,20 @@
             }, [isControlled, title, childNode]);
         }
 
+        var _React$useState4 = React__default.useState(),
+            defaultId = _React$useState4[0],
+            setDefaultId = _React$useState4[1];
+
+        var id = idProp || defaultId;
         React__default.useEffect(function () {
-            // Fallback to this default id when possible.
+            if (!open || defaultId) {
+                return;
+            } // Fallback to this default id when possible.
             // Use the random value for client-side rendering only.
             // We can't use it server-side.
-            if (!defaultId.current) {
-                defaultId.current = "mui-tooltip-".concat(Math.round(Math.random() * 1e5));
-            } // Rerender with defaultId and childNode.
 
-            if (openProp) {
-                forceUpdate(function (n) {
-                    return !n;
-                });
-            }
-        }, [openProp]);
+            setDefaultId("mui-tooltip-".concat(Math.round(Math.random() * 1e5)));
+        }, [open, defaultId]);
         React__default.useEffect(function () {
             return function () {
                 clearTimeout(closeTimer.current);
@@ -35901,9 +36018,11 @@
         }, []);
 
         var handleOpen = function handleOpen(event) {
-            // The mouseover event will trigger for every nested element in the tooltip.
+            clearTimeout(hystersisTimer);
+            hystersisOpen = true; // The mouseover event will trigger for every nested element in the tooltip.
             // We can skip rerendering when the tooltip is already open.
             // We are using the mouseover event instead of the mouseenter event to fix a hide/show issue.
+
             if (!isControlled) {
                 setOpenState(true);
             }
@@ -35933,7 +36052,7 @@
             clearTimeout(enterTimer.current);
             clearTimeout(leaveTimer.current);
 
-            if (enterDelay) {
+            if (enterDelay && !hystersisOpen) {
                 event.persist();
                 enterTimer.current = setTimeout(function () {
                     handleOpen(event);
@@ -35948,9 +36067,9 @@
             onBlurVisible = _useIsFocusVisible.onBlurVisible,
             focusVisibleRef = _useIsFocusVisible.ref;
 
-        var _React$useState4 = React__default.useState(false),
-            childIsFocusVisible = _React$useState4[0],
-            setChildIsFocusVisible = _React$useState4[1];
+        var _React$useState5 = React__default.useState(false),
+            childIsFocusVisible = _React$useState5[0],
+            setChildIsFocusVisible = _React$useState5[1];
 
         var handleBlur = function handleBlur() {
             if (childIsFocusVisible) {
@@ -35980,6 +36099,11 @@
         };
 
         var handleClose = function handleClose(event) {
+            clearTimeout(hystersisTimer);
+            hystersisTimer = setTimeout(function () {
+                hystersisOpen = false;
+            }, 500); // Use 500 ms per https://github.com/reach/reach-ui/blob/3b5319027d763a3082880be887d7a29aee7d3afc/packages/tooltip/src/index.js#L214
+
             if (!isControlled) {
                 setOpenState(false);
             }
@@ -36067,7 +36191,7 @@
         var shouldShowNativeTitle = !open && !disableHoverListener;
 
         var childrenProps = _extends({
-            "aria-describedby": open ? id || defaultId.current : null,
+            "aria-describedby": open ? id : null,
             title: shouldShowNativeTitle && typeof title === "string" ? title : null
         }, other, {}, children.props, {
             className: clsx(other.className, children.props.className)
@@ -36104,23 +36228,39 @@
         return React__default.createElement(React__default.Fragment, null, React__default.cloneElement(children, _extends({
             ref: handleRef
         }, childrenProps)), React__default.createElement(Popper$1, _extends({
-            className: clsx(classes.popper, interactive && classes.popperInteractive),
+            className: clsx(classes.popper, interactive && classes.popperInteractive, arrow && classes.popperArrow),
             placement: placement,
             anchorEl: childNode,
             open: childNode ? open : false,
             id: childrenProps["aria-describedby"],
-            transition: true
+            transition: true,
+            popperOptions: {
+                modifiers: {
+                    arrow: {
+                        enabled: Boolean(arrowRef),
+                        element: arrowRef
+                    }
+                }
+            }
         }, interactiveWrapperListeners, PopperProps), function (_ref) {
             var placementInner = _ref.placement,
                 TransitionPropsInner = _ref.TransitionProps;
             return React__default.createElement(TransitionComponent, _extends({
                 timeout: theme.transitions.duration.shorter
             }, TransitionPropsInner, TransitionProps), React__default.createElement("div", {
-                className: clsx(classes.tooltip, classes["tooltipPlacement".concat(capitalize(placementInner.split("-")[0]))], ignoreNonTouchEvents.current && classes.touch)
-            }, title));
+                className: clsx(classes.tooltip, classes["tooltipPlacement".concat(capitalize(placementInner.split("-")[0]))], ignoreNonTouchEvents.current && classes.touch, arrow && classes.tooltipArrow)
+            }, title, arrow ? React__default.createElement("span", {
+                className: classes.arrow,
+                ref: setArrowRef
+            }) : null));
         }));
     });
     Tooltip.propTypes = {
+        /**
+         * If `true`, adds an arrow to the tooltip.
+         */
+        arrow: propTypes.bool,
+
         /**
          * Tooltip reference element.
          */

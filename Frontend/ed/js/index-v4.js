@@ -89,16 +89,15 @@
     };
 
     const populate = ed => {
-        ed.div.html("").append($("<a>", {
-            id: `${ed.prefix}choose`, "class": `choose-crypt a-icon a-down`
-        }).on("click", showCryptTable));
+        ed.div.html("").append($("<a>", {id: `${ed.prefix}choose`, "class": `choose-crypt a-icon a-down`})
+            .on("click", showCryptTable));
 
         if (ed === source) {
             ed.div.append($("<a>", {id: "en_detect", "class": "active crypt_detect"})
                 .text("AUTO DETECT").on("click", changeDetect));
         }
         ed.list.forEach(id => {
-            const element = $("<a>", {id: ed.prefix + id, "class": `crypt_${id}`})
+            const element = $("<a>", {id: `${ed.prefix}id`, "class": `crypt_${id}`})
                 .text(core[id].name.toUpperCase()).on("click", changeCrypt);
             ed.div.append(element)
         });

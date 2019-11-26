@@ -500,7 +500,7 @@ function formatGot(input, error) {
             return [].concat(acc, [`${prefix + lineNumberLabel} | ${lineSource}`],
                 isLineWithError ? [
                     `${defaultLinePrefix +
-                    repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
+                       repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
                 ] : []
             );
         }, [], lines
@@ -870,7 +870,7 @@ _.many = function () {
             if (result.status) {
                 if (i === result.index) {
                     throw new Error("infinite loop detected in .many() parser --- calling .many() on " +
-                        "a parser which can accept zero characters is usually the cause");
+                                    "a parser which can accept zero characters is usually the cause");
                 }
                 i = result.index;
                 accum.push(result.value);
@@ -905,7 +905,7 @@ _.tie = function () {
 
 _.times = function (min, max) {
     const self = this;
-    if (arguments.length < 2) {max = min}
+    if (arguments.length < 2) {max = min;}
     assertNumber(min);
     assertNumber(max);
 

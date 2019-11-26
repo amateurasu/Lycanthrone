@@ -1,12 +1,11 @@
 import React from "react";
-// nodejs library that concatenates classes
+
 import classNames from "classnames";
-// nodejs library to set properties for components
+
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "../../assets/js/material-dashboard-react/components/cardAvatarStyle.jsx";
-// @material-ui/icons
 
 const useStyles = makeStyles(styles);
 

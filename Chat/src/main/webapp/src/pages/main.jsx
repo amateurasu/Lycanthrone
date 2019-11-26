@@ -31,7 +31,6 @@ class Main extends React.Component {
     }
 
     componentWillUnmount() {
-
     }
 
     handleMainMenuChange(e) {

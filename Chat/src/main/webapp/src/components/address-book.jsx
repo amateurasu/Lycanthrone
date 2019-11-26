@@ -1,6 +1,6 @@
 import React from "react";
 import {Menu} from "antd";
-import CustomAvatar from "../components/custom-avatar";
+import CustomAvatar from "./custom-avatar";
 import AddFriend from "./add-friend";
 import {connect} from "react-redux";
 import {handleChangeAddressBook, loadAddressBookList} from "../actions/addressBookAction";
@@ -62,10 +62,10 @@ class AddressBook extends React.Component {
                                         <div style={{width: 60}}>
                                             <CustomAvatar type="user-avatar" avatar={item.avatar}/>
                                         </div>
-                                        {item.isOnline ?
-                                            <div className="status-point online"/>
-                                            :
-                                            <div className="status-point offline"/>
+                                        {
+                                            item.isOnline
+                                                ? <div className="status-point online"/>
+                                                : <div className="status-point offline"/>
                                         }
                                         <div style={{overflow: "hidden", paddingTop: 5}}>
                                             <div className="user-name">{item.name}</div>
@@ -87,10 +87,10 @@ class AddressBook extends React.Component {
                                 <div style={{width: 60}}>
                                     <CustomAvatar type="user-avatar" avatar={item.avatar}/>
                                 </div>
-                                {item.isOnline ?
-                                    <div className="status-point online"/>
-                                    :
-                                    <div className="status-point offline"/>
+                                {
+                                    item.isOnline
+                                        ? <div className="status-point online"/>
+                                        : <div className="status-point offline"/>
                                 }
                                 <div style={{overflow: "hidden", paddingTop: 5}}>
                                     <div className="user-name">{item.name}</div>

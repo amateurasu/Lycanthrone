@@ -27,4 +27,3 @@ class StatusNotification extends React.Component {
 }
 
 export const statusNotification = new StatusNotification();
-

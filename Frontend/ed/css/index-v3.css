@@ -284,6 +284,9 @@ h1, h3, .choice, .no-select, .group.upper > * {
     margin: auto;
 }
 
+.msg-content {
+    color: white;
+}
 /*endregion*/
 
 /*region Utils */

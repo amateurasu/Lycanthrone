@@ -92,7 +92,7 @@
 }
 
 #sub-side-menu ul li.ant-menu-item:first-child {
-    /*margin-top: 0;*/
+    margin-top: 0;
 }
 
 #sub-side-menu .sub-menu-title {
@@ -474,15 +474,6 @@
     padding: 20px 0 10px 0;
     text-align: center;
 
-}
-
-.box.user-name {
-}
-
-.box.status {
-}
-
-.box.logout {
 }
 
 .logout-a .anticon:hover {

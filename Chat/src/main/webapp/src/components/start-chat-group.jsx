@@ -1,6 +1,6 @@
 import React from "react";
 import {Alert, Input, Modal, Tag} from "antd";
-import CustomAvatar from "../components/custom-avatar";
+import CustomAvatar from "./custom-avatar";
 import $ from "jquery";
 import {connect} from "react-redux";
 import {addNewUserChatGroup, removeUserChatGroup, startNewChatGroup} from "../actions/chatAction";

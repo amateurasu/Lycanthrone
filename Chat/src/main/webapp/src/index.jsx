@@ -17,7 +17,9 @@ window.store = store;
 
 api.post(`/api/protected/ping`).then(data => {
     console.log("ping");
+    console.log(data);
 }, data => {
+    console.log(data);
     console.log("not-ping");
     clearStorage();
 });
@@ -32,7 +34,5 @@ let provider = (
         </Router>
     </Provider>
 );
+
 ReactDOM.render(provider, document.getElementById("root"));
-
-
-

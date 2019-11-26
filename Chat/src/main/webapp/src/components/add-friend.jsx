@@ -1,6 +1,6 @@
 import React from "react";
 import {Alert, Input, Modal} from "antd";
-import CustomAvatar from "../components/custom-avatar";
+import CustomAvatar from "./custom-avatar";
 import {addNewFriend, changeStateAddFriendPopup} from "../actions/addressBookAction";
 import {connect} from "react-redux";
 import $ from "jquery";
@@ -20,7 +20,7 @@ class AddFriend extends React.Component {
         this.props.changeStateAddFriendPopup(true);
     };
 
-    handleOk = (e) => {
+    handleOk = e => {
         console.log(e);
         let $add = $("#add-user-name");
         const un = $add.val();
@@ -48,11 +48,11 @@ class AddFriend extends React.Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     okText="Add"
-                    cancelText="Cancel"
-                >
-                    {this.props.addFriendError ?
-                        < Alert message={this.props.addFriendErrorMessage} type="error"/>
-                        : ""
+                    cancelText="Cancel">
+                    {
+                        this.props.addFriendError
+                            ? < Alert message={this.props.addFriendErrorMessage} type="error"/>
+                            : ""
                     }
                     <p className="model-label">Please enter user name:</p>
                     <Input id="add-user-name" className="add-user-name" onPressEnter={this.handleOk}/>

@@ -21,8 +21,9 @@ class ChatList extends React.Component {
         this.props.userSelected(event.key);
         this.props.loadChatContainer(event.key);
         for (let i = 0; i < this.props.chatList.length; i++) {
-            if (this.props.chatList[i].sessionId === event.key) {
-                this.props.changeMessageHeader(this.props.chatList[i].name, this.props.chatList[i].avatar, this.props.chatList[i].groupchat);
+            const chat = this.props.chatList[i];
+            if (chat.sessionId === event.key) {
+                this.props.changeMessageHeader(chat.name, chat.avatar, chat.groupchat);
             }
         }
     }
@@ -63,10 +64,12 @@ class ChatList extends React.Component {
                                     }
                                     {item.unread > 0 ? <div className="unread">{item.unread}</div> : ""}
                                 </Menu.Item>
-                            )}
+                            )
+                        }
                     </Menu>
                 </Scrollbars>
-            </div>);
+            </div>
+        );
     }
 }
 
