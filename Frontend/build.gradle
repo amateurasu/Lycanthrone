@@ -31,8 +31,9 @@ task webpack(type: Exec) {
     inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.file("webpack.config.js").withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.cacheIf { true }
-    commandLine "ls node_modules/.bin"
-    commandLine "node_modules/.bin/webpack", '--mode', 'production'
+//    workingDir "$projectDir"
+    println "---------------------------------------------------------------------"
+    commandLine "webpack", "./ed/components/App.jsx", "./ed/bundle/ed.js"
 }
 
 clean {

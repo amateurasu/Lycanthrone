@@ -272,9 +272,8 @@
                 return input.replace(core.regex, match => {
                     const result = core.de(match);
                     if (!checkURI(result)) {return result;}
-                    console.log(result);
                     const link = decodeURI(result);
-                    console.log(link);
+                    console.log(`${result} ${link}`);
                     // if ()
                     const url = new URL(link);
                     return `<a href="${link}">${url.origin}</a>`;

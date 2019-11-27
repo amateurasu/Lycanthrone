@@ -71,6 +71,13 @@ h3 {
     position: absolute;
 }
 
+.close-nav {
+    top: 0;
+    right: 25px;
+    font-size: 72px;
+    margin-left: 50px;
+}
+
 .nav-show {
     width: 60vw;
 }

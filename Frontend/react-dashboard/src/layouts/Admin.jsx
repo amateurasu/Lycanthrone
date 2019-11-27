@@ -22,13 +22,11 @@ let ps;
 
 const switchRoutes = (
     <Switch>
-        {
-            routes.map((prop, key) => {
-                return prop.layout === "/admin"
-                    ? <Route path={prop.layout + prop.path} component={prop.component} key={key}/>
-                    : null;
-            })
-        }
+        {routes.map((prop, key) => {
+            return prop.layout === "/admin"
+                ? <Route path={prop.layout + prop.path} component={prop.component} key={key}/>
+                : null;
+        })}
         <Redirect from="/admin" to="/admin/dashboard"/>
     </Switch>
 );
@@ -48,11 +46,7 @@ export default function Admin({...rest}) {
     const handleImageClick = image => setImage(image);
     const handleColorClick = color => setColor(color);
     const handleFixedClick = () => {
-        if (fixedClasses === "dropdown") {
-            setFixedClasses("dropdown show");
-        } else {
-            setFixedClasses("dropdown");
-        }
+        setFixedClasses("dropdown" + (fixedClasses === "dropdown" ? " show" : ""));
     };
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
     const getRoute = () => window.location.pathname !== "/admin/maps";
@@ -98,7 +92,7 @@ export default function Admin({...rest}) {
                         </div>
                         : <div className={classes.map}>{switchRoutes}</div>
                 }
-                {getRoute() ? <Footer/> : null}
+                {getRoute() && <Footer/>}
                 <FixedPlugin
                     handleImageClick={handleImageClick}
                     handleColorClick={handleColorClick}

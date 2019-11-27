@@ -108,7 +108,7 @@ export default function RTL({...rest}) {
                 ) : (
                     <div className={classes.map}>{switchRoutes}</div>
                 )}
-                {getRoute() ? <Footer/> : null}
+                {getRoute() && <Footer/>}
                 <FixedPlugin
                     handleImageClick={handleImageClick}
                     handleColorClick={handleColorClick}

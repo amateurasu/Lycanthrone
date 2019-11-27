@@ -28,7 +28,7 @@ export default function CustomTabs(props) {
     return (
         <Card plain={plainTabs}>
             <CardHeader color={headerColor} plain={plainTabs}>
-                {title !== undefined ? <div className={cardTitle}>{title}</div> : null}
+                {title !== undefined && <div className={cardTitle}>{title}</div>}
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -41,11 +41,9 @@ export default function CustomTabs(props) {
                     scrollButtons="auto"
                 >
                     {tabs.map((prop, key) => {
-                        var icon = {};
+                        let icon = {};
                         if (prop.tabIcon) {
-                            icon = {
-                                icon: <prop.tabIcon/>
-                            };
+                            icon = {icon: <prop.tabIcon/>};
                         }
                         return (
                             <Tab
@@ -64,10 +62,7 @@ export default function CustomTabs(props) {
             </CardHeader>
             <CardBody>
                 {tabs.map((prop, key) => {
-                    if (key === value) {
-                        return <div key={key}>{prop.tabContent}</div>;
-                    }
-                    return null;
+                    return key === value ? <div key={key}>{prop.tabContent}</div> : null;
                 })}
             </CardBody>
         </Card>

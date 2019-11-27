@@ -15,7 +15,7 @@ const useStyles = makeStyles(styles);
 export default function Snackbar(props) {
     const classes = useStyles();
     const {message, color, close, icon, place, open, rtlActive} = props;
-    var action = [];
+    let action = [];
     const messageClasses = classNames({
         [classes.iconMessage]: icon !== undefined
     });
@@ -26,8 +26,7 @@ export default function Snackbar(props) {
                 key="close"
                 aria-label="Close"
                 color="inherit"
-                onClick={() => props.closeNotification()}
-            >
+                onClick={() => props.closeNotification()}>
                 <Close className={classes.close}/>
             </IconButton>
         ];
@@ -39,9 +38,7 @@ export default function Snackbar(props) {
                 horizontal:
                     place.indexOf("l") !== -1
                         ? "left"
-                        : place.indexOf("c") !== -1
-                        ? "center"
-                        : "right"
+                        : place.indexOf("c") !== -1 ? "center" : "right"
             }}
             open={open}
             message={

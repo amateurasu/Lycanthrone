@@ -43,29 +43,24 @@ export default function CustomInput(props) {
             {...formControlProps}
             className={`${formControlProps.className} ${classes.formControl}`}
         >
-            {labelText !== undefined ? (
-                <InputLabel
-                    className={classes.labelRoot + labelClasses}
-                    htmlFor={id}
-                    {...labelProps}
-                >
+            {labelText !== undefined && (
+                <InputLabel htmlFor={id} className={classes.labelRoot + labelClasses} {...labelProps}>
                     {labelText}
                 </InputLabel>
-            ) : null}
+            )}
             <Input
+                id={id}
                 classes={{
                     root: marginTop,
                     disabled: classes.disabled,
                     underline: underlineClasses
                 }}
-                id={id}
-                {...inputProps}
-            />
+                {...inputProps}/>
             {error ? (
                 <Clear className={`${classes.feedback} ${classes.labelRootError}`}/>
-            ) : success ? (
+            ) : success && (
                 <Check className={`${classes.feedback} ${classes.labelRootSuccess}`}/>
-            ) : null}
+            )}
         </FormControl>
     );
 }

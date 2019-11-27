@@ -10,9 +10,9 @@ class ProductCategoryRow extends React.Component {
 class ProductRow extends React.Component {
     render() {
         const product = this.props.product;
-        const name = product.stocked ?
-            product.name :
-            <span style={{color: "red"}}>{product.name}</span>;
+        const name = product.stocked
+            ? product.name
+            : <span style={{color: "red"}}>{product.name}</span>;
 
         return <tr>
             <td>{name}</td>
@@ -53,19 +53,16 @@ class ProductTable extends React.Component {
 }
 
 class SearchBar extends React.Component {
-    handleFilterTextChange = e => this.props.onFilterTextChange(e.target.value);
+    handleFilterChange = e => this.props.onFilterTextChange(e.target.value);
 
     handleInStockChange = e => this.props.onInStockChange(e.target.checked);
 
     render() {
         return <form>
-            <input type="text" placeholder="Search..." value={this.props.filterText}
-                onChange={this.handleFilterTextChange}/>
-            <p>
-                <input type="checkbox" checked={this.props.inStockOnly}
-                    onChange={this.handleInStockChange}/>
-                {" "} Only show products in stock
-            </p>
+            <input type="text" placeholder="Search..." value={this.props.filterText} onChange={this.handleFilterChange}/>
+            <br/>
+            <input type="checkbox" checked={this.props.inStockOnly} onChange={this.handleInStockChange}/>
+            {" "} Only show products in stock
         </form>;
     }
 }
@@ -107,7 +104,4 @@ const PRODUCTS = [
     {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
 ];
 
-ReactDOM.render(
-    <FilterableProductTable products={PRODUCTS}/>,
-    document.getElementById("container")
-);
+ReactDOM.render(<FilterableProductTable products={PRODUCTS}/>, document.getElementById("container"));

@@ -18,33 +18,25 @@ export default function CustomTable(props) {
     return (
         <div className={classes.tableResponsive}>
             <Table className={classes.table}>
-                {tableHead !== undefined ? (
+                {tableHead !== undefined && (
                     <TableHead className={classes[`${tableHeaderColor}TableHeader`]}>
                         <TableRow className={classes.tableHeadRow}>
-                            {tableHead.map((prop, key) =>
-                                (
-                                    <TableCell
-                                        className={`${classes.tableCell} ${classes.tableHeadCell}`}
-                                        key={key}
-                                    >
-                                        {prop}
-                                    </TableCell>
-                                ))}
+                            {tableHead.map((prop, key) => (
+                                <TableCell key={key} className={`${classes.tableCell} ${classes.tableHeadCell}`}>
+                                    {prop}
+                                </TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
-                ) : null}
+                )}
                 <TableBody>
-                    {tableData.map((prop, key) =>
-                        (
-                            <TableRow key={key} className={classes.tableBodyRow}>
-                                {prop.map((prop, key) =>
-                                    (
-                                        <TableCell className={classes.tableCell} key={key}>
-                                            {prop}
-                                        </TableCell>
-                                    ))}
-                            </TableRow>
-                        ))}
+                    {tableData.map((prop, key) => (
+                        <TableRow key={key} className={classes.tableBodyRow}>
+                            {prop.map((prop, key) => (
+                                <TableCell className={classes.tableCell} key={key}>{prop}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>
