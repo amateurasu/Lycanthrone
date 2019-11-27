@@ -7,46 +7,53 @@
 //     return <Button variant="contained" color="primary">Hello World</Button>;
 // }
 
-// import React from "react";
-// import {
-//     BrowserRouter as Router,
-//     Switch,
-//     Route,
-//     Link,
-//     useRouteMatch,
-//     useParams
-// } from "react-router-dom";
+// var Router = ReactRouter.Router;
+// var Route = ReactRouter.Route;
+// var IndexRoute = ReactRouter.IndexRoute;
+// var Link = ReactRouter.Link;
+// var browserHistory = ReactRouter.browserHistory;
 
-function App() {
-    return (
-        <BrowserRouter>
-            <div>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/about">About</Link>
-                    </li>
-                    <li>
-                        <Link to="/topics">Topics</Link>
-                    </li>
-                </ul>
+const {
+    BrowserRouter,
+    Switch,
+    Route,
+    Link,
+    useRouteMatch,
+    useParams
+} = ReactRouterDOM;
 
-                <Switch>
-                    <Route path="/about">
-                        <About/>
-                    </Route>
-                    <Route path="/topics">
-                        <Topics/>
-                    </Route>
-                    <Route path="/">
-                        <Home/>
-                    </Route>
-                </Switch>
-            </div>
-        </BrowserRouter>
-    );
+class App extends React.Component {
+    render() {
+        return (
+            <BrowserRouter>
+                <div>
+                    <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
+                        <li>
+                            <Link to="/about">About</Link>
+                        </li>
+                        <li>
+                            <Link to="/topics">Topics</Link>
+                        </li>
+                    </ul>
+
+                    <Switch>
+                        <Route path="/about">
+                            <About/>
+                        </Route>
+                        <Route path="/topics">
+                            <Topics/>
+                        </Route>
+                        <Route path="/">
+                            <Home/>
+                        </Route>
+                    </Switch>
+                </div>
+            </BrowserRouter>
+        );
+    }
 }
 
 function Home() {
@@ -98,67 +105,60 @@ function Topic() {
 
 ReactDOM.render(<App/>, document.getElementById("root"));
 
-/*
- class Clock extends React.Component {
- constructor(props) {
- super(props);
- this.state = {date: new Date()};
- }
+class Clock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: new Date()};
+    }
 
- componentDidMount() {
- this.timerID = setInterval(() => this.tick(), 1000);
- }
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+    }
 
- componentWillUnmount() {
- clearInterval(this.timerID);
- }
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
 
- tick() {
- this.setState({date: new Date()});
+    tick() {
+        this.setState({date: new Date()});
+    }
 
- // this.setState((state, props) => ({
- //     counter: state.counter + props.increment
- // }));
- }
+    render() {
+        return (
+            <div>
+                <h1>Hello, world!</h1>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+        );
+    }
+}
 
- render() {
- return (
- <div>
- <h1>Hello, world!</h1>
- <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
- </div>
- );
- }
- }
+class Toggle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isToggleOn: true};
 
- class Toggle extends React.Component {
- constructor(props) {
- super(props);
- this.state = {isToggleOn: true};
+        // This binding is necessary to make `this` work in the callback
+        // this.handleClick = this.handleClick.bind(this);
+    }
 
- // This binding is necessary to make `this` work in the callback
- // this.handleClick = this.handleClick.bind(this);
- }
+    handleClick = () => {
+        console.log("something");
+        this.setState(state => ({isToggleOn: !state.isToggleOn}));
+    };
 
- handleClick = () => {
- console.log("something");
- this.setState(state => ({isToggleOn: !state.isToggleOn}));
- };
+    render() {
+        return <button onClick={this.handleClick}>{this.state.isToggleOn ? "ON" : "OFF"}</button>;
+    }
+}
 
- render() {
- return <button onClick={this.handleClick}>{this.state.isToggleOn ? "ON" : "OFF"}</button>;
- }
- }
-
- class App extends React.Component {
- render() {
- return (
- <div>
- <Clock/>
- <Toggle/>
- </div>
- );
- }
- }
-
- ReactDOM.render(<App/>, document.getElementById("root"));*/
+class App2 extends React.Component {
+    render() {
+        return (
+            <div>
+                <Clock/>
+                <Toggle/>
+            </div>
+        );
+    }
+}
