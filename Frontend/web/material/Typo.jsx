@@ -1,6 +1,8 @@
-import React from "react";
-import Typography from "material-ui/core/Typography";
-import {makeStyles} from "material-ui/core/styles";
+// import React from "react";
+// import Typography from "material-ui/core/Typography";
+// import {makeStyles} from "material-ui/core/styles";
+
+const {makeStyles, Typography} = MaterialUI;
 
 const useStyles = makeStyles({
     root: {
@@ -43,3 +45,5 @@ function Types() {
         </div>
     );
 }
+
+ReactDOM.render(<Types/>, document.getElementById("root"));

@@ -18,10 +18,10 @@ class App extends React.Component {
     render() {
         const {navBarVisible: navBar, error} = this.state;
         return (
-            <div>
+            <React.Fragment>
                 <NavBar visible={navBar} onToggle={this.handleNavBarToggle}/>
 
-                <div id="container" className={`container${navBar ? " off-canvas" : ""}`}>
+                <div id="container" className={`container ${navBar ? "off-canvas" : ""}`}>
                     <Overlay visible={navBar}/>
                     <NavHamburger onClick={this.handleNavBarToggle}/>
 
@@ -30,7 +30,7 @@ class App extends React.Component {
 
                     {error && <Notification className={navBar ? " off-canvas" : ""} error={error}/>}
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }
@@ -47,7 +47,7 @@ class NavBar extends React.Component {
     render() {
         return (
             <div id="side-nav" className={`side-nav ${this.props.visible ? "nav-show" : ""}`}>
-                <a className="close-nav no-select" onClick={this.handleToggle}>&times;</a>
+                <i className="close-nav no-select" onClick={this.handleToggle}>&times;</i>
                 <a href="?q=wtf?" className="no-select">Suprise, madafaka?</a>
             </div>
         );
