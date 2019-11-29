@@ -105,8 +105,11 @@ h3 {
     background-color: #f9f9f9;
     padding-bottom: 15px;
     width: 100%;
-    z-index: 2;
-    top: 0;
+    /*top: 0;*/
+    border-radius: 0 0 10px 10px;
+    top: auto;
+    padding-bottom: 15px;
+    z-index: 9;
 }
 
 .dropdown:hover .drop-ctn {
@@ -527,12 +530,6 @@ h1, h3, .choice, .no-select, .group.upper > * {
         margin: auto;
         width: 90%;
         max-width: 1200px;
-    }
-
-    .drop-ctn {
-        border-radius: 0 0 10px 10px;
-        top: auto;
-        padding-bottom: 15px;
     }
 
     .ed {

@@ -11,15 +11,16 @@ repositories { jcenter() }
 dependencies {
     implementation(project(":Core"))
 
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("com.rabbitmq:amqp-client:5.7.1")
     implementation("org.apache.pdfbox:pdfbox:2.0.16")
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("javax.websocket:javax.websocket-api:1.1")
     implementation("com.google.code.gson:gson:2.8.6")
+    implementation("javax.websocket:javax.websocket-api:1.1")
+    implementation("org.elasticsearch.client:transport:7.4.2")
 
     val antlrV = "4.7.2"
     antlr("org.antlr:antlr4:$antlrV")
-    //implementation("org.antlr:antlr4:$antlrV")
+    implementation("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4-runtime:$antlrV")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

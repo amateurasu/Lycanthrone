@@ -7,103 +7,69 @@
 //     return <Button variant="contained" color="primary">Hello World</Button>;
 // }
 
-// var Router = ReactRouter.Router;
-// var Route = ReactRouter.Route;
-// var IndexRoute = ReactRouter.IndexRoute;
-// var Link = ReactRouter.Link;
-// var browserHistory = ReactRouter.browserHistory;
+var {Router, Route, IndexRoute, Link, browserHistory} = ReactRouter;
 
-const {
-    BrowserRouter,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useParams
-} = ReactRouterDOM;
+class RouteA extends React.Component {
+    btnClickB = () => browserHistory.push("/b");
+    btnClickC = () => browserHistory.push("/c");
 
-class App extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <div>
+                <h2>Route A</h2>
                 <div>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                        <li>
-                            <Link to="/topics">Topics</Link>
-                        </li>
-                    </ul>
-
-                    <Switch>
-                        <Route path="/about">
-                            <About/>
-                        </Route>
-                        <Route path="/topics">
-                            <Topics/>
-                        </Route>
-                        <Route path="/">
-                            <Home/>
-                        </Route>
-                    </Switch>
+                    <button className="btn btn-default" onClick={this.btnClickB}>Goto B</button>
+                    <button className="btn btn-default" onClick={this.btnClickC}>Goto C</button>
                 </div>
-            </BrowserRouter>
+            </div>
         );
     }
 }
 
-function Home() {
-    return <h2>Home</h2>;
+class RouteB extends React.Component {
+    btnClickA = () => browserHistory.push("/a");
+    btnClickC = () => browserHistory.push("/c");
+
+    render() {
+        return (
+            <div>
+                <h2>Route B</h2>
+                <div>
+                    <button className="btn btn-default" onClick={this.btnClickA}>Goto A</button>
+                    <button className="btn btn-default" onClick={this.btnClickC}>Goto C</button>
+                </div>
+            </div>
+        );
+    }
 }
 
-function About() {
-    return <h2>About</h2>;
+class RouteC extends React.Component {
+    btnClickA = () => browserHistory.push("/a");
+    btnClickB = () => browserHistory.push("/b");
+
+    render() {
+        return (
+            <div>
+                <h2>Route C</h2>
+                <div>
+                    <button className="btn btn-default" onClick={this.btnClickA}>Goto A</button>
+                    <button className="btn btn-default" onClick={this.btnClickB}>Goto B</button>
+                </div>
+            </div>
+        );
+    }
 }
 
-function Topics() {
-    let match = useRouteMatch();
-
-    return (
-        <div>
-            <h2>Topics</h2>
-
-            <ul>
-                <li>
-                    <Link to={`${match.url}/components`}>Components</Link>
-                </li>
-                <li>
-                    <Link to={`${match.url}/props-v-state`}>
-                        Props v. State
-                    </Link>
-                </li>
-            </ul>
-
-            {/* The Topics page has its own <Switch> with more routes
-             that build on the /topics URL path. You can think of the
-             2nd <Route> here as an "index" page for all topics, or
-             the page that is shown when no topic is selected */}
-            <Switch>
-                <Route path={`${match.path}/:topicId`}>
-                    <Topic/>
-                </Route>
-                <Route path={match.path}>
-                    <h3>Please select a topic.</h3>
-                </Route>
-            </Switch>
-        </div>
-    );
-}
-
-function Topic() {
-    let {topicId} = useParams();
-    return <h3>Requested topic ID: {topicId}</h3>;
-}
-
-ReactDOM.render(<App/>, document.getElementById("root"));
+ReactDOM.render(
+    <Router history={browserHistory}>
+        <Route path="/" component={RouteA}/>
+        <Route path="/a" component={RouteA}/>
+        <Route path="/b" component={RouteB}/>
+        <Route path="/c" component={RouteC}/>
+        <Route path="*" component={RouteA}/>
+    </Router>,
+    document.getElementById("root")
+);
 
 class Clock extends React.Component {
     constructor(props) {
