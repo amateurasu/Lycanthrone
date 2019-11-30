@@ -6,7 +6,6 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-.idea/
 /node_module/
 # User-specific stuff
 .idea/**/workspace.xml
@@ -129,5 +128,5 @@ gradle-app.setting
 /.vscode/
 
 # Project exclude paths
-/Frontend/node_modules/
-/Frontend/react-dashboard/node_modules/
+**/node_modules/
+.db/

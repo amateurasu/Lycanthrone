@@ -18,18 +18,10 @@ public class Hey {
     private static final String PROP_FILE_NAME = "system.properties";
     public static String ENV;
 
-    public static URL getResource(String name) {
-        return Hey.class.getResource(name);
-    }
-
-    public static InputStream getResourceAsStream(String name) {
-        return Hey.class.getResourceAsStream(name);
-    }
-
     public static void main(String[] args) {
-        // env = System.getenv("env");
-        // ENV = "dev";
-        ENV = "production";
+        ENV = System.getenv("env");
+        log.info("Environment: {}", ENV);
+
         if (StringUtils.isBlank(ENV)) {
             log.error("Missing env");
             System.exit(1);
@@ -38,6 +30,14 @@ public class Hey {
         System.setProperty("env", ENV);
         initSystemProperty();
         initVertx();
+    }
+
+    public static URL getResource(String name) {
+        return Hey.class.getResource(name);
+    }
+
+    public static InputStream getResourceAsStream(String name) {
+        return Hey.class.getResourceAsStream(name);
     }
 
     private static void initSystemProperty() {
@@ -56,7 +56,9 @@ public class Hey {
 
     private static void initVertx() {
         VertxOptions vertxOptions = new VertxOptions();
-        vertxOptions.setWorkerPoolSize(PropertiesUtils.getInstance().getIntValue("worker.size"));
+        Integer workerSize = PropertiesUtils.getInstance().getIntValue("worker.size");
+        log.info("worker.size: {}", workerSize);
+        vertxOptions.setWorkerPoolSize(workerSize);
         vertxOptions.setMaxEventLoopExecuteTime(Long.MAX_VALUE);
 
         DeploymentOptions deploymentOptions = new DeploymentOptions();

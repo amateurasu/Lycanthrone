@@ -17,7 +17,7 @@ From Java perspective providing content length is darn simple:
 				.body(body);
 	}
 
-Notice that a method [`Resource.contentLength()`](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/io/Resource.html#contentLength--) also exists, but different types of resource compute it differently, sometimes eagerly reading the whole resource. I have my own `FilePointer` abstraction that knows the size of file we want to download.
+Notice that a method [`Resource.contentLength()`](http://docs.spring.io/spring/docs/current/javadoc-API/org/springframework/core/io/Resource.html#contentLength--) also exists, but different types of resource compute it differently, sometimes eagerly reading the whole resource. I have my own `FilePointer` abstraction that knows the size of file we want to download.
 
 # 7. Implement `Range` request header
 

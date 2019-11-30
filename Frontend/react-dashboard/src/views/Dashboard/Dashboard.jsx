@@ -115,19 +115,18 @@ export default function Dashboard() {
                 <GridItem xs={12} sm={12} md={4}>
                     <Card chart>
                         <CardHeader color="success">
-                            <ChartistGraph
-                                className="ct-chart"
+                            <ChartistGraph className="ct-chart" type="Line"
                                 data={dailySalesChart.data}
-                                type="Line"
                                 options={dailySalesChart.options}
                                 listener={dailySalesChart.animation}/>
                         </CardHeader>
                         <CardBody>
                             <h4 className={classes.cardTitle}>Daily Sales</h4>
                             <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory}/> 55%
-                </span>{" "} increase in today sales.
+                                <span className={classes.successText}>
+                                    <ArrowUpward className={classes.upArrowCardCategory}/> 55%
+                                </span>
+                                {" "} increase in today sales.
                             </p>
                         </CardBody>
                         <CardFooter chart>
@@ -183,22 +182,18 @@ export default function Dashboard() {
                     <CustomTabs
                         title="Tasks:"
                         headerColor="primary"
-                        tabs={
-                            [{
-                                tabName: "Bugs",
-                                tabIcon: BugReport,
+                        tabs={[
+                            {
+                                tabName: "Bugs", tabIcon: BugReport,
                                 tabContent: <Tasks checkedIndexes={[0, 3]} tasksIndexes={[0, 1, 2, 3]} tasks={bugs}/>
                             }, {
-                                tabName: "Website",
-                                tabIcon: Code,
+                                tabName: "Website", tabIcon: Code,
                                 tabContent: <Tasks checkedIndexes={[0]} tasksIndexes={[0, 1]} tasks={website}/>
-
                             }, {
-                                tabName: "Server",
-                                tabIcon: Cloud,
+                                tabName: "Server", tabIcon: Cloud,
                                 tabContent: <Tasks checkedIndexes={[1]} tasksIndexes={[0, 1, 2]} tasks={server}/>
-                            }]
-                        }/>
+                            }
+                        ]}/>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                     <Card>

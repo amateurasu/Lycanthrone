@@ -1,5 +1,5 @@
 /*! v1.4.0 */
-(function (global, factory) {
+((global, factory) => {
     if (typeof exports === "object" && typeof module !== "undefined") {
         module.exports = factory();
     } else {
@@ -9,7 +9,7 @@
             global.PerfectScrollbar = factory();
         }
     }
-}(this, function () {
+})(this, () => {
     "use strict";
 
     function get(element) {
@@ -18,6 +18,8 @@
 
     function set(element, obj) {
         for (var key in obj) {
+            if (!obj.hasOwnProperty(key)) continue;
+
             var val = obj[key];
             if (typeof val === "number") {
                 val = val + "px";
@@ -56,21 +58,21 @@
     }
 
     function queryChildren(element, selector) {
-        return Array.prototype.filter.call(element.children, function (child) { return matches(child, selector); });
+        return Array.prototype.filter.call(element.children, child => matches(child, selector));
     }
 
     var cls = {
         main: "ps",
         element: {
-            thumb: function (x) { return ("ps__thumb-" + x); },
-            rail: function (x) { return ("ps__rail-" + x); },
+            thumb: x => ("ps__thumb-" + x),
+            rail: x => ("ps__rail-" + x),
             consuming: "ps__child--consume"
         },
         state: {
             focus: "ps--focus",
             clicking: "ps--clicking",
-            active: function (x) { return ("ps--active-" + x); },
-            scrolling: function (x) { return ("ps--scrolling-" + x); }
+            active: x => ("ps--active-" + x),
+            scrolling: x => ("ps--scrolling-" + x)
         }
     };
 
@@ -92,7 +94,7 @@
 
     function removeScrollingClass(i, x) {
         scrollingClassTimeout[x] = setTimeout(
-            function () { return i.isAlive && i.element.classList.remove(cls.state.scrolling(x)); },
+            () => i.isAlive && i.element.classList.remove(cls.state.scrolling(x)),
             i.settings.scrollingThreshold
         );
     }
@@ -120,7 +122,7 @@
     EventElement.prototype.unbind = function unbind(eventName, target) {
         var this$1 = this;
 
-        this.handlers[eventName] = this.handlers[eventName].filter(function (handler) {
+        this.handlers[eventName] = this.handlers[eventName].filter(handler => {
             if (target && handler !== target) {
                 return true;
             }
@@ -140,17 +142,19 @@
     prototypeAccessors.isEmpty.get = function () {
         var this$1 = this;
 
-        return Object.keys(this.handlers).every(function (key) { return this$1.handlers[key].length === 0; });
+        return Object.keys(this.handlers).every(key => this$1.handlers[key].length === 0);
     };
 
     Object.defineProperties(EventElement.prototype, prototypeAccessors);
 
-    var EventManager = function EventManager() {
+    function EventManager() {
         this.eventElements = [];
-    };
+    }
 
-    EventManager.prototype.eventElement = function eventElement(element) {
-        var ee = this.eventElements.filter(function (ee) { return ee.element === element; })[0];
+    var EM = EventManager.prototype;
+
+    EM.eventElement = function eventElement(element) {
+        var ee = this.eventElements.filter(ee => ee.element === element)[0];
         if (!ee) {
             ee = new EventElement(element);
             this.eventElements.push(ee);
@@ -158,11 +162,11 @@
         return ee;
     };
 
-    EventManager.prototype.bind = function bind(element, eventName, handler) {
+    EM.bind = function bind(element, eventName, handler) {
         this.eventElement(element).bind(eventName, handler);
     };
 
-    EventManager.prototype.unbind = function unbind(element, eventName, handler) {
+    EM.unbind = function unbind(element, eventName, handler) {
         var ee = this.eventElement(element);
         ee.unbind(eventName, handler);
 
@@ -172,14 +176,14 @@
         }
     };
 
-    EventManager.prototype.unbindAll = function unbindAll() {
-        this.eventElements.forEach(function (e) { return e.unbindAll(); });
+    EM.unbindAll = function unbindAll() {
+        this.eventElements.forEach(e => e.unbindAll());
         this.eventElements = [];
     };
 
-    EventManager.prototype.once = function once(element, eventName, handler) {
+    EM.once = function once(element, eventName, handler) {
         var ee = this.eventElement(element);
-        var onceHandler = function (evt) {
+        var onceHandler = evt => {
             ee.unbind(eventName, onceHandler);
             handler(evt);
         };
@@ -196,7 +200,7 @@
         }
     }
 
-    var processScrollDiff = function (i, axis, diff, useScrollingClass, forceFireReachEvent) {
+    var processScrollDiff = (i, axis, diff, useScrollingClass, forceFireReachEvent) => {
         if (useScrollingClass === void 0) useScrollingClass = true;
         if (forceFireReachEvent === void 0) forceFireReachEvent = false;
 
@@ -282,8 +286,7 @@
 
     var env = {
         isWebKit:
-            typeof document !== "undefined"
-            && "WebkitAppearance" in document.documentElement.style,
+            typeof document !== "undefined" && "WebkitAppearance" in document.documentElement.style,
         supportsTouch:
             typeof window !== "undefined"
             && ("ontouchstart" in window || (window.DocumentTouch && document instanceof window.DocumentTouch)),
@@ -293,7 +296,7 @@
             typeof navigator !== "undefined" && /Chrome/i.test(navigator && navigator.userAgent)
     };
 
-    var updateGeometry = function (i) {
+    var updateGeometry = i => {
         var element = i.element;
         var roundedScrollTop = Math.floor(element.scrollTop);
         var rect = element.getBoundingClientRect();
@@ -305,12 +308,12 @@
 
         if (!element.contains(i.scrollbarXRail)) {
             // clean up and append
-            queryChildren(element, cls.element.rail("x")).forEach(function (el) { return remove(el); });
+            queryChildren(element, cls.element.rail("x")).forEach(el => remove(el));
             element.appendChild(i.scrollbarXRail);
         }
         if (!element.contains(i.scrollbarYRail)) {
             // clean up and append
-            queryChildren(element, cls.element.rail("y")).forEach(function (el) { return remove(el); });
+            queryChildren(element, cls.element.rail("y")).forEach(el => remove(el));
             element.appendChild(i.scrollbarYRail);
         }
 
@@ -433,9 +436,9 @@
         });
     }
 
-    var clickRail = function (i) {
-        i.event.bind(i.scrollbarY, "mousedown", function (e) { return e.stopPropagation(); });
-        i.event.bind(i.scrollbarYRail, "mousedown", function (e) {
+    var clickRail = i => {
+        i.event.bind(i.scrollbarY, "mousedown", e => e.stopPropagation());
+        i.event.bind(i.scrollbarYRail, "mousedown", e => {
             var positionTop = e.pageY - window.pageYOffset - i.scrollbarYRail.getBoundingClientRect().top;
             var direction = positionTop > i.scrollbarYTop ? 1 : -1;
 
@@ -445,8 +448,8 @@
             e.stopPropagation();
         });
 
-        i.event.bind(i.scrollbarX, "mousedown", function (e) { return e.stopPropagation(); });
-        i.event.bind(i.scrollbarXRail, "mousedown", function (e) {
+        i.event.bind(i.scrollbarX, "mousedown", e => e.stopPropagation());
+        i.event.bind(i.scrollbarXRail, "mousedown", e => {
             var positionLeft = e.pageX - window.pageXOffset - i.scrollbarXRail.getBoundingClientRect().left;
             var direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
 
@@ -457,7 +460,7 @@
         });
     };
 
-    var dragThumb = function (i) {
+    var dragThumb = i => {
         bindMouseScrollHandler(i, ["containerWidth", "contentWidth", "pageX", "railXWidth", "scrollbarX", "scrollbarXWidth", "scrollLeft", "x", "scrollbarXRail"]);
         bindMouseScrollHandler(i, ["containerHeight", "contentHeight", "pageY", "railYHeight", "scrollbarY", "scrollbarYHeight", "scrollTop", "y", "scrollbarYRail"]);
     };
@@ -494,7 +497,7 @@
             i.event.unbind(i.ownerDocument, "mousemove", mouseMoveHandler);
         }
 
-        i.event.bind(i[scrollbarY], "mousedown", function (e) {
+        i.event.bind(i[scrollbarY], "mousedown", e => {
             startingScrollTop = element[scrollTop];
             startingMousePageY = e[pageY];
             scrollBy = (i[contentHeight] - i[containerHeight]) / (i[railYHeight] - i[scrollbarYHeight]);
@@ -509,11 +512,11 @@
         });
     }
 
-    var keyboard = function (i) {
+    var keyboard = i => {
         var element = i.element;
 
-        var elementHovered = function () { return matches(element, ":hover"); };
-        var scrollbarFocused = function () { return matches(i.scrollbarX, ":focus") || matches(i.scrollbarY, ":focus"); };
+        var elementHovered = () => matches(element, ":hover");
+        var scrollbarFocused = () => matches(i.scrollbarX, ":focus") || matches(i.scrollbarY, ":focus");
 
         function shouldPreventDefault(deltaX, deltaY) {
             var scrollTop = Math.floor(element.scrollTop);
@@ -542,7 +545,7 @@
             return true;
         }
 
-        i.event.bind(i.ownerDocument, "keydown", function (e) {
+        i.event.bind(i.ownerDocument, "keydown", e => {
             if ((e.isDefaultPrevented && e.isDefaultPrevented()) || e.defaultPrevented) {
                 return;
             }
@@ -644,7 +647,7 @@
         });
     };
 
-    var wheel = function (i) {
+    var wheel = i => {
         var element = i.element;
 
         function shouldPreventDefault(deltaX, deltaY) {
@@ -791,7 +794,7 @@
         }
     };
 
-    var touch = function (i) {
+    var touch = i => {
         if (!env.supportsTouch && !env.supportsIePointer) return;
 
         var element = i.element;
@@ -953,7 +956,7 @@
         function touchEnd() {
             if (i.settings.swipeEasing) {
                 clearInterval(easingLoop);
-                easingLoop = setInterval(function () {
+                easingLoop = setInterval(() => {
                     if (i.isInitialized) {
                         clearInterval(easingLoop);
                         return;
@@ -994,22 +997,20 @@
         }
     };
 
-    var defaultSettings = function () {
-        return ({
-            handlers: ["click-rail", "drag-thumb", "keyboard", "wheel", "touch"],
-            maxScrollbarLength: null,
-            minScrollbarLength: null,
-            scrollingThreshold: 1000,
-            scrollXMarginOffset: 0,
-            scrollYMarginOffset: 0,
-            suppressScrollX: false,
-            suppressScrollY: false,
-            swipeEasing: true,
-            useBothWheelAxes: false,
-            wheelPropagation: true,
-            wheelSpeed: 1
-        });
-    };
+    var defaultSettings = () => ({
+        handlers: ["click-rail", "drag-thumb", "keyboard", "wheel", "touch"],
+        maxScrollbarLength: null,
+        minScrollbarLength: null,
+        scrollingThreshold: 1000,
+        scrollXMarginOffset: 0,
+        scrollYMarginOffset: 0,
+        suppressScrollX: false,
+        suppressScrollY: false,
+        swipeEasing: true,
+        useBothWheelAxes: false,
+        wheelPropagation: true,
+        wheelSpeed: 1
+    });
 
     var handlers = {
         "click-rail": clickRail,
@@ -1019,7 +1020,7 @@
         touch: touch
     };
 
-    var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
+    function PerfectScrollbar(element, userSettings) {
         var this$1 = this;
         if (userSettings === void 0) userSettings = {};
 
@@ -1045,11 +1046,11 @@
         this.contentWidth = null;
         this.contentHeight = null;
 
-        var focus = function () { return element.classList.add(cls.state.focus); };
-        var blur = function () { return element.classList.remove(cls.state.focus); };
+        var focus = () => element.classList.add(cls.state.focus);
+        var blur = () => element.classList.remove(cls.state.focus);
 
         this.isRtl = get(element).direction === "rtl";
-        this.isNegativeScroll = (function () {
+        this.isNegativeScroll = (() => {
             var originalScrollLeft = element.scrollLeft;
             element.scrollLeft = -1;
             var result = element.scrollLeft < 0;
@@ -1124,15 +1125,17 @@
 
         this.isAlive = true;
 
-        this.settings.handlers.forEach(function (handlerName) { return handlers[handlerName](this$1); });
+        this.settings.handlers.forEach(handlerName => handlers[handlerName](this$1));
 
         this.lastScrollTop = Math.floor(element.scrollTop); // for onScroll only
         this.lastScrollLeft = element.scrollLeft; // for onScroll only
-        this.event.bind(this.element, "scroll", function (e) { return this$1.onScroll(e); });
+        this.event.bind(this.element, "scroll", e => this$1.onScroll(e));
         updateGeometry(this);
-    };
+    }
 
-    PerfectScrollbar.prototype.update = function update() {
+    var PS = PerfectScrollbar.prototype;
+
+    PS.update = function update() {
         if (!this.isAlive) return;
 
         // Recalcuate negative scrollLeft adjustment
@@ -1157,7 +1160,7 @@
         set(this.scrollbarYRail, {display: ""});
     };
 
-    PerfectScrollbar.prototype.onScroll = function onScroll(e) {
+    PS.onScroll = function onScroll(e) {
         if (!this.isAlive) {
             return;
         }
@@ -1170,7 +1173,7 @@
         this.lastScrollLeft = this.element.scrollLeft;
     };
 
-    PerfectScrollbar.prototype.destroy = function destroy() {
+    PS.destroy = function destroy() {
         if (!this.isAlive) return;
 
         this.event.unbindAll();
@@ -1190,12 +1193,12 @@
         this.isAlive = false;
     };
 
-    PerfectScrollbar.prototype.removePsClasses = function removePsClasses() {
+    PS.removePsClasses = function removePsClasses() {
         this.element.className = this.element.className
             .split(" ")
-            .filter(function (name) { return !name.match(/^ps([-_].+|)$/); })
+            .filter(name => !name.match(/^ps([-_].+|)$/))
             .join(" ");
     };
 
     return PerfectScrollbar;
-}));
+});

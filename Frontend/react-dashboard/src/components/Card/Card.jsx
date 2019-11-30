@@ -20,7 +20,9 @@ export default function Card(props) {
         [classes.cardChart]: chart,
         [className]: className !== undefined
     });
-    return <div className={cardClasses} {...rest}>{children}</div>;
+    return (
+        <div className={cardClasses} {...rest}>{children}</div>
+    );
 }
 
 Card.propTypes = {

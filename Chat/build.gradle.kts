@@ -29,3 +29,12 @@ dependencies {
     testImplementation("com.lmax:disruptor:3.3.7")
     testImplementation("com.google.guava:guava:28.1-jre")
 }
+
+tasks.register<GradleBuild>("buildReact") {
+
+}
+
+tasks.register<Copy>("copyReact") {
+    from("$projectDir/src/main/react/build")
+    into("$projectDir/src/main/webapp")
+}

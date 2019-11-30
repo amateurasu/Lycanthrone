@@ -39,7 +39,7 @@ HTTP `ETag` header can be used to avoid repeatable downloads of resources client
 						header().string(ETAG, etag))
 	}
 
-Interestingly there is a built-in [`ShallowEtagHeaderFilter`](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/filter/ShallowEtagHeaderFilter.html) in Spring framework. Installing it makes all the tests pass, including the last one:
+Interestingly there is a built-in [`ShallowEtagHeaderFilter`](http://docs.spring.io/spring/docs/current/javadoc-API/org/springframework/web/filter/ShallowEtagHeaderFilter.html) in Spring framework. Installing it makes all the tests pass, including the last one:
 
 	@WebAppConfiguration
 	@ContextConfiguration(classes = [MainApplication])

@@ -36,7 +36,7 @@
 
     let findRandomImgPromise = (tag) => {
         const apiKey = 'a89c66e48519481ab448a3f8356e635c';
-        const endpoint = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${tag}`;
+        const endpoint = `https://API.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${tag}`;
         return fetch(endpoint).then(rs => rs.json()).then(data => data.data.fixed_width_small_url);
     };
 

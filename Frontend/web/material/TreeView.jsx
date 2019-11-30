@@ -1,34 +1,33 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import {makeStyles} from "@material-ui/core/styles";
-// import TreeView from "@material-ui/lab/TreeView";
-// import TreeItem from "@material-ui/lab/TreeItem";
-// import Typography from "@material-ui/core/Typography";
-// import MailIcon from "@material-ui/icons/Mail";
-// import DeleteIcon from "@material-ui/icons/Delete";
-// import Label from "@material-ui/icons/Label";
-// import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-// import InfoIcon from "@material-ui/icons/Info";
-// import ForumIcon from "@material-ui/icons/Forum";
-// import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-// import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-// import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import React from "react";
+import PropTypes from "prop-types";
+import {makeStyles, Typography} from "@material-ui/core";
+import {TreeItem, TreeView} from "@material-ui/lab";
 
-const {
-    makeStyles,
-    TreeView,
-    TreeItem,
-    Typography,
-    MailIcon,
-    DeleteIcon,
-    Label,
-    SupervisorAccountIcon,
-    InfoIcon,
-    ForumIcon,
-    LocalOfferIcon,
-    ArrowDropDownIcon,
-    ArrowRightIcon
-} = MaterialUI;
+import MailIcon from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Label from "@material-ui/icons/Label";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import InfoIcon from "@material-ui/icons/Info";
+import ForumIcon from "@material-ui/icons/Forum";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+
+// const {
+//     makeStyles,
+//     TreeView,
+//     TreeItem,
+//     Typography,
+//     MailIcon,
+//     DeleteIcon,
+//     Label,
+//     SupervisorAccountIcon,
+//     InfoIcon,
+//     ForumIcon,
+//     LocalOfferIcon,
+//     ArrowDropDownIcon,
+//     ArrowRightIcon
+// } = MaterialUI;
 
 ReactDOM.render(<GmailTreeView/>, document.getElementById("root"));
 
@@ -116,13 +115,13 @@ StyledTreeItem.propTypes = {
     labelText: PropTypes.string.isRequired
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     root: {
         height: 264,
         flexGrow: 1,
         maxWidth: 400
     }
-}));
+});
 
 // export default
 class GmailTreeView extends React.Component {
@@ -141,36 +140,20 @@ class GmailTreeView extends React.Component {
                 <StyledTreeItem nodeId="2" labelText="Trash" labelIcon={DeleteIcon}/>
                 <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
                     <StyledTreeItem
-                        nodeId="5"
-                        labelText="Social"
-                        labelIcon={SupervisorAccountIcon}
-                        labelInfo="90"
-                        color="#1a73e8"
-                        bgColor="#e8f0fe"/>
+                        nodeId="5" labelText="Social" labelIcon={SupervisorAccountIcon}
+                        labelInfo="90" color="#1a73e8" bgColor="#e8f0fe"/>
 
                     <StyledTreeItem
-                        nodeId="6"
-                        labelText="Updates"
-                        labelIcon={InfoIcon}
-                        labelInfo="2,294"
-                        color="#e3742f"
-                        bgColor="#fcefe3"/>
+                        nodeId="6" labelText="Updates" labelIcon={InfoIcon}
+                        labelInfo="2,294" color="#e3742f" bgColor="#fcefe3"/>
 
                     <StyledTreeItem
-                        nodeId="7"
-                        labelText="Forums"
-                        labelIcon={ForumIcon}
-                        labelInfo="3,566"
-                        color="#a250f5"
-                        bgColor="#f3e8fd"/>
+                        nodeId="7" labelText="Forums" labelIcon={ForumIcon}
+                        labelInfo="3,566" color="#a250f5" bgColor="#f3e8fd"/>
 
                     <StyledTreeItem
-                        nodeId="8"
-                        labelText="Promotions"
-                        labelIcon={LocalOfferIcon}
-                        labelInfo="733"
-                        color="#3c8039"
-                        bgColor="#e6f4ea"/>
+                        nodeId="8" labelText="Promotions" labelIcon={LocalOfferIcon}
+                        labelInfo="733" color="#3c8039" bgColor="#e6f4ea"/>
 
                 </StyledTreeItem>
                 <StyledTreeItem nodeId="4" labelText="History" labelIcon={Label}/>
