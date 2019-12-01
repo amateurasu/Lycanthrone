@@ -11,7 +11,7 @@ One of the biggest scalability issues is loading whole file into memory before s
 		}
 	}
 
-Your `InputStream` doesn't even have to be buffered, [`IOUtils.copy()`](https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/IOUtils.html#copy(java.io.InputStream,%20java.io.OutputStream)) will take care of that. However this implementation is rather low-level and hard to unit test. Instead I suggest returning [`Resource`](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/io/Resource.html):
+Your `InputStream` doesn't even have to be buffered, [`IOUtils.copy()`](https://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/IOUtils.html#copy(java.io.InputStream,%20java.io.OutputStream)) will take care of that. However this implementation is rather low-level and hard to unit test. Instead I suggest returning [`Resource`](http://docs.spring.io/spring/docs/current/javadoc-API/org/springframework/core/io/Resource.html):
 
 	@RestController
 	@RequestMapping("/download")

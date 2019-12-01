@@ -41,7 +41,7 @@ public class ProtectedApiHandler extends BaseHandler {
         HttpServerRequest request = rc.request();
         HttpServerResponse response = rc.response();
         String requestPath = request.path();
-        String path = StringUtils.substringAfter(requestPath, "/api/protected");
+        String path = StringUtils.substringAfter(requestPath, "/API/protected");
         try {
             String authorization = request.headers().get(HttpHeaders.AUTHORIZATION);
             if (StringUtils.isBlank(authorization)) {

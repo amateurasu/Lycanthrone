@@ -76,9 +76,9 @@ public final class ApiServer {
 
         router.post("/signin").handler(webHandler::signIn);
         router.post("/signout").handler(webHandler::signOut);
-        router.post("/api/public/*").handler(publicApiHandler::handle);
+        router.post("/API/public/*").handler(publicApiHandler::handle);
 
-        router.route("/api/protected/*").handler(protectedApiHandler::handle);
+        router.route("/API/protected/*").handler(protectedApiHandler::handle);
 
         Promise<Void> promise = Promise.promise();
         httpServer = vertx

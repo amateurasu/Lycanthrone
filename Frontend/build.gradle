@@ -5,7 +5,7 @@
 //    outputs.dir("$buildDir/js")
 //    outputs.cacheIf { true }
 //    println("$projectDir")
-//    commandLine("$projectDir/node_modules/.bin/webpack.ps1", "app/index.js", "$buildDir/js/bundle.js")
+//    commandLine("$projectDir/node_modules/.bin/webpack.ps1", "app/index.jsx", "$buildDir/js/bundle.js")
 //}
 
 apply plugin: 'base'

@@ -22,19 +22,19 @@ public class Main {
             //.setMaxRps(1000)
             .build();
 
-        ApiCron getChatList = new ApiCron(serverHost + "api/protected/chatlist", jwtString, "GET", "Get Chat List");
-        ApiCron getAddressBook = new ApiCron(serverHost + "api/protected/addressbook", jwtString, "GET", "Get Address Book");
-        ApiCron getProfile = new ApiCron(serverHost + "api/protected/user", jwtString, "GET", "Get Profile");
+        ApiCron getChatList = new ApiCron(serverHost + "API/protected/chatlist", jwtString, "GET", "Get Chat List");
+        ApiCron getAddressBook = new ApiCron(serverHost + "API/protected/addressbook", jwtString, "GET", "Get Address Book");
+        ApiCron getProfile = new ApiCron(serverHost + "API/protected/user", jwtString, "GET", "Get Profile");
 
         UserRequest userRequest = new UserRequest();
         userRequest.setUserName("vcthanh24");
         userRequest.setPassword("123");
         ApiCron login = new ApiCron(serverHost + "signin", jwtString, "POST", "Sign In", Json.encodePrettily(userRequest));
-        SignUpCron register = new SignUpCron(serverHost + "api/public/user", jwtString, "POST", "Register");
+        SignUpCron register = new SignUpCron(serverHost + "API/public/user", jwtString, "POST", "Register");
 
         ChangeStatusRequest changeStatusRequest = new ChangeStatusRequest();
         changeStatusRequest.setStatus("Test");
-        ApiCron changeStatus = new ApiCron(serverHost + "api/protected/user", jwtString, "POST", "Change Status", Json.encodePrettily(changeStatusRequest));
+        ApiCron changeStatus = new ApiCron(serverHost + "API/protected/user", jwtString, "POST", "Change Status", Json.encodePrettily(changeStatusRequest));
 
         ChatMessageRequest chatMessageRequest = new ChatMessageRequest();
         chatMessageRequest.setType(IWsMessage.TYPE_CHAT_MESSAGE_REQUEST);

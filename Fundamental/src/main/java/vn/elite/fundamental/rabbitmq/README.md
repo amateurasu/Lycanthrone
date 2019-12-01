@@ -11,14 +11,14 @@ You'll need to download the following JAR files
 from Maven Central:
 
  * [RabbitMQ Java Client](https://repo1.maven.org/maven2/com/rabbitmq/amqp-client/5.6.0//amqp-client-5.6.0.jar)
- * [SLF4J API](https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar)
+ * [SLF4J API](https://repo1.maven.org/maven2/org/slf4j/slf4j-API/1.7.25/slf4j-API-1.7.25.jar)
  * [SLF4J Simple](https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/1.7.25/slf4j-simple-1.7.25.jar)
 
 For example, with `wget`:
 
 ``` shell
 wget https://repo1.maven.org/maven2/com/rabbitmq/amqp-client/5.6.0/amqp-client-5.6.0.jar
-wget https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar
+wget https://repo1.maven.org/maven2/org/slf4j/slf4j-API/1.7.25/slf4j-API-1.7.25.jar
 wget https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/1.7.25/slf4j-simple-1.7.25.jar
 ```
 
@@ -30,14 +30,14 @@ To run them you'll need all the dependencies, see examples below.
 You can set an environment variable for the jar files on the classpath e.g.
 
 ```
-export CP=.:amqp-client-5.6.0.jar:slf4j-api-1.7.25.jar:slf4j-simple-1.7.25.jar
+export CP=.:amqp-client-5.6.0.jar:slf4j-API-1.7.25.jar:slf4j-simple-1.7.25.jar
 java -cp $CP Send
 ```
 
 On Windows, use a semicolon instead of a colon to separate items in the classpath:
 
 ```
-set CP=.;amqp-client-5.6.0.jar;slf4j-api-1.7.25.jar;slf4j-simple-1.7.25.jar
+set CP=.;amqp-client-5.6.0.jar;slf4j-API-1.7.25.jar;slf4j-simple-1.7.25.jar
 java -cp %CP% Send
 ```
 
@@ -49,10 +49,10 @@ java -cp %CP% Send
 javac -cp amqp-client-5.6.0.jar Send.java Recv.java
 
 # terminal tab 1
-java -cp .:amqp-client-5.6.0.jar:slf4j-api-1.7.25.jar:slf4j-simple-1.7.25.jar Recv
+java -cp .:amqp-client-5.6.0.jar:slf4j-API-1.7.25.jar:slf4j-simple-1.7.25.jar Recv
 
 # terminal tab 2
-java -cp .:amqp-client-5.6.0.jar:slf4j-api-1.7.25.jar:slf4j-simple-1.7.25.jar Send
+java -cp .:amqp-client-5.6.0.jar:slf4j-API-1.7.25.jar:slf4j-simple-1.7.25.jar Send
 ```
 
 [Tutorial two: Work Queues](https://www.rabbitmq.com/tutorial-two-java.html):
