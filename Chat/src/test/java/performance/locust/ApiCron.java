@@ -33,18 +33,18 @@ public class ApiCron extends Cron {
     public void process() {
         RequestBody body = RequestBody.create(MediaType.get("application/json"), getRequestJson());
         Request request;
-        if (getRequestJson() != null && !getRequestJson().equals("")) {
+        if (getRequestJson() == null || getRequestJson().equals("")) {
+            request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", jwt)
+                .build();
+        } else {
             request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", jwt)
                 .method(method, body)
                 .build();
 
-        } else {
-            request = new Request.Builder()
-                .url(url)
-                .addHeader("Authorization", jwt)
-                .build();
         }
         long startTime = System.currentTimeMillis();
         try {
@@ -58,7 +58,6 @@ public class ApiCron extends Cron {
             long elapsed = System.currentTimeMillis() - startTime;
             recordFailure(elapsed, ex.getMessage());
             ex.printStackTrace();
-
         }
     }
 

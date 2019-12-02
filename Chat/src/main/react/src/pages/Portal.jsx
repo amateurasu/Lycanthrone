@@ -11,10 +11,10 @@ const TabPane = Tabs.TabPane;
 
 class Portal extends React.Component {
 
-    handleTabChanged = (activeKey) => this.props.changeTab(activeKey);
+    handleTabChanged = activeKey => this.props.changeTab(activeKey);
 
     render() {
-        return !isAuthenticated()
+        return isAuthenticated()
             ? <Redirect to="/"/>
             : <div id="portal-container">
                 <div className="logo"><img src="logo.png" alt="logo.png"/></div>

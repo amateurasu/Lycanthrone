@@ -6,8 +6,8 @@ import thunkMiddleware from "redux-thunk";
 import {Provider} from "react-redux";
 
 import rootReducer from "./reducers";
-import Portal from "./pages/portal";
-import Main from "./pages/main";
+import Portal from "./pages/Portal";
+import Main from "./pages/Main";
 import {API} from "./api/API";
 import {clearStorage} from "./utils/utils";
 

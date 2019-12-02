@@ -16,6 +16,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Date;
 
+import static com.hey.util.ErrorCode.*;
+import static com.hey.util.HttpStatus.*;
+
 public class WebService extends BaseService {
 
     public Future<JsonObject> signIn(String requestJson) {
@@ -26,11 +29,13 @@ public class WebService extends BaseService {
 
         getUserAuthFuture.compose(userAuthRes -> {
             if (userAuthRes == null) {
-                throw new HeyHttpStatusException(HttpStatus.UNAUTHORIZED.code(), ErrorCode.AUTHORIZED_FAILED.code(), "Invalid Username or Password :(");
+                throw new HeyHttpStatusException(UNAUTHORIZED.code(), AUTHORIZED_FAILED.code(),
+                    "Invalid Username or Password :(");
             }
 
             if (!BCrypt.checkpw(user.getPassword(), userAuthRes.getHashedPassword())) {
-                throw new HeyHttpStatusException(HttpStatus.UNAUTHORIZED.code(), ErrorCode.AUTHORIZED_FAILED.code(), "Invalid Username or Password :(");
+                throw new HeyHttpStatusException(UNAUTHORIZED.code(), AUTHORIZED_FAILED.code(),
+                    "Invalid Username or Password :(");
             }
 
             String jwt = jwtManager.generateToken(userAuthRes.getUserId());
@@ -38,10 +43,10 @@ public class WebService extends BaseService {
             JsonObject obj = new JsonObject();
             obj.put("jwt", jwt);
             obj.put("userId", userAuthRes.getUserId());
-            LogUtils.log("Signin granted with username " + user.getUserName());
+            LogUtils.log("Signin granted with username {}", user.getUserName());
             promise.complete(obj);
         }, Future.future().setHandler(handler -> {
-            LogUtils.log("Signin failed with username " + user.getUserName());
+            LogUtils.log("Signin failed with username {}", user.getUserName());
             promise.fail(handler.cause());
         }));
 
@@ -59,7 +64,7 @@ public class WebService extends BaseService {
             JsonObject authObj = new JsonObject().put("jwt", token);
             jwtManager.authenticate(authObj, event -> {
                 if (event.failed()) {
-                    throw new HttpStatusException(HttpStatus.UNAUTHORIZED.code(), HttpStatus.UNAUTHORIZED.message());
+                    throw new HttpStatusException(UNAUTHORIZED.code(), UNAUTHORIZED.message());
                 }
 
                 String userId = event.result().principal().getString("userId");
@@ -73,7 +78,7 @@ public class WebService extends BaseService {
             routingContext.response().end();
         } catch (HttpStatusException e) {
             JsonObject obj = new JsonObject();
-            obj.put("code", ErrorCode.AUTHORIZED_FAILED.code());
+            obj.put("code", AUTHORIZED_FAILED.code());
             obj.put("message", e.getPayload());
             response.setStatusCode(e.getStatusCode())
                 .putHeader("content-type", "application/json; charset=utf-8")

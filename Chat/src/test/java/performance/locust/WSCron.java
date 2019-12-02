@@ -4,8 +4,6 @@ import com.bigsonata.swarm.Cron;
 import com.bigsonata.swarm.Props;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
@@ -19,11 +17,7 @@ public class WSCron extends Cron {
     private boolean canProcess = false;
 
     public WSCron(String url, String jwt, String requestJson, String name) {
-        super(
-            Props.createAsync()
-                .setType("WS")
-                .setName(name)
-        );
+        super(Props.createAsync().setType("WS").setName(name));
         this.urlString = url;
         this.jwt = jwt;
         this.requestJson = requestJson;
@@ -62,12 +56,10 @@ public class WSCron extends Cron {
                 @Override
                 public void onOpen(ServerHandshake handshake) {
                     canProcess = true;
-
                 }
 
                 @Override
-                public void onClose(int code, String reason, boolean remote) {
-                }
+                public void onClose(int code, String reason, boolean remote) { }
 
                 @Override
                 public void onError(Exception ex) {
@@ -75,12 +67,10 @@ public class WSCron extends Cron {
                     long elapsed = System.currentTimeMillis() - startTime;
                     recordFailure(elapsed, ex.getMessage());
                 }
-
             };
 
             //open websocket
             mWs.connect();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

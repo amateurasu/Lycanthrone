@@ -9,6 +9,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.redis.RedisClient;
 import io.vertx.redis.op.ScanOptions;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+@Data
 public class RedisCacheClient implements DataRepository {
     private static int numScanCount;
     private RedisClient client;
@@ -23,40 +25,6 @@ public class RedisCacheClient implements DataRepository {
     public RedisCacheClient(RedisClient client) {
         this.client = client;
         numScanCount = Integer.parseInt(PropertiesUtils.getInstance().getValue("scan.count"));
-    }
-
-    private String generateUserAuthKey(String userName) {
-        return "user:" + userName;
-    }
-
-    private String generateUserFullKey(String userId) {
-        return "user_full:" + userId;
-    }
-
-    private String generateFriendListKey(List<String> userIds) {
-        return "friend:list:" + String.join(":", userIds);
-    }
-
-    private String generateFriendListKey(String userId1, String userId2) {
-        return "friend:list:" + userId1 + ":" + userId2;
-    }
-
-    private String generateUserStatusKey(String userId) {
-        return "user_status:" + userId;
-    }
-
-    private String generateChatListKey(String sessionId, List<String> userIds) {
-        return "chat:list:" + sessionId + ":" + String.join(":", userIds);
-    }
-
-    private String generateChatMessageKey(String sessionId, String createdDate) {
-
-        return "chat:message:" + sessionId + ":" + createdDate;
-    }
-
-    private String generateUnSeenKey(String userId, String sessionId) {
-
-        return "unseen:" + userId + ":" + sessionId;
     }
 
     @Override
@@ -68,7 +36,7 @@ public class RedisCacheClient implements DataRepository {
         scanOptions.setCount(numScanCount);
         scanOptions.setMatch(keyPattern);
         client.scan("0", scanOptions, res -> {
-            if (!res.succeeded()) {
+            if (res.failed()) {
                 promise.fail(res.cause());
                 return;
             }
@@ -88,7 +56,6 @@ public class RedisCacheClient implements DataRepository {
 
     @Override
     public Future<UserAuth> insertUserAuth(UserAuth userAuth) {
-
         Promise<UserAuth> promise = Promise.promise();
 
         JsonObject userAuthJsonObject = new JsonObject();
@@ -460,6 +427,40 @@ public class RedisCacheClient implements DataRepository {
         return promise.future();
     }
 
+    private String generateUserAuthKey(String userName) {
+        return "user:" + userName;
+    }
+
+    private String generateUserFullKey(String userId) {
+        return "user_full:" + userId;
+    }
+
+    private String generateFriendListKey(List<String> userIds) {
+        return "friend:list:" + String.join(":", userIds);
+    }
+
+    private String generateFriendListKey(String userId1, String userId2) {
+        return "friend:list:" + userId1 + ":" + userId2;
+    }
+
+    private String generateUserStatusKey(String userId) {
+        return "user_status:" + userId;
+    }
+
+    private String generateChatListKey(String sessionId, List<String> userIds) {
+        return "chat:list:" + sessionId + ":" + String.join(":", userIds);
+    }
+
+    private String generateChatMessageKey(String sessionId, String createdDate) {
+
+        return "chat:message:" + sessionId + ":" + createdDate;
+    }
+
+    private String generateUnSeenKey(String userId, String sessionId) {
+
+        return "unseen:" + userId + ":" + sessionId;
+    }
+
     private ChatList convertJsonObjectToChatList(JsonObject jsonObject, String chatListkey) {
         ChatList chatList = new ChatList();
         List<UserHash> userHashes = new ArrayList<>();
@@ -486,9 +487,5 @@ public class RedisCacheClient implements DataRepository {
         }
 
         return chatList;
-    }
-
-    public RedisClient getClient() {
-        return client;
     }
 }

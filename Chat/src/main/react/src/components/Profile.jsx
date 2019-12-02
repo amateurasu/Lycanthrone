@@ -15,26 +15,17 @@ class Profile extends React.Component {
 
     componentDidMount = () => {
         this.props.getProfile();
-        this.setState({
-            ...this.state,
-            status_text: this.props.userStatus
-        });
+        this.setState({status_text: this.props.userStatus});
     };
 
     componentDidUpdate = () => {
         if (isEmptyString(this.state.status_text) && this.state.status_box_state) {
-            this.state.status_text = "You are online";
-            this.setState({
-                ...this.state,
-                status_text: this.state.status_text
-            });
+            this.setState({status_text: "You are online"});
         }
-        if (this.refs.statusInput)
-            this.refs.statusInput.focus();
+        if (this.refs.statusInput) {this.refs.statusInput.focus();}
     };
 
-    logOut = () =>
-        API.post(`/signout`).then(res => {
+    logOut = () => API.post(`/signout`).then(res => {
             clearStorage();
             this.props.closeWebSocket();
             this.props.logout();
@@ -42,27 +33,18 @@ class Profile extends React.Component {
         });
 
     openStatusBoxStateStatus = () => {
-        this.state.status_text = this.props.userStatus === "You are online" ? "" : this.props.userStatus;
         this.setState({
-            ...this.state,
             status_box_state: false,
-            status_text: this.state.status_text
+            status_text: this.props.userStatus === "You are online" ? "" : this.props.userStatus
         });
     };
 
     closeStatusBoxStateStatus = () => {
         this.props.changeUserStatus(this.state.status_text);
-        this.setState({
-            ...this.state,
-            status_box_state: true
-        });
+        this.setState({status_box_state: true});
     };
 
-    onChangeStatus = (e) =>
-        this.setState({
-            ...this.state,
-            status_text: e.target.value
-        });
+    onChangeStatus = (e) => this.setState({status_text: e.target.value});
 
     render = () => (
         <div className="wrapper">
@@ -71,8 +53,7 @@ class Profile extends React.Component {
                 <div className="box status">
                     {this.state.status_box_state
                         ? <div onClick={this.openStatusBoxStateStatus}>{this.props.userStatus}</div>
-                        :
-                        <Input onBlur={this.closeStatusBoxStateStatus} onPressEnter={this.closeStatusBoxStateStatus}
+                        : <Input onBlur={this.closeStatusBoxStateStatus} onPressEnter={this.closeStatusBoxStateStatus}
                             placeholder="Please enter a status..." value={this.state.status_text}
                             ref="statusInput" onChange={this.onChangeStatus}/>
                     }
@@ -95,8 +76,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     changeUserStatus: status => dispatch(changeUserStatus(status)),
+
     getProfile: () => dispatch(getProfile()),
+
     logout: () => dispatch(logout()),
+
     closeWebSocket: () => dispatch(closeWebSocket())
 });
 

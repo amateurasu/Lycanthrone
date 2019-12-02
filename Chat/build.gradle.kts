@@ -30,8 +30,11 @@ dependencies {
     testImplementation("com.google.guava:guava:28.1-jre")
 }
 
-tasks.register<GradleBuild>("buildReact") {
-
+tasks.register<Exec>("buildReact") {
+    workingDir = File("$projectDir/src/main/react")
+    println("$workingDir")
+    println(workingDir.exists())
+    commandLine("npm", "run build --scripts-prepend-node-path=auto")
 }
 
 tasks.register<Copy>("copyReact") {

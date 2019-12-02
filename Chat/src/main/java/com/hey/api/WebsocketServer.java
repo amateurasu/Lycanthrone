@@ -12,6 +12,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static com.hey.util.LogUtils.log;
 
+@Data
 @Slf4j
 public class WebsocketServer {
     private WsHandler wsHandler;
@@ -99,18 +101,6 @@ public class WebsocketServer {
         }).listen(PropertiesUtils.getInstance().getIntValue("ws.port"));
 
         return future;
-    }
-
-    public void setWsHandler(WsHandler wsHandler) {
-        this.wsHandler = wsHandler;
-    }
-
-    public void setUserWsChannelManager(UserWsChannelManager userWsChannelManager) {
-        this.userWsChannelManager = userWsChannelManager;
-    }
-
-    public void setJwtManager(JwtManager jwtManager) {
-        this.jwtManager = jwtManager;
     }
 
     private void handleNotificationCase(AsyncResult<Boolean> ar, String userId, boolean state) {

@@ -28,35 +28,35 @@ class StartChatGroup extends React.Component {
 
     handleRemoveUsername = item => this.props.removeUserChatGroup(item);
 
-    render = () => <div>
-        <div className="new-action-menu" onClick={this.showModal}>
-            <a href="#">
-                <CustomAvatar type="new-avatar"/>
-                <div className="new-text">Start New Group Chat</div>
-            </a>
-        </div>
-        <Modal width="420px" title="Start New Chat Group" visible={this.state.visible} onOk={this.handleOk}
-            onCancel={this.handleCancel} okText="Start" cancelText="Cancel" className="start-chat-group-modal">
-            {this.props.startChatGroupError && (
-                <Alert message={this.props.startChatGroupErrorMessage} type="error"/>
-            )}
-            <p className="model-label">Please enter user name:</p>
-            <div className="first-line">
-                <Input ref={ref => {this.ref = ref;}} id="add-user-name" className="add-user-name" onPressEnter={this.addMoreUsername}/>
-                <Button onClick={this.addMoreUsername} type="primary" shape="circle" icon="plus"/>
+    render = () => (
+        <div>
+            <div className="new-action-menu" onClick={this.showModal}>
+                <a href="#">
+                    <CustomAvatar type="new-avatar"/>
+                    <div className="new-text">Start New Group Chat</div>
+                </a>
             </div>
-            {this.props.startChatGroupList.length > 0 && (
-                <p className="model-label" style={{marginBottom: 3, marginTop: 10}}>Selected:</p>
-            )}
+            <Modal title="Start New Chat Group" className="start-chat-group-modal" visible={this.state.visible}
+                okText="Start" onOk={this.handleOk} cancelText="Cancel" onCancel={this.handleCancel} width="420px">
+                {this.props.startChatGroupError && (
+                    <Alert message={this.props.startChatGroupErrorMessage} type="error"/>
+                )}
+                <p className="model-label">Please enter user name:</p>
+                <div className="first-line">
+                    <Input id="add-user-name" className="add-user-name"
+                        ref={ref => {this.ref = ref;}} onPressEnter={this.addMoreUsername}/>
+                    <Button onClick={this.addMoreUsername} type="primary" shape="circle" icon="plus"/>
+                </div>
+                {this.props.startChatGroupList.length > 0 && (
+                    <p className="model-label" style={{marginBottom: 3, marginTop: 10}}>Selected:</p>
+                )}
 
-            {this.props.startChatGroupList.map((item, index) =>
-                <Tag key={index} closable onClose={e => {
-                    this.handleRemoveUsername(item);
-                    e.preventDefault();
-                }} color="#f50">{item}</Tag>
-            )}
-        </Modal>
-    </div>;
+                {this.props.startChatGroupList.map((item, index) =>
+                    <Tag key={index} closable onClose={e => {this.handleRemoveUsername(item); e.preventDefault();}} color="#f50">{item}</Tag>
+                )}
+            </Modal>
+        </div>
+    );
 }
 
 const mapStateToProps = state => ({

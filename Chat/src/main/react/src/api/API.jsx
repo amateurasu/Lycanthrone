@@ -12,18 +12,12 @@ const instance = axios.create({baseURL: host});
 instance.interceptors.request.use(config => config, error => Promise.reject(error));
 
 // Add a response interceptor
-instance.interceptors.response.use(function (response) {
-    // Do something with response data
-
-    return response;
-}, function (error) {
+instance.interceptors.response.use(response => response, error => {
     //ignore ping
     if (!error.request.responseURL.endsWith("API/protected/ping")) {
-        if (error.response.data.error.message) {
-            message.error(error.response.data.error.message);
-        } else {
-            message.error("Ooops, The server was unable to complete your request. We will be back soon :(");
-        }
+        message.error(
+            error.response.data.error.message
+            || "Oops, The server was unable to complete your request. We will be back soon :(");
     }
     return Promise.reject(error);
 });

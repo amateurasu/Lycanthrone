@@ -7,20 +7,14 @@ import com.hey.util.JsonUtils;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+@Data
 @Slf4j
 public abstract class BaseHandler {
 
     protected DataRepository dataRepository;
-
-    public DataRepository getDataRepository() {
-        return dataRepository;
-    }
-
-    public void setDataRepository(DataRepository dataRepository) {
-        this.dataRepository = dataRepository;
-    }
 
     public void handleException(Throwable throwable, HttpServerResponse response) {
         if (throwable instanceof HeyHttpStatusException) {

@@ -2,14 +2,14 @@ package com.hey.service;
 
 import com.hey.manager.UserWsChannelManager;
 import com.hey.model.*;
-import com.hey.util.ErrorCode;
 import com.hey.util.HeyHttpStatusException;
-import com.hey.util.HttpStatus;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -18,13 +18,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hey.util.ErrorCode.*;
+import static com.hey.util.HttpStatus.BAD_REQUEST;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class APIService extends BaseService {
 
     private UserWsChannelManager userWsChannelManager;
-
-    public void setUserWsChannelManager(UserWsChannelManager userWsChannelManager) {
-        this.userWsChannelManager = userWsChannelManager;
-    }
 
     public Future<User> registerUser(String jsonData) {
         Promise<User> promise = Promise.promise();
@@ -32,17 +33,17 @@ public class APIService extends BaseService {
         final User user = Json.decodeValue(jsonData, User.class);
 
         if (StringUtils.isBlank(user.getUserName())) {
-            promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.REGISTER_USERNAME_EMPTY.code(), "User Name cannot be empty"));
+            promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), REGISTER_USERNAME_EMPTY.code(), "User Name cannot be empty"));
             return promise.future();
         }
 
         if (StringUtils.isBlank(user.getFullName())) {
-            promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.REGISTER_FULLNAME_EMPTY.code(), "Full Name cannot be empty"));
+            promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), REGISTER_FULLNAME_EMPTY.code(), "Full Name cannot be empty"));
             return promise.future();
         }
 
         if (StringUtils.isBlank(user.getPassword())) {
-            promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.REGISTER_PASSWORD_EMPTY.code(), "Password cannot be empty"));
+            promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), REGISTER_PASSWORD_EMPTY.code(), "Password cannot be empty"));
             return promise.future();
         }
 
@@ -50,7 +51,7 @@ public class APIService extends BaseService {
 
         getUserAuthFuture.compose(existedUserAuth -> {
             if (existedUserAuth != null) {
-                throw new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.REGISTER_USERNAME_UNIQUED.code(), "User Name is duplicated");
+                throw new HeyHttpStatusException(BAD_REQUEST.code(), REGISTER_USERNAME_UNIQUED.code(), "User Name is duplicated");
             }
 
             Future<User> insertUserFuture = insertUser(user);
@@ -116,12 +117,9 @@ public class APIService extends BaseService {
     }
 
     public Future<AddressBookResponse> getAddressBook(String userId) {
-
         Promise<AddressBookResponse> promise = Promise.promise();
 
-        Future<List<FriendList>> getFriendListsFuture = getFriendLists(userId);
-
-        getFriendListsFuture.compose(friendLists -> {
+        getFriendLists(userId).compose(friendLists -> {
 
             List<AddressBookItem> addressBookItems = new ArrayList<>();
 
@@ -144,7 +142,6 @@ public class APIService extends BaseService {
                 }
 
                 for (int index = 0; index < friendLists.size(); ++index) {
-
                     AddressBookItem addressBookItem = new AddressBookItem();
 
                     UserHash friendUserHash = friendLists.get(index).getFriendUserHashes();
@@ -170,21 +167,18 @@ public class APIService extends BaseService {
     }
 
     public Future<UsernameExistedResponse> checkUsernameExisted(UsernameExistedRequest usernameExistedRequest, String userId) {
-
         Promise<UsernameExistedResponse> promise = Promise.promise();
 
-        Future<UserAuth> getUserAuthFuture = dataRepository.getUserAuth(usernameExistedRequest.getUsername());
-
-        getUserAuthFuture.compose(userAuth -> {
+        dataRepository.getUserAuth(usernameExistedRequest.getUsername()).compose(userAuth -> {
             if (userAuth == null) {
-                throw new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.START_GROUP_CHAT_USERNAME_NOT_EXISTED.code(), "User Name is not existed");
+                throw new HeyHttpStatusException(BAD_REQUEST.code(), START_GROUP_CHAT_USERNAME_NOT_EXISTED.code(),
+                    "User Name is not existed");
             }
 
-            Future<Boolean> isFriendFuture = isFriend(userId, userAuth.getUserId());
-
-            isFriendFuture.compose(isFriend -> {
+            isFriend(userId, userAuth.getUserId()).compose(isFriend -> {
                 if (!isFriend) {
-                    throw new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.START_GROUP_CHAT_USERNAME_NOT_FRIEND.code(), "User Name is not friend");
+                    throw new HeyHttpStatusException(BAD_REQUEST.code(), START_GROUP_CHAT_USERNAME_NOT_FRIEND.code(),
+                        "User Name is not friend");
                 }
 
                 UsernameExistedResponse usernameExistedResponse = new UsernameExistedResponse();
@@ -192,14 +186,14 @@ public class APIService extends BaseService {
                 usernameExistedResponse.setExisted(true);
 
                 promise.complete(usernameExistedResponse);
-            }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
-        }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
-
+                return promise.future();
+            });
+            return promise.future();
+        });
         return promise.future();
     }
 
     public Future<GetSessionIdResponse> getSessionIdByUserId(GetSessionIdRequest getSessionIdRequest, String userId) {
-
         Promise<GetSessionIdResponse> promise = Promise.promise();
 
         String chatListKey = "chat:list:*" + userId + ":" + getSessionIdRequest.getUserId();
@@ -213,7 +207,6 @@ public class APIService extends BaseService {
         CompositeFuture cp = CompositeFuture.all(getKeysByPatternFutures);
         cp.setHandler(ar -> {
             if (ar.succeeded()) {
-
                 GetSessionIdResponse getSessionIdResponse = new GetSessionIdResponse();
 
                 List<String> keys = new ArrayList<>();
@@ -237,13 +230,10 @@ public class APIService extends BaseService {
     }
 
     public Future<WaitingChatHeaderResponse> waitingChatHeader(WaitingChatHeaderRequest waitingChatHeaderRequest, String userId) {
-
         Promise<WaitingChatHeaderResponse> promise = Promise.promise();
-
         Future<List<UserAuth>> getUserAuthsFuture = getUserAuths(Arrays.asList(waitingChatHeaderRequest.getUsernames()));
 
         getUserAuthsFuture.compose(userAuths -> {
-
             List<String> userFriendIds = new ArrayList<>();
             for (UserAuth userAuth : userAuths) {
                 userFriendIds.add(userAuth.getUserId());
@@ -262,92 +252,88 @@ public class APIService extends BaseService {
                 waitingChatHeaderResponse.setTitle(String.join(", ", firstNames));
 
                 promise.complete(waitingChatHeaderResponse);
-            }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
-        }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
+                return promise.future();
+            });
+            return promise.future();
+        });
 
         return promise.future();
     }
 
     public Future<AddFriendResponse> addFriend(AddFriendRequest addFriendRequest, String userId) {
-
         Promise<AddFriendResponse> promise = Promise.promise();
 
         if (StringUtils.isBlank(addFriendRequest.getUsername())) {
-            promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.ADD_FRIEND_USERNAME_EMPTY.code(), "User Name cannot be empty"));
+            promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), ADD_FRIEND_USERNAME_EMPTY.code(),
+                "User Name cannot be empty"));
         }
 
         Future<UserAuth> getUserAuthFuture = dataRepository.getUserAuth(addFriendRequest.getUsername());
 
         getUserAuthFuture.compose(userAuth -> {
-
-            if (userAuth != null) {
-
-                Future<Boolean> isFriendFuture = isFriend(userId, userAuth.getUserId());
-
-                isFriendFuture.compose(isFriend -> {
-
-                    if (isFriend) {
-                        promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.ADD_FRIEND_USERNAME_ALREADY.code(), "User Name was added as friend"));
-                    } else {
-
-                        List<String> userIds = new ArrayList<>();
-                        userIds.add(userId);
-                        userIds.add(userAuth.getUserId());
-                        Future<List<UserFull>> getUserFullsFuture = getUserFulls(userIds);
-
-                        getUserFullsFuture.compose(userFulls -> {
-
-                            UserFull currentUserFull = userFulls.get(0);
-                            UserFull friendUserFull = userFulls.get(1);
-
-                            FriendList friendList = new FriendList();
-                            friendList.setCurrentUserHashes(new UserHash(currentUserFull.getUserId(), currentUserFull.getFullName()));
-                            friendList.setFriendUserHashes(new UserHash(friendUserFull.getUserId(), friendUserFull.getFullName()));
-
-                            Future<FriendList> insertFriendListFuture = dataRepository.insertFriendList(friendList);
-
-                            insertFriendListFuture.compose(friendListRes -> {
-
-                                List<Future> getUserStatusAndUserOnlineFuture = new ArrayList<>();
-                                getUserStatusAndUserOnlineFuture.add(dataRepository.getUserStatus(friendUserFull.getUserId()));
-                                getUserStatusAndUserOnlineFuture.add(isUserOnline(friendUserFull.getUserId()));
-
-                                CompositeFuture cp = CompositeFuture.all(getUserStatusAndUserOnlineFuture);
-                                cp.setHandler(ar -> {
-                                    if (ar.succeeded()) {
-
-                                        UserStatus friendUserStatus = cp.resultAt(0);
-                                        Boolean isUserOnline = cp.resultAt(1);
-
-                                        AddressBookItem addressBookItem = new AddressBookItem();
-                                        addressBookItem.setUserId(friendUserFull.getUserId());
-                                        addressBookItem.setName(friendUserFull.getFullName());
-                                        addressBookItem.setStatus(friendUserStatus.getStatus());
-                                        addressBookItem.setOnline(isUserOnline);
-
-                                        AddFriendResponse addFriendResponse = new AddFriendResponse();
-                                        addFriendResponse.setItem(addressBookItem);
-
-                                        promise.complete(addFriendResponse);
-                                    } else {
-                                        promise.fail(ar.cause());
-                                    }
-                                });
-                            }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
-                        }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
-                    }
-                }, Future.future().setHandler(handler -> {
-                }));
-            } else {
-                throw new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), ErrorCode.ADD_FRIEND_USERNAME_NOT_EXISTED.code(), "User Name is not existed");
+            if (userAuth == null) {
+                throw new HeyHttpStatusException(BAD_REQUEST.code(), ADD_FRIEND_USERNAME_NOT_EXISTED.code(),
+                    "User Name is not existed");
             }
+
+            Future<Boolean> isFriendFuture = isFriend(userId, userAuth.getUserId());
+
+            isFriendFuture.compose(isFriend -> {
+                if (isFriend) {
+                    promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), ADD_FRIEND_USERNAME_ALREADY.code(),
+                        "User Name was added as friend"));
+                    return;
+                }
+
+                List<String> userIds = new ArrayList<>();
+                userIds.add(userId);
+                userIds.add(userAuth.getUserId());
+                Future<List<UserFull>> getUserFullsFuture = getUserFulls(userIds);
+
+                getUserFullsFuture.compose(userFulls -> {
+                    UserFull currentUserFull = userFulls.get(0);
+                    UserFull friendUserFull = userFulls.get(1);
+
+                    FriendList friendList = new FriendList();
+                    friendList.setCurrentUserHashes(new UserHash(currentUserFull.getUserId(), currentUserFull.getFullName()));
+                    friendList.setFriendUserHashes(new UserHash(friendUserFull.getUserId(), friendUserFull.getFullName()));
+
+                    Future<FriendList> insertFriendListFuture = dataRepository.insertFriendList(friendList);
+
+                    insertFriendListFuture.compose(friendListRes -> {
+                        List<Future> getUserStatusAndUserOnlineFuture = new ArrayList<>();
+                        getUserStatusAndUserOnlineFuture.add(dataRepository.getUserStatus(friendUserFull.getUserId()));
+                        getUserStatusAndUserOnlineFuture.add(isUserOnline(friendUserFull.getUserId()));
+
+                        CompositeFuture cp = CompositeFuture.all(getUserStatusAndUserOnlineFuture);
+                        cp.setHandler(ar -> {
+                            if (ar.succeeded()) {
+                                UserStatus friendUserStatus = cp.resultAt(0);
+                                Boolean isUserOnline = cp.resultAt(1);
+
+                                AddressBookItem addressBookItem = new AddressBookItem();
+                                addressBookItem.setUserId(friendUserFull.getUserId());
+                                addressBookItem.setName(friendUserFull.getFullName());
+                                addressBookItem.setStatus(friendUserStatus.getStatus());
+                                addressBookItem.setOnline(isUserOnline);
+
+                                AddFriendResponse addFriendResponse = new AddFriendResponse();
+                                addFriendResponse.setItem(addressBookItem);
+
+                                promise.complete(addFriendResponse);
+                            } else {
+                                promise.fail(ar.cause());
+                            }
+                        });
+                    }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
+                }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
+            }, Future.future().setHandler(handler -> { }));
         }, Future.future().setHandler(handler -> promise.fail(handler.cause())));
 
         return promise.future();
     }
 
     public Future<JsonObject> changeStatus(ChangeStatusRequest changeStatusRequest, String userId) {
-
         Promise<JsonObject> promise = Promise.promise();
 
         UserStatus userStatus = new UserStatus();
@@ -377,9 +363,7 @@ public class APIService extends BaseService {
     }
 
     public Future<List<UserAuth>> getUserAuths(List<String> userNames) {
-
         Promise<List<UserAuth>> promise = Promise.promise();
-
         List<Future> getUserAuthFutures = new ArrayList<>();
 
         for (String userName : userNames) {
@@ -389,7 +373,6 @@ public class APIService extends BaseService {
         CompositeFuture cp = CompositeFuture.all(getUserAuthFutures);
         cp.setHandler(ar -> {
             if (ar.succeeded()) {
-
                 List<UserAuth> userAuths = new ArrayList<>();
                 for (int index = 0; index < getUserAuthFutures.size(); ++index) {
                     userAuths.add(cp.resultAt(index));
@@ -432,20 +415,17 @@ public class APIService extends BaseService {
     }
 
     public Future<List<FriendList>> getFriendLists(String userId) {
-
         Promise<List<FriendList>> promise = Promise.promise();
 
         if (StringUtils.isBlank(userId)) {
-            promise.fail(new HeyHttpStatusException(HttpStatus.BAD_REQUEST.code(), "", "User Id is empty"));
+            promise.fail(new HeyHttpStatusException(BAD_REQUEST.code(), "", "User Id is empty"));
             return promise.future();
         }
 
         String keyPattern = "friend:list:*" + userId + "*";
-
         Future<List<String>> getKeysByPatternFuture = dataRepository.getKeysByPattern(keyPattern);
 
         getKeysByPatternFuture.compose(keys -> {
-
             List<Future> getFriendListFutures = new ArrayList<>();
 
             for (String friendListKey : keys) {
@@ -455,7 +435,6 @@ public class APIService extends BaseService {
             CompositeFuture cp = CompositeFuture.all(getFriendListFutures);
             cp.setHandler(ar -> {
                 if (ar.succeeded()) {
-
                     List<FriendList> friendLists = new ArrayList<>();
                     for (int index = 0; index < getFriendListFutures.size(); ++index) {
                         if (cp.resultAt(index) != null) {
@@ -504,16 +483,12 @@ public class APIService extends BaseService {
     }
 
     public Future<ChatList> getChatListBySessionId(String sessionId) {
-
         Promise<ChatList> promise = Promise.promise();
-        List<ChatList> chatLists = new ArrayList<>();
 
         String keyPattern = "chat:list:" + sessionId + "*";
-
         Future<List<String>> getKeysByPatternFuture = dataRepository.getKeysByPattern(keyPattern);
 
         getKeysByPatternFuture.compose(keys -> {
-
             String chatListKey = keys.get(0);
             Future<ChatList> getChatListFuture = dataRepository.getChatList(chatListKey);
 
@@ -524,15 +499,12 @@ public class APIService extends BaseService {
     }
 
     public Future<List<ChatList>> getChatLists(String userId) {
-
         Promise<List<ChatList>> promise = Promise.promise();
 
         String keyPattern = "chat:list:" + "*" + userId + "*";
-
         Future<List<String>> getKeysByPatternFuture = dataRepository.getKeysByPattern(keyPattern);
 
         getKeysByPatternFuture.compose(chatListKeys -> {
-
             List<Future> getChatListFutures = new ArrayList<>();
 
             for (String chatListKey : chatListKeys) {
@@ -542,7 +514,6 @@ public class APIService extends BaseService {
             CompositeFuture cp = CompositeFuture.all(getChatListFutures);
             cp.setHandler(ar -> {
                 if (ar.succeeded()) {
-
                     List<ChatList> chatLists = new ArrayList<>();
                     for (int index = 0; index < getChatListFutures.size(); ++index) {
                         chatLists.add(cp.resultAt(index));
@@ -559,15 +530,12 @@ public class APIService extends BaseService {
     }
 
     public Future<List<ChatMessage>> getChatMessages(String sessionId) {
-
         Promise<List<ChatMessage>> promise = Promise.promise();
 
         String keyPattern = "chat:message:" + sessionId + ":*";
-
         Future<List<String>> getKeysByPatternFuture = dataRepository.getKeysByPattern(keyPattern);
 
         getKeysByPatternFuture.compose(chatMessageKeys -> {
-
             List<Future> getChatMessageFutures = new ArrayList<>();
 
             // Sort message by time

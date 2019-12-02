@@ -17,18 +17,15 @@ import io.vertx.ext.unit.TestContext;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.BeforeClass;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
 @Data
 @Slf4j
 public class BaseVerticleTestSuite {
-    public static final String RESOURCE_PATH = "src/main/resources/";
     private static final String PROP_FILE_NAME = "system.properties";
     private static HeyVerticle heyVerticle;
 
@@ -55,32 +52,24 @@ public class BaseVerticleTestSuite {
      * Another paragraph of the description placed after blank line.
      * <p/>
      * Line with manual line feed.
-     *
-     * @param i                  short named parameter description
-     * @param longParameterName  long named parameter description
-     * @param missingDescription
-     * @return return description.
-     * @throws XXXException description.
-     * @throws YException   description.
-     * @throws ZException
      */
     @BeforeClass
     public static void setUp(TestContext context) {
-        if (heyVerticle == null) {
-            env = System.getenv("env");
-            if (StringUtils.isBlank(env)) {
-                log.error("Missing env");
-                System.exit(1);
-            }
-            initSystemProperty(context);
-            initVertx(context);
+        if (heyVerticle != null) return;
+
+        env = System.getenv("env");
+        if (StringUtils.isBlank(env)) {
+            log.error("Missing env");
+            System.exit(1);
         }
+        initSystemProperty(context);
+        initVertx(context);
     }
 
     private static void initSystemProperty(TestContext context) {
         Properties p = new Properties();
         try {
-            p.load(FileUtils.openInputStream(new File(RESOURCE_PATH + env + "." + PROP_FILE_NAME)));
+            p.load(Hey.getResourceAsStream(env + "." + PROP_FILE_NAME));
         } catch (IOException e) {
             log.error("Cannot load System Property");
             System.exit(1);

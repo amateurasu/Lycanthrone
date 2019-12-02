@@ -22,18 +22,14 @@ class Main extends React.Component {
         this.state = {menuaction: 1};
     };
 
-    componentDidMount = () => {
-        this.props.initialWebSocket();
-    };
-
     componentWillUnmount = () => {};
 
-    handleMainMenuChange = e => {
-        this.setState({menuaction: e.key});
-    };
+    componentDidMount = () => this.props.initialWebSocket();
+
+    handleMainMenuChange = e => this.setState({menuaction: e.key});
 
     handleMessageEnter = e => {
-        let charCode = e.keyCode || e.which;
+        // let charCode = e.keyCode || e.which;
         if (e.shiftKey) return;
 
         e.preventDefault();
@@ -58,8 +54,8 @@ class Main extends React.Component {
             ? <Redirect to="/login"/>
             : <div style={{height: `100vh`}}>
                 <Layout>
-                    <Sider breakpoint="lg" collapsedWidth="0" onBreakpoint={() => {}}
-                        onCollapse={() => {}} width="80" id="main-side-menu">
+                    <Sider breakpoint="lg" collapsedWidth="0" width="80" id="main-side-menu"
+                        onBreakpoint={() => {}} onCollapse={() => {}}>
                         <CustomAvatar type="main-avatar" avatar={this.props.userName}/>
                         <div className="menu-separation"/>
                         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]} onSelect={this.handleMainMenuChange}>
@@ -67,8 +63,8 @@ class Main extends React.Component {
                             <Menu.Item key="2"><Icon type="bars" style={{fontSize: 30}}/></Menu.Item>
                         </Menu>
                     </Sider>
-                    <Sider breakpoint="lg" collapsedWidth="0" theme="light"
-                        onBreakpoint={() => {}} onCollapse={() => {}} width="300" id="sub-side-menu">
+                    <Sider breakpoint="lg" collapsedWidth="0" theme="light" width="300" id="sub-side-menu"
+                        onBreakpoint={() => {}} onCollapse={() => {}}>
                         <Profile/>
                         <div className="menu-separation"/>
                         {this.state.menuaction === 1 ? <ChatList/> : <AddressBook/>}
@@ -77,8 +73,8 @@ class Main extends React.Component {
                         <ChatHeader/>
                         <MessagePanel/>
                         <div className='chat-footer'>
-                            <TextArea id="messageTextArea" onPressEnter={this.handleMessageEnter} rows={1}
-                                placeholder="Type a new message" ref="messageTextArea"/>
+                            <TextArea id="messageTextArea" rows={1} placeholder="Type a new message" ref="messageTextArea"
+                                onPressEnter={this.handleMessageEnter}/>
                             <Button type="primary" onClick={this.handleSendClick}>Send</Button>
                         </div>
                     </div>

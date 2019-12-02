@@ -23,9 +23,9 @@ import java.util.Set;
 @Slf4j
 public final class ApiServer {
     private HttpServer httpServer;
-    private ProtectedApiHandler protectedApiHandler;
-    private PublicApiHandler publicApiHandler;
     private WebHandler webHandler;
+    private PublicApiHandler publicApiHandler;
+    private ProtectedApiHandler protectedApiHandler;
 
     private ApiServer() {
     }
@@ -44,8 +44,7 @@ public final class ApiServer {
 
         router.route("/").handler(routingContext -> {
             HttpServerResponse httpServerResponse = routingContext.response();
-            httpServerResponse.putHeader("content-type", "text/html")
-                .end("<h1>Helloworld</h1>");
+            httpServerResponse.putHeader("content-type", "text/html").end("<h1>Helloworld</h1>");
         });
 
         router.route().handler(BodyHandler.create());
@@ -68,9 +67,12 @@ public final class ApiServer {
             add(HttpMethod.PUT);
         }};
 
-        router.route("/*").handler(CorsHandler.create("http://localhost:3000").allowedHeaders
-            (allowedHeaders).allowedMethods(allowedMethods).allowCredentials(true))
-            .handler(BodyHandler.create());
+        router.route("/*").handler(
+            CorsHandler.create("http://localhost:3000")
+                .allowedHeaders(allowedHeaders)
+                .allowedMethods(allowedMethods)
+                .allowCredentials(true)
+        ).handler(BodyHandler.create());
 
         router.get("/inittestdata").handler(webHandler::initTestData);
 
