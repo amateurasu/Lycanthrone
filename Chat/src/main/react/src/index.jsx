@@ -5,14 +5,14 @@ import {applyMiddleware, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import {Provider} from "react-redux";
 
-import rootReducer from "./reducers";
-import Portal from "./pages/Portal";
-import Main from "./pages/Main";
 import {API} from "./api/API";
+import Main from "./pages/Main";
+import Portal from "./pages/Portal";
+import rootReducer from "./reducers";
 import {clearStorage} from "./utils/utils";
 
-import "antd/dist/antd.css";
 import "./index.css";
+import "antd/dist/antd.css";
 import "react-slidedown/lib/slidedown.css";
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));

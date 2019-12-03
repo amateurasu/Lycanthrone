@@ -26,11 +26,11 @@ class Profile extends React.Component {
     };
 
     logOut = () => API.post(`/signout`).then(res => {
-            clearStorage();
-            this.props.closeWebSocket();
-            this.props.logout();
-            this.props.history.push("/login");
-        });
+        clearStorage();
+        this.props.closeWebSocket();
+        this.props.logout();
+        this.props.history.push("/login");
+    });
 
     openStatusBoxStateStatus = () => {
         this.setState({

@@ -101,24 +101,24 @@
 </div>
 </body>
 
-<script src="assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="assets/js/core/popper.min.js" type="text/javascript"></script>
-<script src="assets/js/core/bootstrap.min.js" type="text/javascript"></script>
-<script src="assets/js/plugins/bootstrap-switch.js"></script>
-<script src="assets/js/plugins/chartist.min.js"></script>
-<script src="assets/js/plugins/bootstrap-notify.js"></script>
-<script src="assets/js/plugins/jquery-jvectormap.js" type="text/javascript"></script>
-<script src="assets/js/plugins/moment.min.js"></script>
-<script src="assets/js/plugins/bootstrap-datetimepicker.js"></script>
-<script src="assets/js/plugins/sweetalert2.min.js" type="text/javascript"></script>
-<script src="assets/js/plugins/bootstrap-tagsinput.js" type="text/javascript"></script>
-<script src="assets/js/plugins/nouislider.js" type="text/javascript"></script>
-<script src="assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
-<script src="assets/js/plugins/jquery.validate.min.js" type="text/javascript"></script>
-<script src="assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-<script src="assets/js/plugins/bootstrap-table.js"></script>
-<script src="assets/js/plugins/jquery.dataTables.min.js"></script>
-<script src="assets/js/plugins/fullcalendar.min.js"></script>
+<script src="js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="js/core/popper.min.js" type="text/javascript"></script>
+<script src="js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="js/plugins/bootstrap-switch.js"></script>
+<script src="js/plugins/chartist.min.js"></script>
+<script src="js/plugins/bootstrap-notify.js"></script>
+<script src="js/plugins/jquery-jvectormap.js" type="text/javascript"></script>
+<script src="js/plugins/moment.min.js"></script>
+<script src="js/plugins/bootstrap-datetimepicker.js"></script>
+<script src="js/plugins/sweetalert2.min.js" type="text/javascript"></script>
+<script src="js/plugins/bootstrap-tagsinput.js" type="text/javascript"></script>
+<script src="js/plugins/nouislider.js" type="text/javascript"></script>
+<script src="js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+<script src="js/plugins/jquery.validate.min.js" type="text/javascript"></script>
+<script src="js/plugins/jquery.bootstrap-wizard.js"></script>
+<script src="js/plugins/bootstrap-table.js"></script>
+<script src="js/plugins/jquery.dataTables.min.js"></script>
+<script src="js/plugins/fullcalendar.min.js"></script>
 <script src="js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
 <script src="js/event.js"></script>
 </html>

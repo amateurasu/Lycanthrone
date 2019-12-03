@@ -73,8 +73,8 @@ class Main extends React.Component {
                         <ChatHeader/>
                         <MessagePanel/>
                         <div className='chat-footer'>
-                            <TextArea id="messageTextArea" rows={1} placeholder="Type a new message" ref="messageTextArea"
-                                onPressEnter={this.handleMessageEnter}/>
+                            <TextArea id="messageTextArea" rows={1} placeholder="Type a new message"
+                                ref="messageTextArea" onPressEnter={this.handleMessageEnter}/>
                             <Button type="primary" onClick={this.handleSendClick}>Send</Button>
                         </div>
                     </div>

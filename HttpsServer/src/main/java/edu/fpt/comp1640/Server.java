@@ -16,10 +16,10 @@ public class Server {
         val tomcat = new Tomcat();
         tomcat.getService().addConnector(getSslConnector());
 
-        val context = tomcat.addWebapp("", new File("HttpsServer/src/main/web").getAbsolutePath());
+        val context = tomcat.addWebapp("", new File("HttpsServer/src/main/webapp").getAbsolutePath());
         context.addFilterDef(createFilterDef("pippoFilter", new EmptyFilter()));
         context.addFilterMap(createFilterMap("pippoFilter", "/rest"));
-        context.getServletContext().setAttribute(Globals.ALT_DD_ATTR, new File("HttpsServer/src/main/web/WEB-INF/web.xml").getAbsolutePath());
+        context.getServletContext().setAttribute(Globals.ALT_DD_ATTR, new File("HttpsServer/src/main/webapp/WEB-INF/web.xml").getAbsolutePath());
 
         tomcat.start();
         tomcat.getServer().await();

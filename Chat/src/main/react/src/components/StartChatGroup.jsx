@@ -52,7 +52,10 @@ class StartChatGroup extends React.Component {
                 )}
 
                 {this.props.startChatGroupList.map((item, index) =>
-                    <Tag key={index} closable onClose={e => {this.handleRemoveUsername(item); e.preventDefault();}} color="#f50">{item}</Tag>
+                    <Tag key={index} closable onClose={e => {
+                        this.handleRemoveUsername(item);
+                        e.preventDefault();
+                    }} color="#f50">{item}</Tag>
                 )}
             </Modal>
         </div>

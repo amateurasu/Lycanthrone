@@ -7,7 +7,6 @@ import {setJWT, setUserID} from "../utils/utils";
 const FormItem = Form.Item;
 
 class NormalLoginForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {

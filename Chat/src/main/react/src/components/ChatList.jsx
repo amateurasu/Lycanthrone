@@ -27,18 +27,15 @@ class ChatList extends React.Component {
     };
 
     render() {
-        if (!this.props.chatList) {
-            return "Loading...";
-        }
-
-        return (
-            <div className="d-flex flex-column full-height">
-                <StartChatGroup/>
-                <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
-                    <Menu theme="light" mode="inline" className="chat-list"
-                        onSelect={this.handleChangeChatItem} selectedKeys={this.props.userSelectedKeys}>
-                        {
-                            this.props.chatList.map((item, index) =>
+        return !this.props.chatList
+            ? "Loading..."
+            : (
+                <div className="d-flex flex-column full-height">
+                    <StartChatGroup/>
+                    <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
+                        <Menu theme="light" mode="inline" className="chat-list"
+                            onSelect={this.handleChangeChatItem} selectedKeys={this.props.userSelectedKeys}>
+                            {this.props.chatList.map((item, index) =>
                                 <Menu.Item key={item.sessionId}>
                                     <div style={{width: 60}}>
                                         {
@@ -62,12 +59,11 @@ class ChatList extends React.Component {
                                     }
                                     {item.unread > 0 ? <div className="unread">{item.unread}</div> : ""}
                                 </Menu.Item>
-                            )
-                        }
-                    </Menu>
-                </Scrollbars>
-            </div>
-        );
+                            )}
+                        </Menu>
+                    </Scrollbars>
+                </div>
+            );
     }
 }
 
@@ -78,8 +74,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     loadChatList: () => dispatch(loadChatList()),
+
     loadChatContainer: sessionId => dispatch(loadChatContainer(sessionId)),
+
     changeMessageHeader: (avatar, title, groupchat) => dispatch(changeMessageHeader(avatar, title, groupchat)),
+
     userSelected: sessionId => dispatch(userSelected(sessionId))
 });
 
