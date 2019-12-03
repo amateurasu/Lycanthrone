@@ -10,10 +10,6 @@ class AddFriend extends React.Component {
     constructor(props) {
         super(props);
         this.state = {visible: false};
-
-        // this.handleOk = this.handleOk.bind(this);
-        // this.handleCancel = this.handleCancel.bind(this);
-        // this.showModal = this.showModal.bind(this);
     };
 
     handleOk = e => {

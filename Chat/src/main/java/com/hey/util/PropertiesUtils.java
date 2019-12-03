@@ -9,7 +9,7 @@ import java.util.Properties;
 @Slf4j
 public final class PropertiesUtils {
 
-    private static final String PROP_FILE_NAME = "application.properties";
+    private static final String PROP_FILE = "application.properties";
     private static PropertiesUtils instance;
     private Properties properties;
 
@@ -17,8 +17,7 @@ public final class PropertiesUtils {
         String env = Hey.ENV;
         try {
             properties = new Properties();
-            // properties.load(FileUtils.openInputStream(new File(Hey.RESOURCE_PATH + env + "." + PROP_FILE_NAME)));
-            properties.load(Hey.getResourceAsStream(env + "." + PROP_FILE_NAME));
+            properties.load(Hey.getResourceAsStream(env + "." + PROP_FILE));
         } catch (IOException ioe) {
             log.error("Error reading config properties.", ioe);
             throw new RuntimeException(ioe);

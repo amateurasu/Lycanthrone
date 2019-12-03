@@ -131,17 +131,17 @@
     </div>
 </div>
 
-<script type="text/javascript" src="assets/js/core/jquery.3.2.1.min.js"></script>
-<script type="text/javascript" src="assets/js/core/popper.min.js"></script>
-<script type="text/javascript" src="assets/js/core/bootstrap.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-switch.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-notify.js"></script>
-<script type="text/javascript" src="assets/js/plugins/moment.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="assets/js/plugins/sweetalert2.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-selectpicker.js"></script>
-<script type="text/javascript" src="assets/js/plugins/jquery.validate.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+<script type="text/javascript" src="js/core/jquery.3.2.1.min.js"></script>
+<script type="text/javascript" src="js/core/popper.min.js"></script>
+<script type="text/javascript" src="js/core/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap-switch.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap-notify.js"></script>
+<script type="text/javascript" src="js/plugins/moment.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="js/plugins/sweetalert2.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap-selectpicker.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.bootstrap-wizard.js"></script>
 <script type="text/javascript" src="js/light-bootstrap-dashboard.js?v=2.0.1"></script>
 <script type="text/javascript" src="js/upload.js"></script>
 

@@ -1,13 +1,10 @@
 package performance.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ChatContainerRequest extends WsMessage {
     private String sessionId;
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 }

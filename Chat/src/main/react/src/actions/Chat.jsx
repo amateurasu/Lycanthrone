@@ -118,6 +118,7 @@ export function initialWebSocket() {
                 case "USER_OFFLINE_RESPONSE":
                     store.dispatch(receivedUserOffline(data));
                     break;
+                default:
             }
         },
 

@@ -1,5 +1,6 @@
 package com.hey.util;
 
+@lombok.AllArgsConstructor
 public enum ErrorCode {
     AUTHORIZED_FAILED("error.unauthorized"),
     REGISTER_USERNAME_UNIQUED("username.uniqued"),
@@ -15,10 +16,6 @@ public enum ErrorCode {
     START_GROUP_CHAT_USERNAME_NOT_FRIEND("username.notfriend");
 
     private String code;
-
-    ErrorCode(String code) {
-        this.code = code;
-    }
 
     public String code() {
         return code;

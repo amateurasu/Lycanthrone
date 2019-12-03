@@ -15,44 +15,37 @@ class AddressBook extends React.Component {
             current: [],
             newselect: []
         };
-        this.handleCurrentChange = this.handleCurrentChange.bind(this);
-        this.handleNewChange = this.handleNewChange.bind(this);
     }
 
-    componentDidMount() {
-        this.props.loadAddressBookList();
-    }
+    componentDidMount = () => this.props.loadAddressBookList();
 
-    handleCurrentChange(event) {
-        this.setState({
-            ...this.state,
-            current: [event.key],
-            newselect: []
-        });
-        this.props.handleChangeAddressBook(this.props.addressBookList[event.key].userId);
-        this.props.changeMessageHeader(this.props.addressBookList[event.key].name, this.props.addressBookList[event.key].avatar, false);
-    }
+    handleCurrentChange = event => {
+        const {handleChangeAddressBook, changeMessageHeader, addressBookList} = this.props;
+        const key = event.key;
+        this.setState({current: [key], newselect: []});
+        handleChangeAddressBook(addressBookList[key].userId);
+        changeMessageHeader(addressBookList[key].name, addressBookList[key].avatar, false);
+    };
 
-    handleNewChange(event) {
-        this.setState({
-            ...this.state,
-            newselect: [event.key],
-            current: []
-        });
-        console.log(event.key);
-        this.props.handleChangeAddressBook(this.props.newAddressBookList[event.key].userId);
-        this.props.changeMessageHeader(this.props.newAddressBookList[event.key].name, this.props.newAddressBookList[event.key].avatar, false);
-    }
+    handleNewChange = event => {
+        const {handleChangeAddressBook, changeMessageHeader, newAddressBookList} = this.props;
+        const key = event.key;
+
+        console.log(key);
+        this.setState({newselect: [key], current: []});
+        handleChangeAddressBook(newAddressBookList[key].userId);
+        changeMessageHeader(newAddressBookList[key].name, newAddressBookList[key].avatar, false);
+    };
 
     render() {
         return (
             <div className="d-flex flex-column full-height address-book-menu">
                 <AddFriend/>
                 <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
-                    {this.props.newAddressBookList.length > 0 ?
+                    {this.props.newAddressBookList.length > 0 && (
                         <div>
                             <hr className="hr-sub-menu-title"/>
-                            < div className="sub-menu-title new-add"> New Friends
+                            <div className="sub-menu-title new-add"> New Friends
                                 ({this.props.newAddressBookList.length})
                             </div>
                             <Menu theme="light" mode="inline" defaultSelectedKeys={[]}
@@ -76,9 +69,7 @@ class AddressBook extends React.Component {
                                 )}
                             </Menu>
                         </div>
-                        :
-                        ""
-                    }
+                    )}
                     <hr className="hr-sub-menu-title"/>
                     <div className="sub-menu-title">Friends ({this.props.addressBookList.length})</div>
                     <Menu theme="light" mode="inline" defaultSelectedKeys={[]} selectedKeys={this.state.current}

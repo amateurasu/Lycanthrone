@@ -390,10 +390,8 @@
 }
 
 .new-action-menu:hover {
-    background-color: #1890ff;
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.17);
     background-color: #4bb5ff;
-    background-color: #f55;
     color: #FFFFFF;
 }
 

@@ -14,12 +14,8 @@ class NormalRegisterForm extends React.Component {
             if (err) { return; }
 
             console.log("Received values of form: ", values);
-            const user = {
-                fullName: values.fullName,
-                userName: values.userName,
-                password: values.password
-            };
-            this.props.register(user);
+            const {fullName, userName, password} = values;
+            this.props.register({fullName, userName, password});
         });
     };
 
@@ -53,8 +49,8 @@ class NormalRegisterForm extends React.Component {
                     {getFieldDecorator("fullName", {
                         rules: [{required: true, message: "Please input your Full Name!"}]
                     })(
-                        <Input prefix={
-                            <Icon type="idcard" style={{color: "rgba(0,0,0,.25)"}}/>} placeholder="Fullname"/>
+                        <Input prefix={<Icon type="idcard" style={{color: "rgba(0,0,0,.25)"}}/>}
+                            placeholder="Fullname"/>
                     )}
                 </FormItem>
                 <FormItem>

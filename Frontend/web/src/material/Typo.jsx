@@ -1,8 +1,6 @@
-// import React from "react";
-// import Typography from "material-ui/core/Typography";
-// import {makeStyles} from "material-ui/core/styles";
-
-const {makeStyles, Typography} = MaterialUI;
+import React from "react";
+import {Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     root: {
@@ -11,8 +9,7 @@ const useStyles = makeStyles({
     }
 });
 
-// export default
-function Types() {
+export default function Typo() {
     const classes = useStyles();
 
     return (
@@ -45,5 +42,3 @@ function Types() {
         </div>
     );
 }
-
-ReactDOM.render(<Types/>, document.getElementById("root"));

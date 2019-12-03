@@ -1,8 +1,18 @@
+let foo = [1, 2, 3];
+let foo2 = foo;
+foo = [];
+
+let bar = [1, 2, 3];
+bar2 = bar;
+bar.length = 0;
+
+console.log(`foo [${foo}] foo2 [${foo2}] bar [${bar}] bar2 [${bar2}]`);
+
 const input = "aHR0cHM6Ly93d3cueW91dHViZS5jb20=";
-console.log(Buffer.from(input, 'base64').toString('utf-8'));
+console.log(Buffer.from(input, "base64").toString("utf-8"));
 
 const s = "https://www.youtube.com";
-console.log(Buffer.from(s).toString('base64'));
+console.log(Buffer.from(s).toString("base64"));
 console.log(input);
 
 const compose = (...fns) => fns.reduce((f, g) => x => f(g(x)));

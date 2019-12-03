@@ -22,17 +22,18 @@ public class JwtManager {
     public JwtManager(Vertx vertx) {
         this.sharedData = vertx.sharedData();
 
+        PropertiesUtils props = PropertiesUtils.getInstance();
         //Hey.RESOURCE_PATH
         authProvider = JWTAuth.create(vertx, new JWTAuthOptions()
             .setKeyStore(new KeyStoreOptions()
-                .setType(PropertiesUtils.getInstance().getValue("jwt.keystore.type"))
-                .setPassword(PropertiesUtils.getInstance().getValue("jwt.keystore.password"))
-                .setPath(Hey.getResource(PropertiesUtils.getInstance().getValue("jwt.keystore")).getPath())));
+                .setType(props.getValue("jwt.keystore.type"))
+                .setPassword(props.getValue("jwt.keystore.password"))
+                .setPath(Hey.getResource(props.getValue("jwt.keystore")).getPath())));
 
         jwtOptions = new JWTOptions()
-            .setIssuer(PropertiesUtils.getInstance().getValue("jwt.iss"))
-            .addAudience(PropertiesUtils.getInstance().getValue("jwt.aud"))
-            .setExpiresInSeconds(PropertiesUtils.getInstance().getIntValue("jwt.expire"));
+            .setIssuer(props.getValue("jwt.iss"))
+            .addAudience(props.getValue("jwt.aud"))
+            .setExpiresInSeconds(props.getIntValue("jwt.expire"));
     }
 
     public void authenticate(JsonObject authInfo, Handler<AsyncResult<User>> resultHandler) {

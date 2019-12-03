@@ -1,5 +1,5 @@
 <%@ page import="edu.fpt.comp1640.model.user.Administrator" %>
-<div class="sidebar" data-color="orange" data-image="./assets/img/university-of-greenwich.jpg">
+<div class="sidebar" data-color="orange" data-image="./img/university-of-greenwich.jpg">
     <div class="sidebar-wrapper">
         <div class="logo">
             <a href="#" class="simple-text logo-mini">AM</a>

@@ -27,7 +27,7 @@
 
 <body>
 <div class="wrapper wrapper-full-page">
-    <div class="full-page  section-image" data-color="black" data-image="./assets/img/university-of-greenwich.jpg">
+    <div class="full-page  section-image" data-color="black" data-image="./img/university-of-greenwich.jpg">
         <div class="content">
             <div class="container">
                 <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
@@ -62,23 +62,23 @@
 </div>
 </body>
 
-<script type="text/javascript" src="assets/js/core/jquery.3.2.1.min.js"></script>
-<script type="text/javascript" src="assets/js/core/popper.min.js"></script>
-<script type="text/javascript" src="assets/js/core/bootstrap.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-switch.js"></script>
-<script type="text/javascript" src="assets/js/plugins/chartist.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-notify.js"></script>
-<script type="text/javascript" src="assets/js/plugins/jquery-jvectormap.js"></script>
-<script type="text/javascript" src="assets/js/plugins/moment.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="assets/js/plugins/sweetalert2.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-tagsinput.js"></script>
-<script type="text/javascript" src="assets/js/plugins/nouislider.js"></script>
-<script type="text/javascript" src="assets/js/plugins/bootstrap-selectpicker.js"></script>
-<script type="text/javascript" src="assets/js/plugins/jquery.validate.min.js"></script>
-<script type="text/javascript" src="assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-<script type="text/javascript" src="js/light-bootstrap-dashboard.js?v=2.0.1"></script>
-<script type="text/javascript" src="js/demo.js"></script>
+<script type="text/javascript" src="./js/core/jquery.3.2.1.min.js"></script>
+<script type="text/javascript" src="./js/core/popper.min.js"></script>
+<script type="text/javascript" src="./js/core/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/plugins/bootstrap-switch.js"></script>
+<script type="text/javascript" src="./js/plugins/chartist.min.js"></script>
+<script type="text/javascript" src="./js/plugins/bootstrap-notify.js"></script>
+<script type="text/javascript" src="./js/plugins/jquery-jvectormap.js"></script>
+<script type="text/javascript" src="./js/plugins/moment.min.js"></script>
+<script type="text/javascript" src="./js/plugins/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="./js/plugins/sweetalert2.min.js"></script>
+<script type="text/javascript" src="./js/plugins/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="./js/plugins/nouislider.js"></script>
+<script type="text/javascript" src="./js/plugins/bootstrap-selectpicker.js"></script>
+<script type="text/javascript" src="./js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="./js/plugins/jquery.bootstrap-wizard.js"></script>
+<script type="text/javascript" src="./js/light-bootstrap-dashboard.js?v=2.0.1"></script>
+<script type="text/javascript" src="./js/demo.js"></script>
 
 <script>
     $(document).ready(function () {

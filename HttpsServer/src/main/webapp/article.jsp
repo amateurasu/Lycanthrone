@@ -20,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Submissions</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-          name='viewport'/>
+            name='viewport'/>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
@@ -56,14 +56,16 @@
                 <h5>Coordinators' comments</h5>
 
                 <% if (user instanceof Coordinator) { %>
-                <form><div class="input-group">
-                    <input id="txt-comment" type="text" class="form-control">
-                    <div class="input-group-append">
-                        <button id="btn-send" type="submit" class="btn btn-outline-secondary">
-                            <i class="fa fa-pencil"></i> Comment
-                        </button>
+                <form>
+                    <div class="input-group">
+                        <input id="txt-comment" type="text" class="form-control">
+                        <div class="input-group-append">
+                            <button id="btn-send" type="submit" class="btn btn-outline-secondary">
+                                <i class="fa fa-pencil"></i> Comment
+                            </button>
+                        </div>
                     </div>
-                </div></form>
+                </form>
                 <% } %>
                 <hr>
                 <br>

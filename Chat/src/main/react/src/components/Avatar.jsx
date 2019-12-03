@@ -15,7 +15,7 @@ export class CustomAvatar extends React.Component {
         const {avatar, type} = this.props;
         const customClassName = `custom-avatar ${type}`;
 
-        switch (this.props.type) {
+        switch (type) {
             case "main-avatar":
                 return <Gravatar email={`${avatar}@gmail.com`} className={customClassName} default="identicon"/>;
             case "new-avatar":

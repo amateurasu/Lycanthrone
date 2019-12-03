@@ -204,9 +204,7 @@ public abstract class BaseService {
     }
 
     private Future<List<User>> createUsers() {
-
         Promise<List<User>> promise = Promise.promise();
-
         List<User> users = new ArrayList<>();
 
         User vcthanh24 = new User();
@@ -281,9 +279,7 @@ public abstract class BaseService {
     }
 
     private Future<List<UserStatus>> createUserStatuses(List<User> users) {
-
         Promise<List<UserStatus>> promise = Promise.promise();
-
         List<UserStatus> userStatuses = new ArrayList<>();
 
         for (User user : users) {
@@ -409,7 +405,9 @@ public abstract class BaseService {
         List<ChatMessage> chatMessages = new ArrayList<>();
 
         for (ChatList chatList : chatLists) {
-            chatMessages.addAll(createChatMessages(chatList.getSessionId(), chatList.getUserHashes(), chatList.getUpdatedDate().getTime()));
+            chatMessages.addAll(createChatMessages(
+                chatList.getSessionId(), chatList.getUserHashes(), chatList.getUpdatedDate().getTime()
+            ));
         }
 
         promise.complete(chatMessages);
@@ -418,11 +416,9 @@ public abstract class BaseService {
     }
 
     private List<ChatMessage> createChatMessages(String sessionId, List<UserHash> userHashes, long createdDate) {
-
         List<ChatMessage> chatMessages = new ArrayList<>();
         int numMessage = 60;
         for (int i = 0; i < numMessage; i++) {
-
             int randomUserId = RandomUtils.nextInt(0, userHashes.size());
 
             ChatMessage chatMessage = new ChatMessage();

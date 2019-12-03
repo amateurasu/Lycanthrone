@@ -2,12 +2,12 @@ package com.hey.util;
 
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public final class JsonUtils {
-    private JsonUtils() {
-    }
 
     public static String toSuccessJSON(Object message) {
         JsonObject objectResult = new JsonObject(Json.encodePrettily(message));
