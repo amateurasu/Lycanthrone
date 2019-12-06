@@ -1,14 +1,5 @@
 "use strict";
 
-function Parsimmon(action) {
-    if (!(this instanceof Parsimmon)) {
-        return new Parsimmon(action);
-    }
-    this._ = action;
-}
-
-const _ = Parsimmon.prototype;
-
 const index = Parsimmon((input, i) => makeSuccess(i, makeLineColumnIndex(input, i)));
 
 let times = (n, f) => {
@@ -352,13 +343,9 @@ function repeat(string, amount) {
 
 function formatExpected(expected) {
     if (expected.length === 1) {
-        return `Expected:
-
-${expected[0]}`;
+        return `Expected: ${expected[0]}`;
     }
-    return `Expected one of the following: 
-
-${expected.join(", ")}`;
+    return `Expected one of the following: ${expected.join(", ")}`;
 }
 
 function leftPad(str, pad, char) {
@@ -521,8 +508,7 @@ function formatGot(input, error) {
                 [`${prefix + lineNumberLabel} | ${lineSource}`],
                 isLineWithError
                     ? [
-                        `${defaultLinePrefix +
-                           repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
+                        `${defaultLinePrefix}${repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
                     ]
                     : []
             );
@@ -646,8 +632,7 @@ function createLanguage(parsers) {
     for (let key in parsers) {
         if ({}.hasOwnProperty.call(parsers, key)) {
             (key => {
-                const func = () => parsers[key](language);
-                language[key] = lazy(func);
+                language[key] = lazy(() => parsers[key](language));
             })(key);
         }
     }
@@ -675,18 +660,17 @@ function alt() {
     });
 }
 
-// Argument asserted by sepBy1
-let sepBy = (parser, separator) => sepBy1(parser, separator).or(succeed([]));
-
-function sepBy1(parser, separator) {
+let sepBy1 = (parser, separator) => {
     assertParser(parser);
     assertParser(separator);
     const pairs = separator.then(parser).many();
     return seqMap(parser, pairs, (r, rs) => [r].concat(rs));
-}
+};
+
+// Argument asserted by sepBy1
+let sepBy = (parser, separator) => sepBy1(parser, separator).or(succeed([]));
 
 const eof = Parsimmon((input, i) => i < input.length ? makeFailure(i, "EOF") : makeSuccess(i, null));
-// -*- Core Parsing Methods -*-
 
 _.parse = function (input) {
     if (typeof input !== "string" && !isBuffer(input)) {
@@ -694,10 +678,7 @@ _.parse = function (input) {
     }
     const result = this.skip(eof)._(input, 0);
     if (result.status) {
-        return {
-            status: true,
-            value: result.value
-        };
+        return {status: true, value: result.value};
     }
     return {
         status: false,
@@ -707,6 +688,15 @@ _.parse = function (input) {
 };
 
 // -*- Other Methods -*-
+
+function Parsimmon(action) {
+    if (!(this instanceof Parsimmon)) {
+        return new Parsimmon(action);
+    }
+    this._ = action;
+}
+
+const _ = Parsimmon.prototype;
 
 _.tryParse = function (str) {
     const result = this.parse(str);
