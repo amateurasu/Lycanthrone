@@ -1,23 +1,39 @@
 "use strict";
 
+function Parsimmon(action) {
+    if (!(this instanceof Parsimmon)) {
+        return new Parsimmon(action);
+    }
+    this._ = action;
+}
+
+const _ = Parsimmon.prototype;
+
+const index = Parsimmon((input, i) => makeSuccess(i, makeLineColumnIndex(input, i)));
+
 let times = (n, f) => {
     for (let i = 0; i < n; i++) f(i);
 };
 
-const forEach = (f, arr) => times(arr.length, i => f(arr[i], i, arr));
+const forEach = (arr, f) => times(arr.length, i => f(arr[i], i, arr));
 
-const reduce = (f, seed, arr) => {
-    forEach((elem, i, arr) => seed = f(seed, elem, i, arr), arr);
+const reduce = (arr, seed, f) => {
+    forEach(arr, (elem, i, arr) => seed = f(seed, elem, i, arr));
     return seed;
 };
 
-let map = (f, arr) => reduce((acc, elem, i, a) => acc.concat([f(elem, i, a)]), [], arr);
+let map = (f, arr) => reduce(
+    arr, [], (acc, elem, i, a) => acc.concat([f(elem, i, a)])
+);
 
 const lshiftBuffer = input => {
     const asTwoBytes = reduce(
-        (a, v, i, b) => a.concat(i === b.length - 1
-            ? Buffer.from([v, 0]).readUInt16BE(0)
-            : b.readUInt16BE(i)), [], input);
+        input, [], (a, v, i, b) => a.concat(
+            i === b.length - 1
+                ? Buffer.from([v, 0]).readUInt16BE(0)
+                : b.readUInt16BE(i)
+        )
+    );
     return Buffer.from(map(x => ((x << 1) & 0xffff) >> 8, asTwoBytes));
 };
 
@@ -34,15 +50,17 @@ const consumeBitsFromBuffer = (n, input) => {
     return state;
 };
 
-const sum = numArr => reduce((x, y) => x + y, 0, numArr);
+const sum = arr => reduce(arr, 0, (x, y) => x + y);
 
-const find = (pred, arr) => reduce((found, elem) => found || (pred(elem) ? elem : found), null, arr);
+const find = (pred, arr) => reduce(
+    arr, null, (found, elem) => found || (pred(elem) ? elem : found)
+);
 
 const bufferExists = () => typeof Buffer !== "undefined";
 
 const ensureBuffer = () => {
     if (!bufferExists()) {
-        throw new Error("Buffer global does not exist; please consider using https://github.com/feross/buffer if you are running Parsimmon in a browser.");
+        throw new Error("Buffer global does not exist; please use webpack if you need to parse Buffers in the browser.");
     }
 };
 
@@ -50,7 +68,8 @@ const bitSeq = alignments => {
     ensureBuffer();
     const totalBits = sum(alignments);
     if (totalBits % 8 !== 0) {
-        throw new Error(`The bits [${alignments.join(", ")}] add up to ${totalBits} which is not an even number of bytes; the total should be divisible by 8`);
+        throw new Error(`The bits [${alignments.join(", ")}] add up to ${totalBits} which is not an even number of bytes;
+             the total should be divisible by 8`);
     }
     const bytes = totalBits / 8;
 
@@ -66,18 +85,22 @@ const bitSeq = alignments => {
         }
         return makeSuccess(
             newPos,
-            reduce((acc, bits) => {
+            reduce(
+                (acc, bits) => {
                     const state = consumeBitsFromBuffer(bits, acc.buf);
-                    return {coll: acc.coll.concat(state.v), buf: state.buf};
-                }, {coll: [], buf: input.slice(i, newPos)}, alignments
+                    return {
+                        coll: acc.coll.concat(state.v),
+                        buf: state.buf
+                    };
+                },
+                {coll: [], buf: input.slice(i, newPos)},
+                alignments
             ).coll
         );
     });
 };
 
-const isArray = x => ({}.toString.call(x) === "[object Array]");
-
-const bitSeqObj = namedAlignments => {
+function bitSeqObj(namedAlignments) {
     ensureBuffer();
     const seenKeys = {};
     let totalKeys = 0;
@@ -109,24 +132,23 @@ const bitSeqObj = namedAlignments => {
     return bitSeq(alignmentsOnly).map(parsed => {
         const namedParsed = map((name, i) => [name, parsed[i]], namesOnly);
 
-        return reduce((obj, kv) => {
+        return reduce(namedParsed, {}, (obj, kv) => {
             if (kv[0] !== null) {
                 obj[kv[0]] = kv[1];
             }
             return obj;
-        }, {}, namedParsed);
+        });
     });
-};
+}
 
-const parseBufferFor = (other, length) => {
-    ensureBuffer();
+function parseBufferFor(other, length) {
     return new Parsimmon((input, i) => {
-        if (i + length > input.length) {
-            return makeFailure(i, `${length} bytes for ${other}`);
-        }
-        return makeSuccess(i + length, input.slice(i, i + length));
+        ensureBuffer();
+        return i + length > input.length
+            ? makeFailure(i, `${length} bytes for ${other}`)
+            : makeSuccess(i + length, input.slice(i, i + length));
     });
-};
+}
 
 const parseBuffer = length => parseBufferFor("buffer", length).map(unsafe => Buffer.from(unsafe));
 
@@ -173,10 +195,11 @@ const toArray = arrLike => Array.prototype.slice.call(arrLike);
 // -*- Helpers -*-
 const isParser = obj => obj instanceof Parsimmon;
 
-function isBuffer(x) {
-    /* global Buffer */
-    return bufferExists() && Buffer.isBuffer(x);
+function isArray(x) {
+    return {}.toString.call(x) === "[object Array]";
 }
+
+const isBuffer = x => bufferExists() && Buffer.isBuffer(x);
 
 function makeSuccess(index, value) {
     return {
@@ -286,31 +309,27 @@ function assertNumber(x) {
     }
 }
 
-const flags = re => {
-    const s = `${re}`;
-    return s.slice(s.lastIndexOf("/") + 1);
-};
-
-const assertRegexp = x => {
+function assertRegexp(x) {
     if (!(x instanceof RegExp)) {
         throw new Error(`not a regexp: ${x}`);
     }
     const f = flags(x);
     for (let i = 0; i < f.length; i++) {
         const c = f.charAt(i);
-        // Only allow regexp flags [imu] for now, since [g] and [y] specifically mess up Parsimmon.
-        // If more non-stateful regexp flags are added in the future, this will need to be revisited.
+        // Only allow regexp flags [imu] for now, since [g] and [y] specifically
+        // mess up Parsimmon. If more non-stateful regexp flags are added in the
+        // future, this will need to be revisited.
         if (c !== "i" && c !== "m" && c !== "u") {
             throw new Error(`unsupported regexp flag "${c}": ${x}`);
         }
     }
-};
+}
 
-const assertFunction = x => {
+function assertFunction(x) {
     if (typeof x !== "function") {
         throw new Error(`not a function: ${x}`);
     }
-};
+}
 
 function assertString(x) {
     if (typeof x !== "string") {
@@ -426,12 +445,10 @@ function formatGot(input, error) {
         const bytes = input.slice(byteRange.from, byteRange.to);
         const bytesInChunks = toChunks(bytes.toJSON().data, bytesPerLine);
 
-        const byteLines = map(function (byteRow) {
-            return map(function (byteValue) {
-                // Prefix byte values with a `0` if they are shorter than 2 characters.
-                return leftPad(byteValue.toString(16), 2, "0");
-            }, byteRow);
-        }, bytesInChunks);
+        const byteLines = map(byteRow => map(byteValue => {
+            // Prefix byte values with a `0` if they are shorter than 2 characters.
+            return leftPad(byteValue.toString(16), 2, "0");
+        }, byteRow), bytesInChunks);
 
         lineRange = byteRangeToRange(byteRange);
         lineWithErrorIndex = byteLineWithErrorIndex / bytesPerLine;
@@ -443,11 +460,9 @@ function formatGot(input, error) {
         }
 
         verticalMarkerLength = 2;
-        lines = map(function (byteLine) {
-            return byteLine.length <= 4
-                ? byteLine.join(" ")
-                : byteLine.slice(0, 4).join(" ") + "  " + byteLine.slice(4).join(" ");
-        }, byteLines);
+        lines = map(byteLine => byteLine.length <= 4
+            ? byteLine.join(" ")
+            : `${byteLine.slice(0, 4).join(" ")}  ${byteLine.slice(4).join(" ")}`, byteLines);
         lastLineNumberLabelLength = (
             (lineRange.to > 0 ? lineRange.to - 1 : lineRange.to) * 8
         ).toString(16).length;
@@ -482,7 +497,7 @@ function formatGot(input, error) {
         }
     }
 
-    const linesWithLineNumbers = reduce((acc, lineSource, index) => {
+    const linesWithLineNumbers = reduce(lines, [], (acc, lineSource, index) => {
             const isLineWithError = index === lineWithErrorCurrentIndex;
             const prefix = isLineWithError ? "> " : defaultLinePrefix;
             let lineNumberLabel;
@@ -490,39 +505,60 @@ function formatGot(input, error) {
             if (isBuffer(input)) {
                 lineNumberLabel = leftPad(
                     ((lineRange.from + index) * 8).toString(16),
-                    lastLineNumberLabelLength, "0");
+                    lastLineNumberLabelLength,
+                    "0"
+                );
             } else {
                 lineNumberLabel = leftPad(
                     (lineRange.from + index + 1).toString(),
-                    lastLineNumberLabelLength, " ");
+                    lastLineNumberLabelLength,
+                    " "
+                );
             }
 
-            return [].concat(acc, [`${prefix + lineNumberLabel} | ${lineSource}`],
-                isLineWithError ? [
-                    `${defaultLinePrefix +
-                       repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
-                ] : []
+            return [].concat(
+                acc,
+                [`${prefix + lineNumberLabel} | ${lineSource}`],
+                isLineWithError
+                    ? [
+                        `${defaultLinePrefix +
+                           repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
+                    ]
+                    : []
             );
-        }, [], lines
+        }
     );
 
     return linesWithLineNumbers.join("\n");
 }
 
-const formatError = (input, error) => `
--- PARSING FAILED ${repeat("-", 50)}
+function formatError(input, error) {
+    return [
+        "\n",
+        `-- PARSING FAILED ${repeat("-", 50)}`,
+        "\n\n",
+        formatGot(input, error),
+        "\n\n",
+        formatExpected(error.expected),
+        "\n"
+    ].join("");
+}
 
-${formatGot(input, error)}
+function flags(re) {
+    const s = `${re}`;
+    return s.slice(s.lastIndexOf("/") + 1);
+}
 
-${formatExpected(error.expected)}
-`;
+function anchoredRegexp(re) {
+    return RegExp(`^(?:${re.source})`, flags(re));
+}
 
-const anchoredRegexp = re => RegExp(`^(?:${re.source})`, flags(re));
+// -*- Combinators -*-
 
-const seq = function () {
+function seq() {
     const parsers = [].slice.call(arguments);
     const numParsers = parsers.length;
-    for (let j = 0; j < numParsers; j += 1) {
+    for (var j = 0; j < numParsers; j += 1) {
         assertParser(parsers[j]);
     }
     return Parsimmon((input, i) => {
@@ -538,14 +574,14 @@ const seq = function () {
         }
         return mergeReplies(makeSuccess(i, accum), result);
     });
-};
+}
 
-const seqObj = function () {
+function seqObj() {
     const seenKeys = {};
     let totalKeys = 0;
     const parsers = toArray(arguments);
     const numParsers = parsers.length;
-    for (let j = 0; j < numParsers; j += 1) {
+    for (var j = 0; j < numParsers; j += 1) {
         const p = parsers[j];
         if (isParser(p)) {
             continue;
@@ -592,7 +628,7 @@ const seqObj = function () {
         }
         return mergeReplies(makeSuccess(i, accum), result);
     });
-};
+}
 
 function seqMap() {
     const args = [].slice.call(arguments);
@@ -604,22 +640,21 @@ function seqMap() {
     return seq.apply(null, args).map(results => mapper.apply(null, results));
 }
 
-const succeed = value => Parsimmon((input, i) => makeSuccess(i, value));
-
-const fail = expected => Parsimmon((input, i) => makeFailure(i, expected));
-
 // TODO[ES5]: Revisit this with Object.keys and .bind.
-const createLanguage = parsers => {
+function createLanguage(parsers) {
     const language = {};
     for (let key in parsers) {
         if ({}.hasOwnProperty.call(parsers, key)) {
-            language[key] = lazy(() => parsers[key](language));
+            (key => {
+                const func = () => parsers[key](language);
+                language[key] = lazy(func);
+            })(key);
         }
     }
     return language;
-};
+}
 
-const alt = function () {
+function alt() {
     const parsers = [].slice.call(arguments);
     const numParsers = parsers.length;
     if (numParsers === 0) {
@@ -638,177 +673,24 @@ const alt = function () {
         }
         return result;
     });
-};
-
-let sepBy1 = (parser, separator) => {
-    assertParser(parser);
-    assertParser(separator);
-    const pairs = separator.then(parser).many();
-    return seqMap(parser, pairs, (r, rs) => [r].concat(rs));
-};
+}
 
 // Argument asserted by sepBy1
 let sepBy = (parser, separator) => sepBy1(parser, separator).or(succeed([]));
 
-const eof = Parsimmon((input, i) => {
-    if (i < input.length) {
-        return makeFailure(i, "EOF");
-    }
-    return makeSuccess(i, null);
-});
-// -*- Core Parsing Methods -*-
-
-const string = (str) => {
-    assertString(str);
-    const expected = `'${str}'`;
-    return Parsimmon((input, i) => {
-        const j = i + str.length;
-        const head = input.slice(i, j);
-        if (head === str) {
-            return makeSuccess(j, head);
-        } else {
-            return makeFailure(i, expected);
-        }
-    });
-};
-
-const byte = b => {
-    ensureBuffer();
-    assertNumber(b);
-    if (b > 0xff) {
-        throw new Error(`Value specified to byte constructor (${b}=0x${b.toString(16)}) is larger in value than a single byte.`);
-    }
-    const expected = `${b > 0xf ? "0x" : "0x0"}${b.toString(16)}`;
-    return Parsimmon((input, i) => {
-        const head = get(input, i);
-        if (head === b) {
-            return makeSuccess(i + 1, head);
-        } else {
-            return makeFailure(i, expected);
-        }
-    });
-};
-
-const regexp = function (re, group) {
-    assertRegexp(re);
-    if (arguments.length >= 2) {
-        assertNumber(group);
-    } else {
-        group = 0;
-    }
-    const anchored = anchoredRegexp(re);
-    const expected = `${re}`;
-    return Parsimmon((input, i) => {
-        const match = anchored.exec(input.slice(i));
-        if (!match) { return makeFailure(i, expected); }
-
-        if (0 <= group && group <= match.length) {
-            const fullMatch = match[0];
-            const groupMatch = match[group];
-            return makeSuccess(i + fullMatch.length, groupMatch);
-        }
-
-        return makeFailure(i, `valid match group (0 to ${match.length}) in ${expected}`);
-
-    });
-};
-
-function lookahead(x) {
-    if (isParser(x)) {
-        return Parsimmon((input, i) => {
-            const result = x._(input, i);
-            result.index = i;
-            result.value = "";
-            return result;
-        });
-    } else if (typeof x === "string") {
-        return lookahead(string(x));
-    } else if (x instanceof RegExp) {
-        return lookahead(regexp(x));
-    }
-    throw new Error(`not a string, regexp, or parser: ${x}`);
-}
-
-function notFollowedBy(parser) {
+function sepBy1(parser, separator) {
     assertParser(parser);
-    return Parsimmon((input, i) => {
-        const result = parser._(input, i);
-        const text = input.slice(i, result.index);
-        return result.status
-            ? makeFailure(i, `not "${text}"`)
-            : makeSuccess(i, null);
-    });
+    assertParser(separator);
+    const pairs = separator.then(parser).many();
+    return seqMap(parser, pairs, (r, rs) => [r].concat(rs));
 }
 
-const test = predicate => {
-    assertFunction(predicate);
-    return Parsimmon((input, i) => {
-        const char = get(input, i);
-        if (i < input.length && predicate(char)) {
-            return makeSuccess(i + 1, char);
-        } else {
-            return makeFailure(i, `a character/byte matching ${predicate}`);
-        }
-    });
-};
-
-const oneOf = str => {
-    const expected = str.split("");
-    for (let idx = 0; idx < expected.length; idx++) {
-        expected[idx] = `'${expected[idx]}'`;
-    }
-    return test(ch => str.indexOf(ch) >= 0).desc(expected);
-};
-
-const noneOf = str => test(ch => str.indexOf(ch) < 0).desc(`none of '${str}'`);
-
-const custom = parsingFunction => Parsimmon(parsingFunction(makeSuccess, makeFailure));
-
-// TODO[ES5]: Improve error message using JSON.stringify eventually.
-const range = (begin, end) => test(ch => begin <= ch && ch <= end).desc(`${begin}-${end}`);
-
-const takeWhile = predicate => {
-    assertFunction(predicate);
-
-    return Parsimmon((input, i) => {
-        let j = i;
-        while (j < input.length && predicate(get(input, j))) {
-            j++;
-        }
-        return makeSuccess(j, input.slice(i, j));
-    });
-};
-
-function lazy(desc, f) {
-    if (arguments.length < 2) {
-        f = desc;
-        desc = undefined;
-    }
-
-    const parser = Parsimmon((input, i) => {
-        parser._ = f()._;
-        return parser._(input, i);
-    });
-
-    return desc ? parser.desc(desc) : parser;
-}
-
-// -*- Fantasy Land Extras -*-
-
-let empty = () => fail("fantasy-land/empty");
-
-function Parsimmon(action) {
-    if (!(this instanceof Parsimmon)) {
-        return new Parsimmon(action);
-    }
-    this._ = action;
-}
-
-const _ = Parsimmon.prototype;
+const eof = Parsimmon((input, i) => i < input.length ? makeFailure(i, "EOF") : makeSuccess(i, null));
+// -*- Core Parsing Methods -*-
 
 _.parse = function (input) {
     if (typeof input !== "string" && !isBuffer(input)) {
-        throw new Error(".parse() must be called with a string or Buffer as its argument");
+        throw new Error(".parse must be called with a string or Buffer as its argument");
     }
     const result = this.skip(eof)._(input, 0);
     if (result.status) {
@@ -824,6 +706,8 @@ _.parse = function (input) {
     };
 };
 
+// -*- Other Methods -*-
+
 _.tryParse = function (str) {
     const result = this.parse(str);
     if (result.status) {
@@ -835,6 +719,10 @@ _.tryParse = function (str) {
         err.result = result;
         throw err;
     }
+};
+
+_.assert = function (condition, errorMessage) {
+    return this.chain(value => condition(value) ? succeed(value) : fail(errorMessage));
 };
 
 _.or = function (alternative) {
@@ -869,8 +757,10 @@ _.many = function () {
             result = mergeReplies(self._(input, i), result);
             if (result.status) {
                 if (i === result.index) {
-                    throw new Error("infinite loop detected in .many() parser --- calling .many() on " +
-                                    "a parser which can accept zero characters is usually the cause");
+                    throw new Error(
+                        "infinite loop detected in .many() parser --- calling .many() on " +
+                        "a parser which can accept zero characters is usually the cause"
+                    );
                 }
                 i = result.index;
                 accum.push(result.value);
@@ -905,16 +795,16 @@ _.tie = function () {
 
 _.times = function (min, max) {
     const self = this;
-    if (arguments.length < 2) {max = min;}
+    if (arguments.length < 2) {
+        max = min;
+    }
     assertNumber(min);
     assertNumber(max);
-
     return Parsimmon((input, i) => {
         const accum = [];
         let result = undefined;
         let prevResult = undefined;
-        let times;
-        for (times = 0; times < min; times += 1) {
+        for (var times = 0; times < min; times += 1) {
             result = self._(input, i);
             prevResult = mergeReplies(result, prevResult);
             if (result.status) {
@@ -1050,6 +940,157 @@ _.chain = function (f) {
         return mergeReplies(nextParser._(input, result.index), result);
     });
 };
+
+// -*- Constructors -*-
+
+function string(str) {
+    assertString(str);
+    const expected = `'${str}'`;
+    return Parsimmon((input, i) => {
+        const j = i + str.length;
+        const head = input.slice(i, j);
+        if (head === str) {
+            return makeSuccess(j, head);
+        } else {
+            return makeFailure(i, expected);
+        }
+    });
+}
+
+function byte(b) {
+    ensureBuffer();
+    assertNumber(b);
+    if (b > 0xff) {
+        throw new Error(`Value specified to byte constructor (${b}=0x${b.toString(16)}) is larger in value than a single byte.`);
+    }
+    const expected = `${b > 0xf ? "0x" : "0x0"}${b.toString(16)}`;
+    return Parsimmon((input, i) => {
+        const head = get(input, i);
+        return head === b ? makeSuccess(i + 1, head) : makeFailure(i, expected);
+    });
+}
+
+function regexp(re, group) {
+    assertRegexp(re);
+    if (arguments.length >= 2) {
+        assertNumber(group);
+    } else {
+        group = 0;
+    }
+    const anchored = anchoredRegexp(re);
+    const expected = `${re}`;
+    return Parsimmon((input, i) => {
+        const match = anchored.exec(input.slice(i));
+        if (match) {
+            if (0 <= group && group <= match.length) {
+                const fullMatch = match[0];
+                const groupMatch = match[group];
+                return makeSuccess(i + fullMatch.length, groupMatch);
+            }
+            const message = `valid match group (0 to ${match.length}) in ${expected}`;
+            return makeFailure(i, message);
+        }
+        return makeFailure(i, expected);
+    });
+}
+
+function succeed(value) {
+    return Parsimmon((input, i) => makeSuccess(i, value));
+}
+
+function fail(expected) {
+    return Parsimmon((input, i) => makeFailure(i, expected));
+}
+
+function lookahead(x) {
+    if (isParser(x)) {
+        return Parsimmon((input, i) => {
+            const result = x._(input, i);
+            result.index = i;
+            result.value = "";
+            return result;
+        });
+    } else if (typeof x === "string") {
+        return lookahead(string(x));
+    } else if (x instanceof RegExp) {
+        return lookahead(regexp(x));
+    }
+    throw new Error(`not a string, regexp, or parser: ${x}`);
+}
+
+function notFollowedBy(parser) {
+    assertParser(parser);
+    return Parsimmon((input, i) => {
+        const result = parser._(input, i);
+        const text = input.slice(i, result.index);
+        return result.status
+            ? makeFailure(i, `not "${text}"`)
+            : makeSuccess(i, null);
+    });
+}
+
+function test(predicate) {
+    assertFunction(predicate);
+    return Parsimmon((input, i) => {
+        const char = get(input, i);
+        if (i < input.length && predicate(char)) {
+            return makeSuccess(i + 1, char);
+        } else {
+            return makeFailure(i, `a character/byte matching ${predicate}`);
+        }
+    });
+}
+
+function oneOf(str) {
+    const expected = str.split("");
+    for (let idx = 0; idx < expected.length; idx++) {
+        expected[idx] = `'${expected[idx]}'`;
+    }
+    return test(ch => str.indexOf(ch) >= 0).desc(expected);
+}
+
+function noneOf(str) {
+    return test(ch => str.indexOf(ch) < 0).desc(`none of '${str}'`);
+}
+
+function custom(parsingFunction) {
+    return Parsimmon(parsingFunction(makeSuccess, makeFailure));
+}
+
+// TODO[ES5]: Improve error message using JSON.stringify eventually.
+function range(begin, end) {
+    return test(ch => begin <= ch && ch <= end).desc(`${begin}-${end}`);
+}
+
+function takeWhile(predicate) {
+    assertFunction(predicate);
+
+    return Parsimmon((input, i) => {
+        let j = i;
+        while (j < input.length && predicate(get(input, j))) {
+            j++;
+        }
+        return makeSuccess(j, input.slice(i, j));
+    });
+}
+
+function lazy(desc, f) {
+    if (arguments.length < 2) {
+        f = desc;
+        desc = undefined;
+    }
+
+    const parser = Parsimmon((input, i) => {
+        parser._ = f()._;
+        return parser._(input, i);
+    });
+
+    return desc ? parser.desc(desc) : parser;
+}
+
+// -*- Fantasy Land Extras -*-
+
+let empty = () => fail("fantasy-land/empty");
 
 _.concat = _.or;
 _.empty = empty;

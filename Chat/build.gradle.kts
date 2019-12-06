@@ -33,14 +33,27 @@ dependencies {
     testImplementation("org.java-websocket:Java-WebSocket:1.3.9")
 }
 
-tasks.register<Exec>("buildReact") {
-    workingDir = File("$projectDir/src/main/react")
-    println("$workingDir")
-    println(workingDir.exists())
-    commandLine("npm", "run build --scripts-prepend-node-path=auto")
-}
+buildscript {
 
-tasks.register<Copy>("copyReact") {
-    from("$projectDir/src/main/react/build")
-    into("$projectDir/src/main/webapp")
+    tasks.register<Exec>("buildReact") {
+        val _os = org.gradle.internal.os.OperatingSystem.current()
+        val npm = if (_os.isWindows) {
+            "C:\\Program Files\\nodejs\\npm.cmd"
+        } else {
+            ""
+        }
+        workingDir = File("$projectDir/src/main/js")
+        println("$workingDir")
+        println(workingDir.exists())
+        commandLine(npm, "run", "build", "--scripts-prepend-node-path=auto")
+    }
+
+    tasks.register<Copy>("copyReact") {
+        doFirst {
+            println("copyReact")
+        }
+        this.dependsOn(tasks.get("buildReact"))
+        from("$projectDir/src/main/react/build")
+        into("$projectDir/src/main/webapp")
+    }
 }

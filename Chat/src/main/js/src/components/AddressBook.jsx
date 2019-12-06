@@ -56,11 +56,7 @@ class AddressBook extends React.Component {
                                         <div style={{width: 60}}>
                                             <CustomAvatar type="user-avatar" avatar={item.avatar}/>
                                         </div>
-                                        {
-                                            item.isOnline
-                                                ? <div className="status-point online"/>
-                                                : <div className="status-point offline"/>
-                                        }
+                                        <div className={`status-point ${item.isOnline ? "online" : "offline"}`}/>
                                         <div style={{overflow: "hidden", paddingTop: 5}}>
                                             <div className="user-name">{item.name}</div>
                                             <div className="history-message">{item.status}</div>
@@ -79,11 +75,9 @@ class AddressBook extends React.Component {
                                 <div style={{width: 60}}>
                                     <CustomAvatar type="user-avatar" avatar={item.avatar}/>
                                 </div>
-                                {
-                                    item.isOnline
-                                        ? <div className="status-point online"/>
-                                        : <div className="status-point offline"/>
-                                }
+
+                                <div className={`status-point ${item.isOnline ? "online" : "offline"}`}/>
+
                                 <div style={{overflow: "hidden", paddingTop: 5}}>
                                     <div className="user-name">{item.name}</div>
                                     <div className="history-message">{item.status}</div>

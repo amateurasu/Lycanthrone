@@ -1,10 +1,16 @@
 const Core = () => {
-    const split = (input, i) => (input.search(" ") !== -1
-        ? input.split(" ") : input.match(new RegExp(`.{${i}}`, "g"))) || [input];
+
+    const split = (input, i) => {
+        return (
+                   input.search(" ") !== -1
+                       ? input.split(" ")
+                       : input.match(new RegExp(`.{${i}}`, "g"))
+               ) || [input];
+    };
 
     const maps = [
-        ['kh', 'x'], ['nh', 'n\''], ['c(?!h)', 'k'], ['th', 'w'], ['q', 'k'], ['ngh?', 'q'], ['gh', 'g'],
-        ['ph', 'f'], ['tr', 'c'], ['ch', 'c'], ['d', 'z'], ['gi', 'z'], ['r', 'z'], ['đ', 'd']
+        ["kh", "x"], ["nh", "n'"], ["c(?!h)", "k"], ["th", "w"], ["q", "k"], ["ngh?", "q"], ["gh", "g"],
+        ["ph", "f"], ["tr", "c"], ["ch", "c"], ["d", "z"], ["gi", "z"], ["r", "z"], ["đ", "d"]
     ];
 
     const regex_bin = /(?:[01]{1,8}\s*){4,}/g;
@@ -15,7 +21,7 @@ const Core = () => {
 
     const decodeURI = input => {
         try {
-            return decodeURIComponent(input.replace(/\+/g, " "))
+            return decodeURIComponent(input.replace(/\+/g, " "));
         } catch (e) {
             return null;
         }
@@ -63,7 +69,7 @@ const Core = () => {
                     str += String.fromCharCode(parseInt(s[i], 16));
                 }
                 const s_cape = (window && window.escape) ||
-                    encodeURIComponent;
+                               encodeURIComponent;
                 try {
                     return decodeURIComponent(s_cape(str));
                 } catch (e) {
@@ -75,7 +81,7 @@ const Core = () => {
                 input = uns_cape(encodeURIComponent(input));
                 let result = "";
                 for (let i = 0; i < input.length; i++) {
-                    result += input.charCodeAt(i).toString(16)
+                    result += input.charCodeAt(i).toString(16);
                 }
                 return result.toUpperCase();
             }
@@ -89,7 +95,7 @@ const Core = () => {
             de: input => {
                 let d = atob(input);
                 try {
-                    return decodeURIComponent(d.split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                    return decodeURIComponent(d.split("").map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
                 } catch (e) {
                     return null;
                 }
@@ -114,8 +120,8 @@ const Core = () => {
             valid: () => true,
             // "Bạn đùa à? Cái thứ này thì dịch thế đ** nào được!"
             de: () => null,
-            en: input => maps.reduce((result, map) => input.replace(new RegExp(map[0], 'g'), map[1])
-                .replace(new RegExp(map[0].toUpperCase(), 'g'), map[1].toUpperCase()), input)
+            en: input => maps.reduce((result, map) => input.replace(new RegExp(map[0], "g"), map[1])
+                .replace(new RegExp(map[0].toUpperCase(), "g"), map[1].toUpperCase()), input)
         },
 
         uni: {
@@ -129,43 +135,43 @@ const Core = () => {
 
                 while (off < len) {
                     let c = input.charAt(off++);
-                    if (c !== '\\') {
+                    if (c !== "\\") {
                         out += c;
                         continue;
                     }
                     c = input.charAt(off++);
-                    if (c === 'u') {
+                    if (c === "u") {
                         let value = 0;
                         for (let i = 0; i < 4; i++) {
                             c = input.charAt(off++);
                             let code = c.charCodeAt(0);
                             switch (c) {
-                                case '0':
-                                case '1':
-                                case '2':
-                                case '3':
-                                case '4':
-                                case '5':
-                                case '6':
-                                case '7':
-                                case '8':
-                                case '9':
+                                case "0":
+                                case "1":
+                                case "2":
+                                case "3":
+                                case "4":
+                                case "5":
+                                case "6":
+                                case "7":
+                                case "8":
+                                case "9":
                                     value = (value << 4) + code - 48;
                                     break;
-                                case 'a':
-                                case 'b':
-                                case 'c':
-                                case 'd':
-                                case 'e':
-                                case 'f':
+                                case "a":
+                                case "b":
+                                case "c":
+                                case "d":
+                                case "e":
+                                case "f":
                                     value = (value << 4) + 10 + code - 97;
                                     break;
-                                case 'A':
-                                case 'B':
-                                case 'C':
-                                case 'D':
-                                case 'E':
-                                case 'F':
+                                case "A":
+                                case "B":
+                                case "C":
+                                case "D":
+                                case "E":
+                                case "F":
                                     value = (value << 4) + 10 + code - 65;
                                     break;
                                 default:
@@ -175,17 +181,17 @@ const Core = () => {
                         out += String.fromCharCode(value);
                     } else {
                         switch (c) {
-                            case 't':
-                                out += '\t';
+                            case "t":
+                                out += "\t";
                                 break;
-                            case 'r':
-                                out += '\r';
+                            case "r":
+                                out += "\r";
                                 break;
-                            case 'n':
-                                out += '\n';
+                            case "n":
+                                out += "\n";
                                 break;
-                            case 'f':
-                                out += '\f';
+                            case "f":
+                                out += "\f";
                                 break;
                         }
                     }
@@ -201,33 +207,33 @@ const Core = () => {
                         const code = input.charCodeAt(i);
                         const char = input.charAt(i);
                         if (code > 61 && code < 127) {
-                            if (code === '\\') {
-                                sb += '\\\\';
+                            if (code === "\\") {
+                                sb += "\\\\";
                                 continue;
                             }
                             sb += char;
                             continue;
                         }
                         switch (code) {
-                            case ' ':
+                            case " ":
                                 sb += " ";
                                 break;
-                            case '\t':
+                            case "\t":
                                 sb += "\\t";
                                 break;
-                            case '\n':
+                            case "\n":
                                 sb += "\\n";
                                 break;
-                            case '\r':
+                            case "\r":
                                 sb += "\\r";
                                 break;
-                            case '\f':
+                            case "\f":
                                 sb += "\\f";
                                 break;
-                            case '=':
-                            case ':':
-                            case '#':
-                            case '!':
+                            case "=":
+                            case ":":
+                            case "#":
+                            case "!":
                                 sb += "\\" + char;
                                 break;
                             default:
@@ -260,13 +266,13 @@ const Core = () => {
                 if (checkURI(result)) {
                     const link = decodeURI(result);
                     const url = new URL(link);
-                    return `<a href="${link}" target="_blank">${url.hostname}</a>`
-                } else {return result}
+                    return `<a href="${link}" target="_blank">${url.hostname}</a>`;
+                } else {return result;}
             });
 
         },
 
         encode: (core, input) => core.en(input.trim())
-    }
+    };
 };
 

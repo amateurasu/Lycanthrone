@@ -8,8 +8,6 @@
 //    commandLine("$projectDir/node_modules/.bin/webpack.ps1", "app/index.jsx", "$buildDir/js/bundle.js")
 //}
 
-apply plugin: 'base'
-
 task start(type: Exec) {
     inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.file("webpack.config.js").withPathSensitivity(PathSensitivity.RELATIVE)
@@ -17,7 +15,7 @@ task start(type: Exec) {
 }
 
 task npm_install(type: Exec) {
-    commandLine "npm", 'install'
+    commandLine "C:/Program Files/nodejs/npm.cmd", /*"C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",*/ "install", "--scripts-prepend-node-path=auto"
     standardOutput = new FileOutputStream("./install.txt")
 }
 

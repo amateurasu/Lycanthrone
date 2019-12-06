@@ -5,6 +5,8 @@
 let util = require("util");
 let P = require("../parsimmon");
 
+///////////////////////////////////////////////////////////////////////
+
 // -*- Parser -*-
 
 let Lang = P.createLanguage({
@@ -147,7 +149,4 @@ function prettyPrint(x) {
 let ast = Lang.Program.tryParse(text);
 let linterMessages = lint(ast);
 prettyPrint(linterMessages);
-console.log();
 prettyPrint(ast);
-console.log("------------------------------------");
-console.log(ast);

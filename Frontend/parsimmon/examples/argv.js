@@ -9,23 +9,40 @@ let util = require("util");
 let P = require("../parsimmon");
 
 let CLI = P.createLanguage({
-    // whitespace-separated words, strings and options
-    expression: r => P.alt(r.word, r.string, r.option).sepBy(P.whitespace).trim(P.optWhitespace),
+    expression: function (r) {
+        // whitespace-separated words, strings and options
+        return P.alt(r.word, r.string, r.option)
+            .sepBy(P.whitespace)
+            .trim(P.optWhitespace);
+    },
 
-    // one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote
-    option: r => P.seq(
-        P.alt(P.string("-").then(P.regex(/[a-z]/)), P.string("--").then(r.word)),
-        P.alt(P.string("=").then(r.word), P.of(true))
-    ),
+    option: function (r) {
+        // one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote
+        return P.seq(
+            P.alt(P.string("-").then(P.regex(/[a-z]/)), P.string("--").then(r.word)),
+            P.alt(P.string("=").then(r.word), P.of(true))
+        );
+    },
 
-    // 1 char of anything except forbidden symbols and dash, then 0+ chars of anything except forbidden symbols
-    word: () => P.regex(/[^-=\s"'][^=\s"']*/),
+    word: function () {
+        // 1 char of anything except forbidden symbols and dash, then 0+ chars of anything except forbidden symbols
+        return P.regex(/[^-=\s"'][^=\s"']*/);
+    },
 
-    /** one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote */
-    string: () => P.oneOf(`"'`).chain(q => P.alt(
-        P.noneOf(`\\${q}`).atLeast(1).tie(), // everything but quote and escape sign
-        P.string(`\\`).then(P.any) // escape sequence like \"
-    ).many().tie().skip(P.string(q)))
+    string: function () {
+        // one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote
+        return P.oneOf(`"'`).chain(function (q) {
+            return P.alt(
+                P.noneOf(`\\${q}`)
+                    .atLeast(1)
+                    .tie(), // everything but quote and escape sign
+                P.string(`\\`).then(P.any) // escape sequence like \"
+            )
+                .many()
+                .tie()
+                .skip(P.string(q));
+        });
+    }
 });
 
 let expression = process.argv[2] || "";

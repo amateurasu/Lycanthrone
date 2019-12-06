@@ -24,13 +24,15 @@ instance.interceptors.response.use(response => response, error => {
 
 export const API = {
     get: url => {
-        let jwt = !isEmptyString(getJWT()) ? `${auth_type} ${jwt}` : "";
-        return instance.get(`${url}`, {headers: {"Authorization": jwt}});
+        const jwt = getJWT();
+        const auth = !isEmptyString(jwt) ? `${auth_type} ${jwt}` : "";
+        return instance.get(`${url}`, {headers: {"Authorization": auth}});
     },
 
     post: (url, req) => {
-        let jwt = !isEmptyString(getJWT()) ? `${auth_type} ${jwt}` : "";
-        return instance.post(`${url}`, req, {headers: {"Authorization": jwt}});
+        const jwt = getJWT();
+        const auth = !isEmptyString(jwt) ? `${auth_type} ${jwt}` : "";
+        return instance.post(`${url}`, req, {headers: {"Authorization": auth}});
     },
 
     put: (url, req) => instance.put(`${url}`, req),
