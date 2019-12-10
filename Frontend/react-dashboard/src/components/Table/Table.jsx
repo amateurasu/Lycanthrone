@@ -2,13 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 
-import styles from "../../assets/js/material-dashboard-react/components/tableStyle.jsx";
+import styles from "./TableStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -32,9 +28,9 @@ export default function CustomTable(props) {
                 <TableBody>
                     {tableData.map((prop, key) => (
                         <TableRow key={key} className={classes.tableBodyRow}>
-                            {prop.map((prop, key) => (
+                            {prop.map((prop, key) =>
                                 <TableCell className={classes.tableCell} key={key}>{prop}</TableCell>
-                            ))}
+                            )}
                         </TableRow>
                     ))}
                 </TableBody>
@@ -46,15 +42,7 @@ export default function CustomTable(props) {
 CustomTable.defaultProps = {tableHeaderColor: "gray"};
 
 CustomTable.propTypes = {
-    tableHeaderColor: PropTypes.oneOf([
-        "warning",
-        "primary",
-        "danger",
-        "success",
-        "info",
-        "rose",
-        "gray"
-    ]),
+    tableHeaderColor: PropTypes.oneOf(["warning", "primary", "danger", "success", "info", "rose", "gray"]),
     tableHead: PropTypes.arrayOf(PropTypes.string),
     tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 };

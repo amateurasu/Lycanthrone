@@ -47,11 +47,11 @@ class Success extends Result {
 }
 
 class Failure extends Result {
-    map = fn => this;
+    map = () => this;
 
     bimap = (s, f) => new Failure(f(this.value), this.rest);
 
-    chain = fn => this;
+    chain = () => this;
 
     fold = (s, f) => f(this.value, this.rest);
 }
@@ -76,6 +76,10 @@ class Parser {
 
 //endregion CLASSES
 
+const always = value => new Parser(stream => new Success(value, stream));
+
+const never = value => new Parser(stream => new Failure(value, stream));
+
 const char = c => where(x => x === c);
 
 const sequence = list => list.reduce((acc, parser) => append(acc, parser), always([]));
@@ -93,17 +97,14 @@ const where = predicate => new Parser(stream => {
     return new Failure("predicate did not match", stream);
 });
 
-const always = value => new Parser(stream => new Success(value, stream));
-
-const never = value => new Parser(stream => new Failure(value, stream));
-
 const append = (p1, p2) => p1.chain(vs => p2.map(v => vs.concat([v])));
 
 const concat = (p1, p2) => p1.chain(xs => p2.map(ys => xs.concat(ys)));
 
-const maybe = parser => new Parser(stream => {
-    return parser.run(stream).fold((v, s) => new Success(v, s), (v, s) => new Success(null, stream));
-});
+const maybe = parser => new Parser(stream => parser.run(stream).fold(
+    (v, s) => new Success(v, s),
+    (v, s) => new Success(null, stream)
+));
 
 const lookahead = parser => new Parser(stream => {
     return parser.run(stream).fold(v => new Success(v, stream), v => new Failure(v, stream));
@@ -111,8 +112,8 @@ const lookahead = parser => new Parser(stream => {
 
 const zeroOrMore = parser => new Parser(stream => parser.run(stream).fold(
     (value, s) => zeroOrMore(parser).map(rest => [value].concat(rest)).run(s),
-    (value, s) => new Success([], stream))
-);
+    (value, s) => new Success([], stream)
+));
 
 const not = parser => new Parser(stream => parser.run(stream).fold(
     (value, s) => new Failure("NOT failed", stream),
@@ -139,10 +140,17 @@ parser.run(s).fold(
     e => console.log("error:", e)
 );
 
+// const digit =
 const s2 = "68747470733A2F2F7777772E796F75747562652E636F6D";
 console.log(Buffer.from(s2, "hex").toString("utf-8"));
 const s3 = "aHR0cHM6Ly93d3cueW91dHViZS5jb20=";
 console.log(Buffer.from(s3, "base64").toString("utf-8"));
+
+const regex_bin = /(?:[01]{1,8}\s*){4,}/g;
+const regex_b64 = /(?:[\w+\/]{4})*(?:[\w+\/]{4}|[\w+\/]{3}=|[\w\/]{2}==)/g;
+const regex_uni = /(?:(?:\\u[0-9a-fA-F]{4}|\w)?[ !'#$%&"()*+-.,\/\\:;<=>?@[\]^_`{|}~]?)*/g;
+const regex_hex = /(?:[0-9A-Fa-f]{2}\s*?)+/g;
+const regex_url = /((https?|ftp):\/\/)?\w+([\-.]\w+)*\.[a-z0-9]{2,5}(:[0-9]{1,5})?(\/.*)?/ig;
 
 const s4 = "Tôi có link này 68747470733A2F2F7777772E796F75747562652E636F6D và aHR0cHM6Ly93d3cueW91dHViZS5jb20=";
 // const parser2 = zeroOrMore();

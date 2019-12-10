@@ -2,24 +2,14 @@ import React from "react";
 import classNames from "classnames";
 
 import {makeStyles} from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Hidden from "@material-ui/core/Hidden";
-import Poppers from "@material-ui/core/Popper";
-import Divider from "@material-ui/core/Divider";
-// @material-ui/icons
-import Person from "@material-ui/icons/Person";
-import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
-import Search from "@material-ui/icons/Search";
+import {ClickAwayListener, Divider, Grow, Hidden, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
 
-import CustomInput from "../../components/CustomInput/CustomInput.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
+import {Dashboard, Notifications, Person, Search} from "@material-ui/icons";
 
-import styles from "../../assets/js/material-dashboard-react/components/headerLinksStyle.jsx";
+import CustomInput from "../CustomInput/CustomInput";
+import Button from "../CustomButtons/Button";
+
+import styles from "./HeaderLinksStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -91,55 +81,37 @@ export default function AdminNavbarLinks() {
                         </p>
                     </Hidden>
                 </Button>
-                <Poppers
+                <Popper
                     open={Boolean(openNotification)}
                     anchorEl={openNotification}
                     transition
                     disablePortal
-                    className={
-                        `${classNames({[classes.popperClose]: !openNotification})} ${classes.popperNav}`
-                    }
+                    className={`${classNames({[classes.popperClose]: !openNotification})} ${classes.popperNav}`}
                 >
                     {({TransitionProps, placement}) => (
-                        <Grow
-                            {...TransitionProps}
-                            id="notification-menu-list-grow"
-                            style={{
-                                transformOrigin:
-                                    placement === "bottom" ? "center top" : "center bottom"
-                            }}
-                        >
+                        <Grow id="notification-menu-list-grow"
+                            style={{transformOrigin: placement === "bottom" ? "center top" : "center bottom"}}
+                            {...TransitionProps}>
                             <Paper>
                                 <ClickAwayListener onClickAway={handleCloseNotification}>
                                     <MenuList role="menu">
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
+                                        <MenuItem onClick={handleCloseNotification} className={classes.dropdownItem}>
                                             Mike John responded to your email
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
+
+                                        <MenuItem onClick={handleCloseNotification} className={classes.dropdownItem}>
                                             You have 5 new tasks
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
+
+                                        <MenuItem onClick={handleCloseNotification} className={classes.dropdownItem}>
                                             You{"'"}re now friend with Andrew
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
+
+                                        <MenuItem onClick={handleCloseNotification} className={classes.dropdownItem}>
                                             Another Notification
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseNotification}
-                                            className={classes.dropdownItem}
-                                        >
+
+                                        <MenuItem onClick={handleCloseNotification} className={classes.dropdownItem}>
                                             Another One
                                         </MenuItem>
                                     </MenuList>
@@ -147,7 +119,7 @@ export default function AdminNavbarLinks() {
                             </Paper>
                         </Grow>
                     )}
-                </Poppers>
+                </Popper>
             </div>
             <div className={classes.manager}>
                 <Button
@@ -157,14 +129,14 @@ export default function AdminNavbarLinks() {
                     aria-owns={openProfile ? "profile-menu-list-grow" : null}
                     aria-haspopup="true"
                     onClick={handleClickProfile}
-                    className={classes.buttonLink}
-                >
+                    className={classes.buttonLink}>
+
                     <Person className={classes.icons}/>
                     <Hidden mdUp implementation="css">
                         <p className={classes.linkText}>Profile</p>
                     </Hidden>
                 </Button>
-                <Poppers
+                <Popper
                     open={Boolean(openProfile)}
                     anchorEl={openProfile}
                     transition
@@ -209,7 +181,7 @@ export default function AdminNavbarLinks() {
                             </Paper>
                         </Grow>
                     )}
-                </Poppers>
+                </Popper>
             </div>
         </div>
     );

@@ -1,31 +1,24 @@
 "use strict";
 
+function Parsimmon(action) {
+    if (!(this instanceof Parsimmon)) {
+        return new Parsimmon(action);
+    }
+    this._ = action;
+}
+
 const index = Parsimmon((input, i) => makeSuccess(i, makeLineColumnIndex(input, i)));
 
 let times = (n, f) => {
     for (let i = 0; i < n; i++) f(i);
 };
 
-const forEach = (arr, f) => times(arr.length, i => f(arr[i], i, arr));
-
-const reduce = (arr, seed, f) => {
-    forEach(arr, (elem, i, arr) => seed = f(seed, elem, i, arr));
-    return seed;
-};
-
-let map = (f, arr) => reduce(
-    arr, [], (acc, elem, i, a) => acc.concat([f(elem, i, a)])
-);
-
 const lshiftBuffer = input => {
-    const asTwoBytes = reduce(
-        input, [], (a, v, i, b) => a.concat(
-            i === b.length - 1
-                ? Buffer.from([v, 0]).readUInt16BE(0)
-                : b.readUInt16BE(i)
-        )
-    );
-    return Buffer.from(map(x => ((x << 1) & 0xffff) >> 8, asTwoBytes));
+    const asTwoBytes = input.reduce((a, v, i, b) => a.concat(i === b.length - 1
+        ? Buffer.from([v, 0]).readUInt16BE(0)
+        : b.readUInt16BE(i)
+    ), []);
+    return Buffer.from(asTwoBytes.map(x => ((x << 1) & 0xffff) >> 8));
 };
 
 const bitPeekBuffer = input => input[0] >> 7;
@@ -41,11 +34,7 @@ const consumeBitsFromBuffer = (n, input) => {
     return state;
 };
 
-const sum = arr => reduce(arr, 0, (x, y) => x + y);
-
-const find = (pred, arr) => reduce(
-    arr, null, (found, elem) => found || (pred(elem) ? elem : found)
-);
+const sum = arr => arr.reduce((x, y) => x + y, 0);
 
 const bufferExists = () => typeof Buffer !== "undefined";
 
@@ -59,35 +48,27 @@ const bitSeq = alignments => {
     ensureBuffer();
     const totalBits = sum(alignments);
     if (totalBits % 8 !== 0) {
-        throw new Error(`The bits [${alignments.join(", ")}] add up to ${totalBits} which is not an even number of bytes;
+        throw new Error(`The bits [${alignments.join(", ")}] add up to ${totalBits} which is not an even number of bytes;\
              the total should be divisible by 8`);
     }
     const bytes = totalBits / 8;
 
-    const tooBigRange = find(x => x > 48, alignments);
+    const tooBigRange = alignments.find(x => x > 48);
     if (tooBigRange) {
         throw new Error(`${tooBigRange} bit range requested exceeds 48 bit (6 byte) Number max.`);
     }
 
     return new Parsimmon((input, i) => {
         const newPos = bytes + i;
-        if (newPos > input.length) {
-            return makeFailure(i, `${bytes.toString()} bytes`);
-        }
-        return makeSuccess(
-            newPos,
-            reduce(
-                (acc, bits) => {
-                    const state = consumeBitsFromBuffer(bits, acc.buf);
-                    return {
-                        coll: acc.coll.concat(state.v),
-                        buf: state.buf
-                    };
-                },
-                {coll: [], buf: input.slice(i, newPos)},
-                alignments
-            ).coll
-        );
+        return newPos > input.length
+            ? makeFailure(i, `${bytes.toString()} bytes`)
+            : makeSuccess(
+                newPos,
+                alignments.reduce((acc, bits) => {
+                    const {v, buf} = consumeBitsFromBuffer(bits, acc.buf);
+                    return {coll: acc.coll.concat(v), buf};
+                }, {coll: [], buf: input.slice(i, newPos)}).coll
+            );
     });
 };
 
@@ -95,7 +76,7 @@ function bitSeqObj(namedAlignments) {
     ensureBuffer();
     const seenKeys = {};
     let totalKeys = 0;
-    const fullAlignments = map(item => {
+    const fullAlignments = namedAlignments.map(item => {
         if (isArray(item)) {
             const pair = item;
             if (pair.length !== 2) {
@@ -113,33 +94,31 @@ function bitSeqObj(namedAlignments) {
             assertNumber(item);
             return [null, item];
         }
-    }, namedAlignments);
+    });
     if (totalKeys < 1) {
         throw new Error(`bitSeqObj expects at least one named pair, got [${namedAlignments.join(", ")}]`);
     }
-    const namesOnly = map(pair => pair[0], fullAlignments);
-    const alignmentsOnly = map(pair => pair[1], fullAlignments);
+    const namesOnly = fullAlignments.map(pair => pair[0]);
+    const alignmentsOnly = fullAlignments.map(pair => pair[1]);
 
     return bitSeq(alignmentsOnly).map(parsed => {
-        const namedParsed = map((name, i) => [name, parsed[i]], namesOnly);
+        const namedParsed = namesOnly.map((name, i) => [name, parsed[i]]);
 
-        return reduce(namedParsed, {}, (obj, kv) => {
+        return namedParsed.reduce((obj, kv) => {
             if (kv[0] !== null) {
                 obj[kv[0]] = kv[1];
             }
             return obj;
-        });
+        }, {});
     });
 }
 
-function parseBufferFor(other, length) {
-    return new Parsimmon((input, i) => {
-        ensureBuffer();
-        return i + length > input.length
-            ? makeFailure(i, `${length} bytes for ${other}`)
-            : makeSuccess(i + length, input.slice(i, i + length));
-    });
-}
+const parseBufferFor = (other, length) => new Parsimmon((input, i) => {
+    ensureBuffer();
+    return i + length > input.length
+        ? makeFailure(i, `${length} bytes for ${other}`)
+        : makeSuccess(i + length, input.slice(i, i + length));
+});
 
 const parseBuffer = length => parseBufferFor("buffer", length).map(unsafe => Buffer.from(unsafe));
 
@@ -337,26 +316,20 @@ const bytesBefore = bytesPerLine * 5;
 const bytesAfter = bytesPerLine * 4;
 const defaultLinePrefix = "  ";
 
-function repeat(string, amount) {
-    return new Array(amount + 1).join(string);
-}
+const repeat = (string, amount) => new Array(amount + 1).join(string);
 
-function formatExpected(expected) {
-    if (expected.length === 1) {
-        return `Expected: ${expected[0]}`;
-    }
-    return `Expected one of the following: ${expected.join(", ")}`;
-}
+const formatExpected = expected => {
+    return expected.length === 1
+        ? `Expected: ${expected[0]}`
+        : `Expected one of the following: ${expected.join(", ")}`;
+};
 
-function leftPad(str, pad, char) {
+const leftPad = (str, pad, char) => {
     const add = pad - str.length;
-    if (add <= 0) {
-        return str;
-    }
-    return repeat(char, add) + str;
-}
+    return add <= 0 ? str : repeat(char, add) + str;
+};
 
-function toChunks(arr, chunkSize) {
+const toChunks = (arr, chunkSize) => {
     const length = arr.length;
     const chunks = [];
     let chunkIndex = 0;
@@ -378,7 +351,7 @@ function toChunks(arr, chunkSize) {
     }
 
     return chunks;
-}
+};
 
 // Get a range of indexes including `i`-th element and `before` and `after` amount of elements from `arr`.
 function rangeFromIndexAndOffsets(i, before, after, length) {
@@ -432,10 +405,10 @@ function formatGot(input, error) {
         const bytes = input.slice(byteRange.from, byteRange.to);
         const bytesInChunks = toChunks(bytes.toJSON().data, bytesPerLine);
 
-        const byteLines = map(byteRow => map(byteValue => {
+        const byteLines = bytesInChunks.map(byteRow => byteRow.map(byteValue => {
             // Prefix byte values with a `0` if they are shorter than 2 characters.
-            return leftPad(byteValue.toString(16), 2, "0");
-        }, byteRow), bytesInChunks);
+            return byteValue.toString(16).padStart(2, "0");
+        }));
 
         lineRange = byteRangeToRange(byteRange);
         lineWithErrorIndex = byteLineWithErrorIndex / bytesPerLine;
@@ -447,9 +420,9 @@ function formatGot(input, error) {
         }
 
         verticalMarkerLength = 2;
-        lines = map(byteLine => byteLine.length <= 4
+        lines = byteLines.map(byteLine => byteLine.length <= 4
             ? byteLine.join(" ")
-            : `${byteLine.slice(0, 4).join(" ")}  ${byteLine.slice(4).join(" ")}`, byteLines);
+            : `${byteLine.slice(0, 4).join(" ")}  ${byteLine.slice(4).join(" ")}`);
         lastLineNumberLabelLength = (
             (lineRange.to > 0 ? lineRange.to - 1 : lineRange.to) * 8
         ).toString(16).length;
@@ -484,51 +457,46 @@ function formatGot(input, error) {
         }
     }
 
-    const linesWithLineNumbers = reduce(lines, [], (acc, lineSource, index) => {
-            const isLineWithError = index === lineWithErrorCurrentIndex;
-            const prefix = isLineWithError ? "> " : defaultLinePrefix;
-            let lineNumberLabel;
+    const linesWithLineNumbers = lines.reduce((acc, lineSource, index) => {
+        const isLineWithError = index === lineWithErrorCurrentIndex;
+        const prefix = isLineWithError ? "> " : defaultLinePrefix;
+        let lineNumberLabel;
 
-            if (isBuffer(input)) {
-                lineNumberLabel = leftPad(
-                    ((lineRange.from + index) * 8).toString(16),
-                    lastLineNumberLabelLength,
-                    "0"
-                );
-            } else {
-                lineNumberLabel = leftPad(
-                    (lineRange.from + index + 1).toString(),
-                    lastLineNumberLabelLength,
-                    " "
-                );
-            }
-
-            return [].concat(
-                acc,
-                [`${prefix + lineNumberLabel} | ${lineSource}`],
-                isLineWithError
-                    ? [
-                        `${defaultLinePrefix}${repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
-                    ]
-                    : []
+        if (isBuffer(input)) {
+            lineNumberLabel = leftPad(
+                ((lineRange.from + index) * 8).toString(16),
+                lastLineNumberLabelLength,
+                "0"
+            );
+        } else {
+            lineNumberLabel = leftPad(
+                (lineRange.from + index + 1).toString(),
+                lastLineNumberLabelLength,
+                " "
             );
         }
-    );
+
+        return [].concat(
+            acc,
+            [`${prefix + lineNumberLabel} | ${lineSource}`],
+            isLineWithError
+                ? [
+                    `${defaultLinePrefix}${repeat(" ", lastLineNumberLabelLength)} | ${leftPad("", column, " ")}${repeat("^", verticalMarkerLength)}`
+                ]
+                : []
+        );
+    }, []);
 
     return linesWithLineNumbers.join("\n");
 }
 
-function formatError(input, error) {
-    return [
-        "\n",
-        `-- PARSING FAILED ${repeat("-", 50)}`,
-        "\n\n",
-        formatGot(input, error),
-        "\n\n",
-        formatExpected(error.expected),
-        "\n"
-    ].join("");
-}
+const formatError = (input, error) => {
+    return `-- PARSING FAILED ${repeat("-", 50)}\
+
+            ${formatGot(input, error)}\
+
+            ${formatExpected(error.expected)}`;
+};
 
 function flags(re) {
     const s = `${re}`;
@@ -541,10 +509,10 @@ function anchoredRegexp(re) {
 
 // -*- Combinators -*-
 
-function seq() {
+const seq = function () {
     const parsers = [].slice.call(arguments);
     const numParsers = parsers.length;
-    for (var j = 0; j < numParsers; j += 1) {
+    for (let j = 0; j < numParsers; j += 1) {
         assertParser(parsers[j]);
     }
     return Parsimmon((input, i) => {
@@ -560,21 +528,20 @@ function seq() {
         }
         return mergeReplies(makeSuccess(i, accum), result);
     });
-}
+};
 
-function seqObj() {
+const seqObj = function () {
     const seenKeys = {};
     let totalKeys = 0;
     const parsers = toArray(arguments);
     const numParsers = parsers.length;
-    for (var j = 0; j < numParsers; j += 1) {
+    for (let j = 0; j < numParsers; j += 1) {
         const p = parsers[j];
         if (isParser(p)) {
             continue;
         }
         if (isArray(p)) {
-            const isWellFormed =
-                p.length === 2 && typeof p[0] === "string" && isParser(p[1]);
+            const isWellFormed = p.length === 2 && typeof p[0] === "string" && isParser(p[1]);
             if (isWellFormed) {
                 const key = p[0];
                 if (Object.prototype.hasOwnProperty.call(seenKeys, key)) {
@@ -614,7 +581,7 @@ function seqObj() {
         }
         return mergeReplies(makeSuccess(i, accum), result);
     });
-}
+};
 
 function seqMap() {
     const args = [].slice.call(arguments);
@@ -639,7 +606,7 @@ function createLanguage(parsers) {
     return language;
 }
 
-function alt() {
+const alt = function () {
     const parsers = [].slice.call(arguments);
     const numParsers = parsers.length;
     if (numParsers === 0) {
@@ -658,7 +625,7 @@ function alt() {
         }
         return result;
     });
-}
+};
 
 let sepBy1 = (parser, separator) => {
     assertParser(parser);
@@ -671,6 +638,9 @@ let sepBy1 = (parser, separator) => {
 let sepBy = (parser, separator) => sepBy1(parser, separator).or(succeed([]));
 
 const eof = Parsimmon((input, i) => i < input.length ? makeFailure(i, "EOF") : makeSuccess(i, null));
+
+// -*- Other Methods -*-
+const _ = Parsimmon.prototype;
 
 _.parse = function (input) {
     if (typeof input !== "string" && !isBuffer(input)) {
@@ -686,17 +656,6 @@ _.parse = function (input) {
         expected: result.expected
     };
 };
-
-// -*- Other Methods -*-
-
-function Parsimmon(action) {
-    if (!(this instanceof Parsimmon)) {
-        return new Parsimmon(action);
-    }
-    this._ = action;
-}
-
-const _ = Parsimmon.prototype;
 
 _.tryParse = function (str) {
     const result = this.parse(str);
@@ -933,21 +892,17 @@ _.chain = function (f) {
 
 // -*- Constructors -*-
 
-function string(str) {
+const string = str => {
     assertString(str);
     const expected = `'${str}'`;
     return Parsimmon((input, i) => {
         const j = i + str.length;
         const head = input.slice(i, j);
-        if (head === str) {
-            return makeSuccess(j, head);
-        } else {
-            return makeFailure(i, expected);
-        }
+        return head === str ? makeSuccess(j, head) : makeFailure(i, expected);
     });
-}
+};
 
-function byte(b) {
+const byte = b => {
     ensureBuffer();
     assertNumber(b);
     if (b > 0xff) {
@@ -958,9 +913,9 @@ function byte(b) {
         const head = get(input, i);
         return head === b ? makeSuccess(i + 1, head) : makeFailure(i, expected);
     });
-}
+};
 
-function regexp(re, group) {
+const regexp = function (re, group) {
     assertRegexp(re);
     if (arguments.length >= 2) {
         assertNumber(group);
@@ -971,18 +926,20 @@ function regexp(re, group) {
     const expected = `${re}`;
     return Parsimmon((input, i) => {
         const match = anchored.exec(input.slice(i));
-        if (match) {
-            if (0 <= group && group <= match.length) {
-                const fullMatch = match[0];
-                const groupMatch = match[group];
-                return makeSuccess(i + fullMatch.length, groupMatch);
-            }
+        if (!match) {
+            return makeFailure(i, expected);
+        }
+
+        if (!(0 <= group && group <= match.length)) {
             const message = `valid match group (0 to ${match.length}) in ${expected}`;
             return makeFailure(i, message);
         }
-        return makeFailure(i, expected);
+
+        const fullMatch = match[0];
+        const groupMatch = match[group];
+        return makeSuccess(i + fullMatch.length, groupMatch);
     });
-}
+};
 
 function succeed(value) {
     return Parsimmon((input, i) => makeSuccess(i, value));

@@ -13,7 +13,7 @@ import {
     transition,
     warningColor,
     whiteColor
-} from "../../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const sidebarStyle = theme => ({
     drawerPaper: {

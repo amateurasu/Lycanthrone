@@ -6,14 +6,14 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import {makeStyles} from "@material-ui/core/styles";
 
-import Navbar from "../components/Navbars/Navbar.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "../components/FixedPlugin/FixedPlugin.jsx";
+import Navbar from "../components/Navbars/Navbar";
+import Footer from "../components/Footer/Footer";
+import Sidebar from "../components/Sidebar/Sidebar";
+import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 
-import routes from "../routes.jsx";
+import routes from "../routes";
 
-import styles from "../assets/js/material-dashboard-react/layouts/adminStyle.jsx";
+import styles from "./AdminStyle";
 
 import bgImage from "../assets/img/sidebar-2.jpg";
 import logo from "../assets/img/reactlogo.png";
@@ -45,9 +45,7 @@ export default function Admin({...rest}) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleImageClick = image => setImage(image);
     const handleColorClick = color => setColor(color);
-    const handleFixedClick = () => {
-        setFixedClasses("dropdown" + (fixedClasses === "dropdown" ? " show" : ""));
-    };
+    const handleFixedClick = () => setFixedClasses("dropdown" + (fixedClasses === "dropdown" ? " show" : ""));
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
     const getRoute = () => window.location.pathname !== "/admin/maps";
     const resizeFunction = () => {
@@ -85,13 +83,13 @@ export default function Admin({...rest}) {
             <div className={classes.mainPanel} ref={mainPanel}>
                 <Navbar routes={routes} handleDrawerToggle={handleDrawerToggle} {...rest}/>
                 {/* On the /maps route we want the map to be on full screen - this is not possible if the content and container classes are present because they have some padding which would make the map smaller */}
-                {
-                    getRoute()
-                        ? <div className={classes.content}>
-                            <div className={classes.container}>{switchRoutes}</div>
-                        </div>
-                        : <div className={classes.map}>{switchRoutes}</div>
-                }
+                {getRoute() ? (
+                    <div className={classes.content}>
+                        <div className={classes.container}>{switchRoutes}</div>
+                    </div>
+                ) : (
+                    <div className={classes.map}>{switchRoutes}</div>
+                )}
                 {getRoute() && <Footer/>}
                 <FixedPlugin
                     handleImageClick={handleImageClick}

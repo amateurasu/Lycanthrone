@@ -6,7 +6,7 @@ import {
     primaryColor,
     successColor,
     warningColor
-} from "../../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const typographyStyle = {
     defaultFontStyle: {

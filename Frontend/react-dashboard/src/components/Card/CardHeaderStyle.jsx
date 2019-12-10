@@ -6,7 +6,7 @@ import {
     successCardHeader,
     warningCardHeader,
     whiteColor
-} from "../../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const cardHeaderStyle = {
     cardHeader: {

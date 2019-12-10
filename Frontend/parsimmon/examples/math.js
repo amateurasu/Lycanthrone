@@ -36,7 +36,10 @@ function operators(ops) {
 // parsed, and parses as many occurrences as possible of the prefix operator.
 // Note that the parser is created using `P.lazy` because it's recursive. It's
 // valid for there to be zero occurrences of the prefix operator.
-const PREFIX = (operatorsParser, nextParser) => P.lazy(() => P.seq(operatorsParser, parser).or(nextParser));
+function PREFIX(operatorsParser, nextParser) {
+    let parser = P.lazy(() => P.seq(operatorsParser, parser).or(nextParser));
+    return parser;
+}
 
 // Ideally this function would be just like `PREFIX` but reordered like
 // `P.seq(parser, operatorsParser).or(nextParser)`, but that doesn't work. The
@@ -67,9 +70,12 @@ function POSTFIX(operatorsParser, nextParser) {
 // that parses as many binary operations as possible, associating them to the
 // right. (e.g. 1^2^3 is 1^(2^3) not (1^2)^3)
 function BINARY_RIGHT(operatorsParser, nextParser) {
-    return P.lazy(() => nextParser.chain(next =>
-        P.seq(operatorsParser, P.of(next), parser).or(P.of(next))
-    ));
+    let parser = P.lazy(() =>
+        nextParser.chain(next =>
+            P.seq(operatorsParser, P.of(next), parser).or(P.of(next))
+        )
+    );
+    return parser;
 }
 
 // Takes a parser for all the operators at this precedence level, and a parser
@@ -147,7 +153,7 @@ let MyMath = tableParser.trim(_);
 
 ///////////////////////////////////////////////////////////////////////
 
-let text = `2 + 3 * 4 / 1 - 3 ^ (2!)`;
+let text = `2 + 3 * 4 / (1 - 3) ^ (2!)`;
 
 function prettyPrint(x) {
     let opts = {depth: null, colors: "auto"};
@@ -156,5 +162,6 @@ function prettyPrint(x) {
 }
 
 let ast = MyMath.tryParse(text);
+console.log(ast.evaluate);
 prettyPrint(ast);
 console.log(ast);

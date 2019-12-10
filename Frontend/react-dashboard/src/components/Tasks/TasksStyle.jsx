@@ -1,10 +1,10 @@
-import {dangerColor, defaultFont, grayColor, primaryColor} from "../../material-dashboard-react.jsx";
-import tooltipStyle from "../../material-dashboard-react/tooltipStyle.jsx";
-import checkboxAdnRadioStyle from "../../material-dashboard-react/checkboxAdnRadioStyle.jsx";
+import {dangerColor, defaultFont, grayColor, primaryColor} from "../../DashboardStyle";
+import tooltipStyle from "./TooltipStyle";
+import checkboxAndRadioStyle from "./CheckboxAndRadioStyle";
 
 const tasksStyle = {
     ...tooltipStyle,
-    ...checkboxAdnRadioStyle,
+    ...checkboxAndRadioStyle,
     table: {
         marginBottom: "0",
         overflow: "visible"

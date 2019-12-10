@@ -7,7 +7,7 @@ import {
     roseColor,
     successColor,
     warningColor
-} from "../../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const tableStyle = theme => ({
     warningTableHeader: {

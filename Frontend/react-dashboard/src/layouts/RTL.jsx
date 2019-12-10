@@ -4,14 +4,14 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import {makeStyles} from "@material-ui/core/styles";
 
-import Navbar from "../components/Navbars/Navbar.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "../components/FixedPlugin/FixedPlugin.jsx";
+import Navbar from "../components/Navbars/Navbar";
+import Footer from "../components/Footer/Footer";
+import Sidebar from "../components/Sidebar/Sidebar";
+import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 
-import routes from "../routes.jsx";
+import routes from "../routes";
 
-import styles from "../assets/js/material-dashboard-react/layouts/rtlStyle.jsx";
+import styles from "./RtlStyle";
 
 import bgImage from "../assets/img/sidebar-2.jpg";
 import logo from "../assets/img/reactlogo.png";
@@ -21,16 +21,13 @@ let ps;
 const switchRoutes = (
     <Switch>
         {routes.map((prop, key) => {
-            if (prop.layout === "/rtl") {
-                return (
-                    <Route
-                        path={prop.layout + prop.path}
-                        component={prop.component}
-                        key={key}
-                    />
-                );
-            }
-            return null;
+            return prop.layout === "/rtl" ? (
+                <Route
+                    path={prop.layout + prop.path}
+                    component={prop.component}
+                    key={key}
+                />
+            ) : null;
         })}
         <Redirect from="/rtl" to="/rtl/rtl-page"/>
     </Switch>

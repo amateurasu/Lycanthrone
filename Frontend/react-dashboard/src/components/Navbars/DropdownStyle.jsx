@@ -6,7 +6,7 @@ import {
     primaryBoxShadow,
     primaryColor,
     whiteColor
-} from "../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const dropdownStyle = theme => ({
     buttonLink: {

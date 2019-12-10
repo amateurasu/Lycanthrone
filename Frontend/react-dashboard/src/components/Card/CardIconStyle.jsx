@@ -6,7 +6,7 @@ import {
     roseCardHeader,
     successCardHeader,
     warningCardHeader
-} from "../../material-dashboard-react.jsx";
+} from "../../DashboardStyle";
 
 const cardIconStyle = {
     cardIcon: {

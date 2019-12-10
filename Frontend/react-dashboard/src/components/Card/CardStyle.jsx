@@ -1,4 +1,4 @@
-import {blackColor, hexToRgb, whiteColor} from "../../material-dashboard-react.jsx";
+import {blackColor, hexToRgb, whiteColor} from "../../DashboardStyle";
 
 const cardStyle = {
     card: {

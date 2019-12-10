@@ -1,6 +1,6 @@
-import {blackColor, hexToRgb, primaryColor} from "../material-dashboard-react.jsx";
+import {blackColor, hexToRgb, primaryColor} from "../../DashboardStyle";
 
-const checkboxAdnRadioStyle = {
+const checkboxAndRadioStyle = {
     root: {
         padding: "13px",
         "&:hover": {
@@ -44,4 +44,4 @@ const checkboxAdnRadioStyle = {
     }
 };
 
-export default checkboxAdnRadioStyle;
+export default checkboxAndRadioStyle;

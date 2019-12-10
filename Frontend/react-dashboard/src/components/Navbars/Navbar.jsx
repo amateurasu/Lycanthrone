@@ -3,18 +3,14 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Hidden from "@material-ui/core/Hidden";
-// @material-ui/icons
-import Menu from "@material-ui/icons/Menu";
+import {AppBar, Hidden, IconButton, Toolbar} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
-import AdminNavbarLinks from "./AdminNavbarLinks.jsx";
-import RTLNavbarLinks from "./RTLNavbarLinks.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
+import AdminNavbarLinks from "./AdminNavbarLinks";
+import RTLNavbarLinks from "./RTLNavbarLinks";
+import Button from "../CustomButtons/Button";
 
-import styles from "../../assets/js/material-dashboard-react/components/headerStyle.jsx";
+import styles from "./HeaderStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -22,7 +18,7 @@ export default function Header(props) {
     const classes = useStyles();
 
     function makeBrand() {
-        var name;
+        let name;
         props.routes.map(prop => {
             if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
                 name = props.rtlActive ? prop.rtlName : prop.name;

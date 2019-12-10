@@ -3,17 +3,15 @@ import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
 
-import styles from "../../assets/js/material-dashboard-react/components/typographyStyle.jsx";
+import styles from "./TypographyStyle";
 
 const useStyles = makeStyles(styles);
 
 export default function Warning(props) {
-    const classes = useStyles();
     const {children} = props;
+    const {defaultFontStyle, warningText} = useStyles();
     return (
-        <div className={`${classes.defaultFontStyle} ${classes.warningText}`}>
-            {children}
-        </div>
+        <div className={`${defaultFontStyle} ${warningText}`}>{children}</div>
     );
 }
 

@@ -5,7 +5,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "../../assets/js/material-dashboard-react/components/cardAvatarStyle.jsx";
+import styles from "./CardAvatarStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -19,9 +19,7 @@ export default function CardAvatar(props) {
         [className]: className !== undefined
     });
     return (
-        <div className={cardAvatarClasses} {...rest}>
-            {children}
-        </div>
+        <div className={cardAvatarClasses} {...rest}>{children}</div>
     );
 }
 

@@ -1,26 +1,10 @@
-/*!
-
- =========================================================
- * Material Dashboard React - v1.8.0 based on Material Dashboard - v1.2.0
- =========================================================
-
- * Product Page: http://www.creative-tim.com/product/material-dashboard-react
- * Copyright 2019 Creative Tim (http://www.creative-tim.com)
- * Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
+/*
+ * Function that converts from hex color to rgb color
+ * Example: input = #9c27b0 => output = 156, 39, 176
+ * Example: input = 9c27b0 => output = 156, 39, 176
+ * Example: input = #999 => output = 153, 153, 153
+ * Example: input = 999 => output = 153, 153, 153
  */
-
-// ##############################
-// // // Function that converts from hex color to rgb color
-// // // Example: input = #9c27b0 => output = 156, 39, 176
-// // // Example: input = 9c27b0 => output = 156, 39, 176
-// // // Example: input = #999 => output = 153, 153, 153
-// // // Example: input = 999 => output = 153, 153, 153
-// #############################
 const hexToRgb = input => {
     input = `${input}`;
     input = input.replace("#", "");
@@ -38,15 +22,10 @@ const hexToRgb = input => {
     let first = input[0] + input[1];
     let second = input[2] + input[3];
     let last = input[4] + input[5];
-    return (
-        `${parseInt(first, 16)}, ${parseInt(second, 16)}, ${parseInt(last, 16)}`
-    );
+    return `${parseInt(first, 16)}, ${parseInt(second, 16)}, ${parseInt(last, 16)}`;
 };
 
-// ##############################
-// // // Variables - Styles that are used on more than one component
-// #############################
-
+// Variables - Styles that are used on more than one component
 const drawerWidth = 260;
 
 const transition = {
@@ -61,7 +40,7 @@ const container = {
 };
 
 const defaultFont = {
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
     fontWeight: "300",
     lineHeight: "1.5em"
 };
@@ -81,7 +60,9 @@ const whiteColor = "#FFF";
 
 const boxShadow = {
     boxShadow:
-        `0 10px 30px -12px rgba(${hexToRgb(blackColor)}, 0.42), 0 4px 25px 0px rgba(${hexToRgb(blackColor)}, 0.12), 0 8px 10px -5px rgba(${hexToRgb(blackColor)}, 0.2)`
+        `0 10px 30px -12px rgba(${hexToRgb(blackColor)}, 0.42),
+         0 4px 25px 0px rgba(${hexToRgb(blackColor)}, 0.12), 
+         0 8px 10px -5px rgba(${hexToRgb(blackColor)}, 0.2)`
 };
 
 const primaryBoxShadow = {

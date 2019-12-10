@@ -12,10 +12,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 
-import AdminNavbarLinks from "../../components/Navbars/AdminNavbarLinks.jsx";
-import RTLNavbarLinks from "../../components/Navbars/RTLNavbarLinks.jsx";
+import AdminNavbarLinks from "../Navbars/AdminNavbarLinks";
+import RTLNavbarLinks from "../Navbars/RTLNavbarLinks";
 
-import styles from "../../assets/js/material-dashboard-react/components/sidebarStyle.jsx";
+import styles from "./SidebarStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -23,12 +23,10 @@ export default function Sidebar(props) {
     const classes = useStyles();
 
     // verifies if routeName is the one active (in browser input)
-    function activeRoute(routeName) {
-        return window.location.href.indexOf(routeName) > -1 ? true : false;
-    }
+    const activeRoute = routeName => window.location.href.indexOf(routeName) > -1;
 
     const {color, logo, image, logoText, routes} = props;
-    var links = (
+    const links = (
         <List className={classes.list}>
             {routes.map((prop, key) => {
                 var activePro = " ";
@@ -82,10 +80,9 @@ export default function Sidebar(props) {
             })}
         </List>
     );
-    var brand = (
+    const brand = (
         <div className={classes.logo}>
-            <a
-                href="https://www.creative-tim.com?ref=mdr-sidebar"
+            <a href="#?ref=mdr-sidebar"
                 className={classNames(classes.logoLink, {
                     [classes.logoLinkRTL]: props.rtlActive
                 })}
