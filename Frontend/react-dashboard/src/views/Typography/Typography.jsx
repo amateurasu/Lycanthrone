@@ -16,36 +16,36 @@ import CardBody from "../../components/Card/CardBody";
 const styles = {
     typo: {
         paddingLeft: "25%",
-        marginBottom: "40px",
+        marginBottom: 40,
         position: "relative"
     },
     note: {
         fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-        bottom: "10px",
+        bottom: 10,
         color: "#c0c1c2",
         display: "block",
         fontWeight: "400",
-        fontSize: "13px",
-        lineHeight: "13px",
-        left: "0",
-        marginLeft: "20px",
+        fontSize: 13,
+        lineHeight: 13,
+        left: 0,
+        marginLeft: 20,
         position: "absolute",
-        width: "260px"
+        width: 260
     },
     cardCategoryWhite: {
         color: "rgba(255,255,255,.62)",
-        margin: "0",
-        fontSize: "14px",
-        marginTop: "0",
-        marginBottom: "0"
+        margin: 0,
+        fontSize: 14,
+        marginTop: 0,
+        marginBottom: 0
     },
     cardTitleWhite: {
         color: "#FFFFFF",
-        marginTop: "0px",
+        marginTop: 0,
         minHeight: "auto",
         fontWeight: "300",
         fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-        marginBottom: "3px",
+        marginBottom: 3,
         textDecoration: "none"
     }
 };

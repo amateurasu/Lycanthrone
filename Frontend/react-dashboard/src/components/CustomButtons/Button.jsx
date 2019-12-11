@@ -12,18 +12,7 @@ const useStyles = makeStyles(styles);
 export default function RegularButton(props) {
     const classes = useStyles();
     const {
-        color,
-        round,
-        children,
-        disabled,
-        simple,
-        size,
-        block,
-        link,
-        justIcon,
-        className,
-        muiClasses,
-        ...rest
+        color, round, children, disabled, simple, size, block, link, justIcon, className, muiClasses, ...rest
     } = props;
     const btnClasses = classNames({
         [classes.button]: true,
@@ -43,16 +32,7 @@ export default function RegularButton(props) {
 }
 
 RegularButton.propTypes = {
-    color: PropTypes.oneOf([
-        "primary",
-        "info",
-        "success",
-        "warning",
-        "danger",
-        "rose",
-        "white",
-        "transparent"
-    ]),
+    color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger", "rose", "white", "transparent"]),
     size: PropTypes.oneOf(["sm", "lg"]),
     simple: PropTypes.bool,
     round: PropTypes.bool,
