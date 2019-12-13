@@ -12,19 +12,19 @@ import java.util.Map;
 public class GraphQLDataFetchers {
     //region SAMPLE DATA
     private static List<Map<String, String>> books = Arrays.asList(
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "book-1");
             put("name", "Harry Potter and the Philosopher's Stone");
             put("pageCount", "223");
             put("authorId", "author-1");
         }},
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "book-2");
             put("name", "Moby Dick");
             put("pageCount", "635");
             put("authorId", "author-2");
         }},
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "book-3");
             put("name", "Interview with the vampire");
             put("pageCount", "371");
@@ -33,17 +33,17 @@ public class GraphQLDataFetchers {
     );
 
     private static List<Map<String, String>> authors = Arrays.asList(
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "author-1");
             put("firstName", "Joanne");
             put("lastName", "Rowling");
         }},
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "author-2");
             put("firstName", "Herman");
             put("lastName", "Melville");
         }},
-        new HashMap<>() {{
+        new HashMap<String, String>() {{
             put("id", "author-3");
             put("firstName", "Anne");
             put("lastName", "Rice");

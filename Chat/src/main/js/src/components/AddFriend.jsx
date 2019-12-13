@@ -35,7 +35,7 @@ class AddFriend extends React.Component {
                 </div>
                 <Modal title="Add New Friend" okText="Add" cancelText="Cancel" width="420px"
                     visible={this.props.addFriendPopup} onOk={this.handleOk} onCancel={this.handleCancel}>
-                    {this.props.addFriendError && < Alert message={this.props.addFriendErrorMessage} type="error"/>}
+                    {this.props.addFriendError && <Alert message={this.props.addFriendErrorMessage} type="error"/>}
                     <p className="model-label">Please enter user name:</p>
                     <Input id="add-user-name" className="add-user-name" onPressEnter={this.handleOk}/>
                 </Modal>

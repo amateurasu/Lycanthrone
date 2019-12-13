@@ -18,8 +18,8 @@ dependencies {
     implementation("net.java.dev.jna:jna:5.4.0")
     implementation("net.java.dev.jna:jna-platform:5.4.0")
 
-    val springV = "5.2.0.RELEASE"
-    val springBootV = "2.1.8.RELEASE"
+    val springV = "5.2.2.RELEASE"
+    val springBootV = "2.2.2.RELEASE"
 
     implementation("cglib:cglib-nodep:3.1")
     implementation("commons-io:commons-io:2.4")
@@ -27,14 +27,14 @@ dependencies {
     implementation("commons-codec:commons-codec:1.10")
     implementation("org.codehaus.groovy:groovy-all:2.5.8")
 
+    implementation("org.springframework:spring-core:$springV")
     implementation("org.springframework:spring-beans:$springV")
     implementation("org.springframework:spring-context:$springV")
+    implementation("org.springframework:spring-expression:$springV")
     implementation("org.springframework:spring-context-support:$springV")
     implementation("org.springframework:spring-webmvc:$springV")
     implementation("org.springframework:spring-web:$springV")
     implementation("org.springframework:spring-aop:$springV")
-    implementation("org.springframework:spring-core:$springV")
-    implementation("org.springframework:spring-expression:$springV")
 
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootV")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootV")

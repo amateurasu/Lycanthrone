@@ -2,6 +2,7 @@ import org.gradle.internal.os.OperatingSystem
 
 val _os = OperatingSystem.current()
 println("Building '${rootProject.name}' on ${_os.name} ver ${_os.version}...")
+println(org.gradle.internal.jvm.Jvm.current())
 
 plugins { java }
 

@@ -43,7 +43,9 @@ public class Hey {
     private static void initSystemProperty() {
         Properties p = new Properties();
         try {
-            p.load(Hey.getResourceAsStream(ENV + "." + PROP_FILE_NAME));
+            InputStream resource = Hey.getResourceAsStream(ENV + "." + PROP_FILE_NAME);
+            log.info("{}", resource);
+            p.load(resource);
         } catch (IOException e) {
             log.error("Cannot load System Property", e);
             System.exit(1);

@@ -84,7 +84,7 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
 
     @Override
     protected Boolean doInBackground() throws Exception {
-        System.out.println("Starting...");
+        log.info("Starting...");
         if (!setTarget) {
             throw new IOException("Target folder is not set!");
         }
@@ -94,12 +94,12 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
         }
 
         if (setList) {
-            System.out.println("downloadByList()");
+            log.info("downloadByList()");
             return downloadByList();
         }
 
         if (setRange) {
-            System.out.println("downloadByRange()");
+            log.info("downloadByRange()");
             return downloadByRange();
         }
         return null;
@@ -119,10 +119,10 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
         for (int i = min; i <= max; i++) {
             try {
                 String link = String.format(pattern, i);
-                System.out.println(link);
+                log.info(link);
                 download(link, target);
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                log.info(e.getMessage());
             }
         }
         return true;
@@ -142,7 +142,7 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
         val con = url.openConnection();
         con.setRequestProperty("User-Agent", USER_AGENT);
         int contentLength = con.getContentLength();
-        System.out.printf("File contentLength = %d bytes = %s%n", contentLength, byteCount(contentLength, false));
+        log.info("File contentLength = {} bytes = {}%n", contentLength, byteCount(contentLength, false));
 
         val filename = Paths.get(url.getPath()).getFileName().toString();
         try (
@@ -179,6 +179,6 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
 
         String folder = "E:\\Pictures\\Marta Gromova\\3";
         HttpDownload.getDownloader().setFile("E:\\Pictures\\Marta-Gromova.txt").setTarget(folder).download();
-        System.out.format("Done downloading in %s ms\n", System.currentTimeMillis() - start);
+        log.info("Done downloading in {} ms\n", System.currentTimeMillis() - start);
     }
 }

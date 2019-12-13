@@ -13,7 +13,9 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
@@ -21,14 +23,12 @@ import java.util.Set;
 
 @Data
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ApiServer {
     private HttpServer httpServer;
     private WebHandler webHandler;
     private PublicApiHandler publicApiHandler;
     private ProtectedApiHandler protectedApiHandler;
-
-    private ApiServer() {
-    }
 
     public static ApiServer newInstance() {
         return new ApiServer();
@@ -49,7 +49,7 @@ public final class ApiServer {
 
         router.route().handler(BodyHandler.create());
 
-        Set<String> allowedHeaders = new HashSet<>() {{
+        Set<String> allowedHeaders = new HashSet<String>() {{
             add("x-requested-with");
             add("Access-Control-Allow-Origin");
             add("origin");
@@ -58,7 +58,7 @@ public final class ApiServer {
             add("Authorization");
         }};
 
-        Set<HttpMethod> allowedMethods = new HashSet<>() {{
+        Set<HttpMethod> allowedMethods = new HashSet<HttpMethod>() {{
             add(HttpMethod.GET);
             add(HttpMethod.POST);
             add(HttpMethod.OPTIONS);
@@ -78,9 +78,9 @@ public final class ApiServer {
 
         router.post("/signin").handler(webHandler::signIn);
         router.post("/signout").handler(webHandler::signOut);
-        router.post("/API/public/*").handler(publicApiHandler::handle);
+        router.post("/api/public/*").handler(publicApiHandler::handle);
 
-        router.route("/API/protected/*").handler(protectedApiHandler::handle);
+        router.route("/api/protected/*").handler(protectedApiHandler::handle);
 
         Promise<Void> promise = Promise.promise();
         httpServer = vertx

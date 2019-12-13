@@ -1,5 +1,9 @@
 plugins { war }
 
+//apply {
+//    from("$rootDir/gradle/config.gradle.kts")
+//}
+
 dependencies {
     val vertxV = "3.8.1"
     implementation("io.vertx:vertx-web:$vertxV")
@@ -36,23 +40,14 @@ dependencies {
 buildscript {
 
     tasks.register<Exec>("buildReact") {
-        val _os = org.gradle.internal.os.OperatingSystem.current()
-        val npm = if (_os.isWindows) {
-            "C:\\Program Files\\nodejs\\npm.cmd"
-        } else {
-            ""
-        }
         workingDir = File("$projectDir/src/main/js")
         println("$workingDir")
         println(workingDir.exists())
-        commandLine(npm, "run", "build", "--scripts-prepend-node-path=auto")
+        commandLine(extra["npm"] ?: "", "run", "build", "--scripts-prepend-node-path=auto")
     }
 
     tasks.register<Copy>("copyReact") {
-        doFirst {
-            println("copyReact")
-        }
-        this.dependsOn(tasks.get("buildReact"))
+        this.dependsOn(tasks["buildReact"])
         from("$projectDir/src/main/react/build")
         into("$projectDir/src/main/webapp")
     }

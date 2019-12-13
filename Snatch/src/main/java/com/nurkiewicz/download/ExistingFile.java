@@ -1,8 +1,7 @@
 package com.nurkiewicz.download;
 
 import com.google.common.util.concurrent.RateLimiter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
@@ -21,9 +20,8 @@ import java.util.function.Function;
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.springframework.http.HttpStatus.*;
 
+@Slf4j
 public class ExistingFile {
-
-    private static final Logger log = LoggerFactory.getLogger(ExistingFile.class);
 
     private final HttpMethod method;
     private final FilePointer filePointer;
@@ -45,7 +43,8 @@ public class ExistingFile {
 
     private ResponseEntity<Resource> serveWithCaching(
         Optional<String> requestEtagOpt, Optional<Date> ifModifiedSinceOpt,
-        Function<FilePointer, ResponseEntity<Resource>> notCachedResponse) {
+        Function<FilePointer, ResponseEntity<Resource>> notCachedResponse
+    ) {
         if (cached(requestEtagOpt, ifModifiedSinceOpt))
             return notModified(filePointer);
         return notCachedResponse.apply(filePointer);
@@ -81,10 +80,7 @@ public class ExistingFile {
     }
 
     private InputStreamResource resourceToReturn(FilePointer filePointer) {
-        if (method == HttpMethod.GET)
-            return buildResource(filePointer);
-        else
-            return null;
+        return method == HttpMethod.GET ? buildResource(filePointer) : null;
     }
 
     private InputStreamResource buildResource(FilePointer filePointer) {
