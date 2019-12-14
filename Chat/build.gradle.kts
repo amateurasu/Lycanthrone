@@ -1,8 +1,8 @@
 plugins { war }
 
-//apply {
-//    from("$rootDir/gradle/config.gradle.kts")
-//}
+apply {
+    from("$rootDir/gradle/config.gradle.kts")
+}
 
 dependencies {
     val vertxV = "3.8.1"
@@ -23,7 +23,6 @@ dependencies {
     implementation("org.elasticsearch.client:transport:7.5.0")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.12.1")
 
-    testImplementation("io.vertx:vertx-core:$vertxV")
     testImplementation("io.vertx:vertx-unit:$vertxV")
     testImplementation("io.vertx:vertx-web-client:$vertxV")
 
@@ -41,9 +40,8 @@ buildscript {
 
     tasks.register<Exec>("buildReact") {
         workingDir = File("$projectDir/src/main/js")
-        println("$workingDir")
-        println(workingDir.exists())
-        commandLine(extra["npm"] ?: "", "run", "build", "--scripts-prepend-node-path=auto")
+
+        commandLine(project.extra["npm"], "run", "build", "--scripts-prepend-node-path=auto")
     }
 
     tasks.register<Copy>("copyReact") {

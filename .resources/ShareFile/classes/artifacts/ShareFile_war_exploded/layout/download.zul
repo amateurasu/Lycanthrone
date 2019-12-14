@@ -1,0 +1,130 @@
+<div
+	viewModel="@id('downloadVM') @init('viettel.com.sf.viewmodel.DownloadVM')"
+	apply="org.zkoss.bind.BindComposer">
+	<groupbox title="Search box" open="true"
+		style="padding-left:15px;padding-right:10px; font-size:15px;">
+		<grid sclass="gridSearch" style="border: none;">
+			<columns>
+				<column />
+				<column if="${sessionScope.login.role eq 'ADM'}" />
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<vlayout>
+						<label>File name:</label>
+						<textbox id="fileTextbox"
+							style="font-size: 16px" placeholder="Enter file name" onOK="@command('clickSearchButton')"
+							width="100%" value="@bind(downloadVM.fileTextbox) " />
+					</vlayout>
+
+					<vlayout if="${sessionScope.login.role eq 'ADM'}">
+						<label>Uploaded by:</label>
+						<textbox id="userTextbox" width="100%" onOK="@command('clickSearchButton')"
+							style="font-size: 16px" placeholder="Enter username"
+							value="@bind(downloadVM.userTextbox)" />
+					</vlayout>
+					<vlayout>
+						<label>From:</label>
+						<datebox id="from" format="dd/MM/yyyy"
+							onCreate="self.value = new Date()" width="100%"
+							constraint="no future" style="font-size: 16px"
+							value="@bind(downloadVM.from)">
+						</datebox>
+					</vlayout>
+
+					<vlayout>
+						<label>To:</label>
+						<datebox id="to" format="dd/MM/yyyy"
+							onCreate="self.value = new Date()" style="font-size: 16px"
+							width="100%" value="@bind(downloadVM.to)">
+						</datebox>
+					</vlayout>
+				</row>
+				<row>
+					<cell></cell>
+
+				</row>
+				<row>
+					<cell colspan="3" align="center"
+						if="${sessionScope.login.role ne 'ADM'}">
+						<button height="30px" image="/image/search.ico"
+							label="Search" onClick="@command('clickSearchButton')" />
+					</cell>
+					<cell colspan="4" align="center"
+						if="${sessionScope.login.role eq 'ADM'}">
+						<button height="30px" image="/image/search.ico"
+							label="Search" onClick="@command('clickSearchButton')" />
+					</cell>
+				</row>
+			</rows>
+		</grid>
+		<separator />
+	</groupbox>
+	<separator />
+	<grid model="@load(downloadVM.listFileDownload)" height="100%"
+		width="calc(100% - 15px)" sclass="gridDownload"
+		emptyMessage="Nothing to Download" mold="paging" pageSize="10">
+		<columns visible="true">
+			<column width="2%"
+				visible="${sessionScope.login.role ne 'ADM'}" />
+			<column width="2%" label="No." align="center" />
+			<column hflex="1" label="File name" style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(fileName))" align="center" />
+			<column width="10%" label="Download count" align="center" style="word-wrap:break-word;white-space: normal"
+				sort="auto(downloadCounter)" />
+			<column width="8%" label="File size" style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(fileSize))" align="center" />
+			<column width="10%" label="Uploaded by" align="center" style="word-wrap:break-word;white-space: normal"/>
+			<column width="10%" label="Uploaded time" style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(upTime))" align="center" />
+			<column width="10%" label="Last downloaded" style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(lastDownTime))" align="center" />
+			<column width="8%" label="Action" align="center" />
+		</columns>
+		<template name="model">
+			<row>
+				<checkbox visible="${sessionScope.login.role ne 'ADM'}"
+					onCheck="@command('checkFoDownload', file=each)"
+					checked="@bind(each.selected)" />
+				<label value="${forEachStatus.index + 1}" />
+				<hlayout style="float: left !important;">
+					<image width="25px" src="@load(each.sourceIcon)"
+						tooltiptext="@load(each.fileType)" />
+					<label value="@load(each.fileName)" />
+				</hlayout>
+				<label value="@load(each.downloadCounter)"
+					style="float: right !important;" />
+				<hlayout style="float: right !important;">
+					<label value="@load(each.fileSize)" />
+					<label value=" KB" style="" />
+				</hlayout>
+				<label value="@load(each.uploader.fullName)"
+					style="float: left !important;" />
+				<label
+					value="@load(each.upTime) @converter('formatedDate', format='dd/MM/yyy HH:MM:ss')"
+					style="float: center !important;" />
+				<label
+					value="@load(each.lastDownTime) @converter('formatedDate', format='dd/MM/yyy HH:MM:ss')"
+					style="float: center !important;" />
+				<div>
+					<image style="cursor:pointer;" height="25px"
+						if="${sessionScope.login.role ne 'ADM'}"
+						src="/image/Download_file.ico" tooltiptext="Download file"
+						onClick="@command('doDownloadFile', param=each)" />
+				</div>
+			</row>
+		</template>
+	</grid>
+	<separator />
+	<hlayout sclass="download-class"
+		if="${sessionScope.login.role ne 'ADM'}">
+		<hlayout>
+			<label value="You have selected "></label>
+			<label value="@load(downloadVM.fileDownloadCounter)"></label>
+			<label value=" file(s) to download"></label>
+		</hlayout>
+		<button label="Download" onClick="@command('doDownload')" />
+	</hlayout>
+</div>

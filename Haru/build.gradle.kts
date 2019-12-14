@@ -2,6 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.springframework.boot") version "2.2.2.RELEASE"
+//    id("io.spring.dependency-management") version "1.0.8.RELEASE"
 }
 
 dependencies {
@@ -38,5 +39,5 @@ dependencies {
 }
 
 tasks.getByName<BootJar>("bootJar") {
-    mainClassName = "vn.elite.haru.book.Application"
+    mainClassName = "vn.elite.haru.HaruApplication"
 }

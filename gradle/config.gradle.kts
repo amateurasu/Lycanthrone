@@ -1,9 +1,12 @@
 import org.gradle.internal.os.OperatingSystem
 
-extra["os"] = OperatingSystem.current()
+val os: OperatingSystem = OperatingSystem.current()
 
-extra["npm"] = if ((extra["os"] as OperatingSystem).isWindows) {
+extra["os"] = os
+
+extra["npm"] = if (os.isWindows) {
     "C:\\Program Files\\nodejs\\npm.cmd"
 } else {
     ""
 }
+

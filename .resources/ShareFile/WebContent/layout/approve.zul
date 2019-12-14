@@ -1,0 +1,56 @@
+<div
+	viewModel="@id('approveVM') @init('viettel.com.sf.viewmodel.ApproveVM')"
+	apply="org.zkoss.bind.BindComposer">
+	<separator />
+	<grid model="@load(approveVM.listFile)" height="100%"
+		width="calc(100% - 15px)" sclass="gridDownload"
+		emptyMessage="Nothing need approval" mold="paging" pageSize="10">
+
+		<columns>
+			<column width="2%" label="No." align="center" />
+			<column hflex="1" label="File name"
+				style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(fileName))" align="center" />
+			<column width="10%" label="File type"
+				style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(fileType))" align="center" />
+			<column width="10%" label="File size"
+				style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(fileSize))" align="center" />
+			<column width="10%" label="Uploaded by" align="center"
+				style="word-wrap:break-word;white-space: normal" />
+			<column width="10%" label="Uploaded time"
+				style="word-wrap:break-word;white-space: normal"
+				sort="auto(LOWER(upTime))" align="center" />
+			<column width="8%" label="Action" align="center" />
+		</columns>
+
+		<template name="model">
+			<row>
+				<label value="${forEachStatus.index + 1}" />
+				<label value="@load(each.fileName)"
+					style="float: left !important;" />
+				<label value="@load(each.fileType)"
+					style="float: left !important;" />
+				<hlayout style="float: right !important;">
+					<label value="@load(each.fileSize)" />
+					<label value=" KB" style="" />
+				</hlayout>
+
+				<label value="@load(each.uploader.loginName)"
+					style="float: center !important;" />
+				<label
+					value="@load(each.upTime) @converter('formatedDate', format='dd/MM/yyy HH:MM:ss')"
+					style="float: center !important;" />
+
+				<hlayout>
+					<button label="Approve"
+						onClick="@command('approveFile', file=each)" />
+					<button label="Reject"
+						onClick="@command('rejectFile',file=each)" />
+				</hlayout>
+			</row>
+		</template>
+	</grid>
+
+</div>

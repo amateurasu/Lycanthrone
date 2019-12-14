@@ -1,0 +1,93 @@
+<zk>
+	<style src="/css/login.css" />
+	<div apply="viettel.com.sf.controller.LoginoutController"
+		sclass="loginGrid" width="400px">
+		<grid id="loginGrid">
+			<auxhead>
+				<auxheader>
+					<label>Log in</label>
+				</auxheader>
+			</auxhead>
+			<columns visible="false">
+				<column width="40%" />
+				<column width="60%" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Username" style="float: right;"/>
+					<textbox id="userName" width="100%" maxlength="20"
+						placeholder="Enter your account" />
+				</row>
+				<row>
+					<label value="Password" style="float: right;"/>
+					<textbox id="password" type="password" width="100%"
+						placeholder="Enter your password" maxlength="20" />
+				</row>
+				<row visible="false" id="captchaInput">
+					<vlayout>
+						<label>Please input captcha:</label>
+						<textbox id="captchaTextBox" hflex="1" />
+					</vlayout>
+					<hlayout id="captchaId" visible="false" hflex="1">
+						<captcha id="myCaptcha" frame="true" />
+						<image id="generateCaptcha"
+							src="/image/reset_16x16.png" tooltiptext="New"
+							style="cursor: pointer" />
+					</hlayout>
+				</row>
+				<row>
+					<cell colspan="2">
+						<label style="color: red;" id="loginMess" />
+					</cell>
+				</row>
+				<row>
+					<cell colspan="2" align="center">
+						<button id="btnLogin" label="Log In"
+							tooltiptext="Sign In" autodisable="self" />
+					</cell>
+				</row>
+			</rows>
+		</grid>
+		<grid id="rsPwdGrid" if="false">
+			<auxhead>
+				<auxheader>
+					<label>Reset Password</label>
+				</auxheader>
+			</auxhead>
+			<columns visible="false">
+				<column width="100px" />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label>Username</label>
+					<textbox id="resetLoginName"
+						placeholder="Enter your username">
+					</textbox>
+				</row>
+				<row>
+					<label>Email address</label>
+					<textbox id="resetEmail"
+						placeholder="Enter email address">
+					</textbox>
+				</row>
+				<row>
+					<cell colspan="2">
+						<label style="color: red;" id="resetMess" />
+					</cell>
+				</row>
+				<row>
+					<label></label>
+					<div>
+						<button tooltiptext="Reset password"
+							label="Reset" id="btnForgot">
+						</button>
+						<button tooltiptext="Cancel" label="Cancel"
+							id="btnCancel">
+						</button>
+					</div>
+				</row>
+			</rows>
+		</grid>
+	</div>
+</zk>
