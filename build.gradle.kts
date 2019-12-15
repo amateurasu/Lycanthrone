@@ -1,7 +1,12 @@
+import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 
-val _os = OperatingSystem.current()
-println("Building '${rootProject.name}' on ${_os.name} ver ${_os.version}...")
+apply {
+    from("$rootDir/gradle/config.gradle.kts")
+}
+val os = extra["os"] as OperatingSystem
+
+println("Building '${rootProject.name}' on ${os.name} ver ${os.version} with ${Jvm.current()}...")
 
 plugins { java }
 
@@ -35,14 +40,13 @@ subprojects {
         from(sourceSets.main.get().allSource)
     }
 
-    buildDir = File("${if (_os.isWindows) "D:" else "/var"}/Temp/Compiled/${rootProject.name}/${project.name}")
+    buildDir = File("${if (os.isWindows) "D:" else "/var"}/Temp/Compiled/${rootProject.name}/${project.name}")
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         doFirst {
             println(" - Module ${"%-12s".format(project.name)} -> $buildDir")
         }
     }
-
 
     dependencies {
         val lombokV = "1.18.10"

@@ -7,6 +7,5 @@ rootProject.name = "Lycanthrone"
 /* 05 */ include(":GoogleAPI")
 /* 06 */ include(":Haru")
 /* 07 */ include(":HttpsServer")
-/* 08 */ include(":Hydra")
-/* 09 */ include(":Snatch")
-/* 10 */ include(":Sukara")
+/* 08 */ include(":Snatch")
+/* 09 */ include(":Sukara")

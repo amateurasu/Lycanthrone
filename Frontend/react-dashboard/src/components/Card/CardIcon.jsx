@@ -1,13 +1,9 @@
 import React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// nodejs library to set properties for components
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
-
-import styles from "../../assets/js/material-dashboard-react/components/cardIconStyle.jsx";
-// @material-ui/icons
+import styles from "./CardIconStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -20,9 +16,7 @@ export default function CardIcon(props) {
         [className]: className !== undefined
     });
     return (
-        <div className={cardIconClasses} {...rest}>
-            {children}
-        </div>
+        <div className={cardIconClasses} {...rest}>{children}</div>
     );
 }
 

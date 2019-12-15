@@ -1,5 +1,9 @@
 plugins { war }
 
+apply {
+    from("$rootDir/gradle/config.gradle.kts")
+}
+
 dependencies {
     val vertxV = "3.8.1"
     implementation("io.vertx:vertx-web:$vertxV")
@@ -19,7 +23,6 @@ dependencies {
     implementation("org.elasticsearch.client:transport:7.5.0")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.12.1")
 
-    testImplementation("io.vertx:vertx-core:$vertxV")
     testImplementation("io.vertx:vertx-unit:$vertxV")
     testImplementation("io.vertx:vertx-web-client:$vertxV")
 
@@ -33,14 +36,17 @@ dependencies {
     testImplementation("org.java-websocket:Java-WebSocket:1.3.9")
 }
 
-tasks.register<Exec>("buildReact") {
-    workingDir = File("$projectDir/src/main/react")
-    println("$workingDir")
-    println(workingDir.exists())
-    commandLine("npm", "run build --scripts-prepend-node-path=auto")
-}
+buildscript {
 
-tasks.register<Copy>("copyReact") {
-    from("$projectDir/src/main/react/build")
-    into("$projectDir/src/main/webapp")
+    tasks.register<Exec>("buildReact") {
+        workingDir = File("$projectDir/src/main/js")
+
+        commandLine(project.extra["npm"], "run", "build", "--scripts-prepend-node-path=auto")
+    }
+
+    tasks.register<Copy>("copyReact") {
+        this.dependsOn(tasks["buildReact"])
+        from("$projectDir/src/main/react/build")
+        into("$projectDir/src/main/webapp")
+    }
 }

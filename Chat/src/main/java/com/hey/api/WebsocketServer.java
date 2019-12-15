@@ -12,7 +12,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +26,11 @@ import static com.hey.util.LogUtils.log;
 
 @Data
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebsocketServer {
     private WsHandler wsHandler;
     private UserWsChannelManager userWsChannelManager;
     private JwtManager jwtManager;
-
-    private WebsocketServer() {
-    }
 
     public static WebsocketServer newInstance() {
         return new WebsocketServer();

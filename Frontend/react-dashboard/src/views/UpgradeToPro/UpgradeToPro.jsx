@@ -2,26 +2,24 @@ import React from "react";
 
 import {makeStyles} from "@material-ui/core/styles";
 // @material-ui/icons
-import Close from "@material-ui/icons/Close";
-import Check from "@material-ui/icons/Check";
-
-import GridItem from "../../components/Grid/GridItem.jsx";
-import GridContainer from "../../components/Grid/GridContainer.jsx";
-import Danger from "../../components/Typography/Danger.jsx";
-import Success from "../../components/Typography/Success.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
-import Card from "../../components/Card/Card.jsx";
-import CardHeader from "../../components/Card/CardHeader.jsx";
-import CardBody from "../../components/Card/CardBody.jsx";
+import {Close, Check} from "@material-ui/icons";
+import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../components/Grid/GridContainer";
+import Danger from "../../components/Typography/Danger";
+import Success from "../../components/Typography/Success";
+import Button from "../../components/CustomButtons/Button";
+import Card from "../../components/Card/Card";
+import CardHeader from "../../components/Card/CardHeader";
+import CardBody from "../../components/Card/CardBody";
 
 const styles = {
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
             color: "rgba(255,255,255,.62)",
-            margin: "0",
-            fontSize: "14px",
-            marginTop: "0",
-            marginBottom: "0"
+            margin: 0,
+            fontSize: 14,
+            marginTop: 0,
+            marginBottom: 0
         },
         "& a,& a:hover,& a:focus": {
             color: "#FFFFFF"
@@ -29,11 +27,11 @@ const styles = {
     },
     cardTitleWhite: {
         color: "#FFFFFF",
-        marginTop: "0px",
+        marginTop: 0,
         minHeight: "auto",
         fontWeight: "300",
         fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-        marginBottom: "3px",
+        marginBottom: 3,
         textDecoration: "none",
         "& small": {
             color: "#777",
@@ -56,14 +54,14 @@ const styles = {
         backgroundColor: "transparent",
         borderCollapse: "collapse",
         display: "table",
-        borderSpacing: "2px",
+        borderSpacing: 2,
         borderColor: "grey",
         "& thdead tr th": {
             fontSize: "1.063rem",
             padding: "12px 8px",
             verticalAlign: "middle",
             fontWeight: "300",
-            borderTopWidth: "0",
+            borderTopWidth: 0,
             borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
             textAlign: "inherit"
         },

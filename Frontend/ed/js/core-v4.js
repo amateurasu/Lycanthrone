@@ -44,15 +44,7 @@
                     }
                     return finalStr;
                 },
-                en: input => {
-                    let output = "";
-                    const pad = "00000000";
-                    for (let i = 0; i < input.length; i++) {
-                        const str = input[i].charCodeAt(0).toString(2);
-                        output += pad.substring(0, 8 - str.length) + str;
-                    }
-                    return output;
-                }
+                en: input => input.reduce((out, s) => out + s.charCodeAt(0).toString(2).padStart(8, 0))
             },
 
             hex: {

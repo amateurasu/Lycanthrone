@@ -23,7 +23,7 @@ public class JwtManager {
         this.sharedData = vertx.sharedData();
 
         PropertiesUtils props = PropertiesUtils.getInstance();
-        //Hey.RESOURCE_PATH
+
         authProvider = JWTAuth.create(vertx, new JWTAuthOptions()
             .setKeyStore(new KeyStoreOptions()
                 .setType(props.getValue("jwt.keystore.type"))

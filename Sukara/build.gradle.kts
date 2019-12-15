@@ -8,23 +8,6 @@ repositories {
     }
 }
 
-//sourceSets {
-//    main {
-//        withConvention(ScalaSourceSet::class) {
-//            scala {
-//                setSrcDirs(listOf("main/scala"))
-//            }
-//        }
-//    }
-//    test {
-//        withConvention(ScalaSourceSet::class) {
-//            scala {
-//                setSrcDirs(listOf("test/scala"))
-//            }
-//        }
-//    }
-//}
-
 val scalaVersion = "2.12.8"
 val scalaV = "2.12"
 dependencies {

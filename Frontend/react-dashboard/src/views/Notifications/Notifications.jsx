@@ -5,23 +5,23 @@ import {makeStyles} from "@material-ui/core/styles";
 
 import AddAlert from "@material-ui/icons/AddAlert";
 
-import GridItem from "../../components/Grid/GridItem.jsx";
-import GridContainer from "../../components/Grid/GridContainer.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
-import SnackbarContent from "../../components/Snackbar/SnackbarContent.jsx";
-import Snackbar from "../../components/Snackbar/Snackbar.jsx";
-import Card from "../../components/Card/Card.jsx";
-import CardHeader from "../../components/Card/CardHeader.jsx";
-import CardBody from "../../components/Card/CardBody.jsx";
+import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../components/Grid/GridContainer";
+import Button from "../../components/CustomButtons/Button";
+import SnackbarContent from "../../components/Snackbar/SnackbarContent";
+import Snackbar from "../../components/Snackbar/Snackbar";
+import Card from "../../components/Card/Card";
+import CardHeader from "../../components/Card/CardHeader";
+import CardBody from "../../components/Card/CardBody";
 
 const styles = {
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
             color: "rgba(255,255,255,.62)",
-            margin: "0",
-            fontSize: "14px",
-            marginTop: "0",
-            marginBottom: "0"
+            margin: 0,
+            fontSize: 14,
+            marginTop: 0,
+            marginBottom: 0
         },
         "& a,& a:hover,& a:focus": {
             color: "#FFFFFF"
@@ -29,11 +29,11 @@ const styles = {
     },
     cardTitleWhite: {
         color: "#FFFFFF",
-        marginTop: "0px",
+        marginTop: 0,
         minHeight: "auto",
         fontWeight: "300",
         fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-        marginBottom: "3px",
+        marginBottom: 3,
         textDecoration: "none",
         "& small": {
             color: "#777",

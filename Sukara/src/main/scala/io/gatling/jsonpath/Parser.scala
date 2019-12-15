@@ -17,6 +17,8 @@ package io.gatling.jsonpath
 
 import java.lang.{StringBuilder => JStringBuilder}
 
+import io.gatling.jsonpath.AST._
+
 import scala.util.parsing.combinator.RegexParsers
 
 class StringBuilderPool extends ThreadLocal[JStringBuilder] {
@@ -86,25 +88,21 @@ object Parser extends RegexParsers {
     private def arrayRandomAccess: Parser[Option[ArrayRandomAccess]] =
         rep1("," ~> number).? ^^ (_.map(ArrayRandomAccess))
 
-    private def arraySlicePartial: Parser[ArrayAccessor] =
-        number ~ arraySlice ^^ {
-            case i ~ as => as.copy(start = Some(i))
-        }
+    private def arraySlicePartial: Parser[ArrayAccessor] = number ~ arraySlice ^^ {
+        case i ~ as => as.copy(start = Some(i))
+    }
 
-    private def arrayRandomAccessPartial: Parser[ArrayAccessor] =
-        number ~ arrayRandomAccess ^^ {
-            case i ~ Some(ArrayRandomAccess(indices)) => ArrayRandomAccess(i :: indices)
-            case i ~ _ => ArrayRandomAccess(i :: Nil)
-        }
+    private def arrayRandomAccessPartial: Parser[ArrayAccessor] = number ~ arrayRandomAccess ^^ {
+        case i ~ Some(ArrayRandomAccess(indices)) => ArrayRandomAccess(i :: indices)
+        case i ~ _ => ArrayRandomAccess(i :: Nil)
+    }
 
     private def arrayPartial: Parser[ArrayAccessor] =
         arraySlicePartial | arrayRandomAccessPartial
 
-    private def arrayAll: Parser[ArraySlice] =
-        "*" ^^^ ArraySlice.All
+    private def arrayAll: Parser[ArraySlice] = "*" ^^^ ArraySlice.All
 
-    private[jsonpath] def arrayAccessors: Parser[ArrayAccessor] =
-        "[" ~> (arrayAll | arrayPartial | arraySlice) <~ "]"
+    private[jsonpath] def arrayAccessors: Parser[ArrayAccessor] = "[" ~> (arrayAll | arrayPartial | arraySlice) <~ "]"
 
     /// filters parsers ///////////////////////////////////////////////////////
 
@@ -113,11 +111,9 @@ object Parser extends RegexParsers {
     }
 
     private def booleanValue: Parser[FilterDirectValue] =
-        "true" ^^^ FilterDirectValue.True |
-            "false" ^^^ FilterDirectValue.False
+        "true" ^^^ FilterDirectValue.True | "false" ^^^ FilterDirectValue.False
 
-    private def nullValue: Parser[FilterValue] =
-        "null" ^^^ FilterDirectValue.Null
+    private def nullValue: Parser[FilterValue] = "null" ^^^ FilterDirectValue.Null
 
     private def stringValue: Parser[FilterDirectValue] = quotedValue ^^ {FilterDirectValue.string}
 

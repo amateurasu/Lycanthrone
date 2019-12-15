@@ -1,10 +1,10 @@
 "use strict";
 
-// Run me with Node to see my output!
-
 let util = require("util");
 let P = require("../parsimmon");
 let B = P.Binary;
+
+///////////////////////////////////////////////////////////////////////
 
 // Try using another string encoding here!
 let STRING_ENCODING = "utf8";
@@ -14,14 +14,14 @@ let STRING_ENCODING = "utf8";
 let DIRECTIONS_ENUM = ["up", "down", "left", "right"];
 
 let Lang = P.createLanguage({
-    File: p => P.seqObj(
-        p.MagicNumber,
-        ["directions", p.Directions5],
-        ["array", p.Int32Array],
-        ["double", B.doubleLE],
-        ["string", p.String]
-    ),
-
+    File: p =>
+        P.seqObj(
+            p.MagicNumber,
+            ["directions", p.Directions5],
+            ["array", p.Int32Array],
+            ["double", B.doubleLE],
+            ["string", p.String]
+        ),
     Directions5: () =>
         B.bitSeq([
             6, // 6 ignored bits
@@ -34,13 +34,9 @@ let Lang = P.createLanguage({
             return xs.slice(1).map(x => DIRECTIONS_ENUM[x]);
         }),
     MagicNumber: () => P.seq(B.byte(0x13), B.byte(0x37)),
-
     Int32: () => B.int32BE,
-
     UInt32: () => B.uint32BE,
-
     String: p => p.UInt32.chain(n => B.encodedString(STRING_ENCODING, n)),
-
     Int32Array: p => p.UInt32.chain(n => p.Int32.times(n))
 });
 

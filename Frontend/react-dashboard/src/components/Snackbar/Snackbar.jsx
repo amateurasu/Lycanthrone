@@ -3,12 +3,11 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
-import Snack from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-// @material-ui/icons
-import Close from "@material-ui/icons/Close";
+import {Snackbar as Snack, IconButton} from "@material-ui/core";
 
-import styles from "../../assets/js/material-dashboard-react/components/snackbarContentStyle.jsx";
+import {Close} from "@material-ui/icons";
+
+import styles from "./SnackbarContentStyle";
 
 const useStyles = makeStyles(styles);
 

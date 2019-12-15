@@ -1,0 +1,113 @@
+<div
+	viewModel="@id('uploadVM') @init('viettel.com.sf.viewmodel.UploadFileVM')"
+	apply="org.zkoss.bind.BindComposer" sclass="upload">
+	<zscript><![CDATA[
+	String position = "middle_center";
+]]>
+</zscript>
+	<separator />
+	<div sclass="dropupload" id="dropupload">
+		<dropupload maxsize="15360" detection="browser" vflex="1"
+			hflex="1" onUpload="@command('preUpload')" />
+	</div>
+	<separator />
+
+	<button onUpload="@command('preUpload')"
+		upload="true,maxsize=15360, multiple=true,native">
+		Select File
+	</button>
+	<groupbox title="Attachments: " open="true">
+		<grid model="@load(uploadVM.listFile)" mold="paging"
+			pageSize="10" visible="@bind(uploadVM.listFile.size() ne 0)">
+			<columns>
+				<column width="40px" />
+				<column hflex="1" value="File name" />
+				<column width="120px" value="File size" />
+				<column width="120px" value="type" />
+				<column width="120px" />
+			</columns>
+			<template name="model">
+				<row>
+					<image width="25px" src="@load(each.sourceIcon)" />
+					<label value="@load(each.fileName)" />
+					<cell>
+						<label value="@load(each.fileSize)" />
+						<label value=" KB" />
+					</cell>
+					<label value="@load(each.fileType)" />
+					<button label="Remove" image="/image/remove.ico"
+						onClick="@command('removeFile', file=each)" />
+				</row>
+			</template>
+		</grid>
+	</groupbox>
+	<separator />
+	<hlayout style="float:right;">
+		<hlayout>
+			<label value="You have "></label>
+			<label value="@load(uploadVM.listFile.size())"></label>
+			<label value=" file(s) to upload"></label>
+		</hlayout>
+		<button label="Reset" image="/image/reset.ico"
+			onClick="@command('doReset')" />
+		<button label="Upload" image="/image/upload2.ico"
+			onClick="confirmUpload.open(dropupload,position)" />
+		<!-- onClick="@command('doUpload')" -->
+	</hlayout>
+	<popup id="confirmUpload" style="background: white;">
+		<vlayout width="600px">
+			<label value="Điều Khoản"
+				style="font-size: 30px; font-weight: bold; font-family: 'Roboto'; color: black; border-bottom: 2px solid red;" />
+			<label
+				style="font-size: 15px; font-family: 'Roboto'; font-weight: 500;">
+				Theo quy chế, quy định về công tác bảo vệ bí mật nhà
+				nước, Quân đội và Tập đoàn, và của VHT. Tôi cam kết:
+			</label>
+			<separator />
+			<label
+				style="font-size: 15px; font-family: 'Roboto';font-weight: 500; text-align: justify; display: block;">
+				1. Chịu trách nhiệm giữ gìn bí mật tại mọi thời điểm, kể
+				cả trong thời gian đang làm việc và cả khi đã ra khỏi
+				Tập đoàn (vô thời hạn) đối với tất cả các thông tin, tài
+				liệu, nội dung công việc (hoặc dự án) mà tôi được tiếp
+				cận hoặc giao thực hiện.
+			</label>
+			<separator />
+			<label
+				style="font-size: 15px; font-family: 'Roboto';font-weight: 500; text-align: justify; display: block;">
+				2. Không sao chép, cung cấp, tiết lộ các thông tin, tài
+				liệu, nội dung liên quan đến công việc và nhiệm vụ của
+				các dự án mà bản thân được tiếp xúc hoặc được giao thực
+				hiện vì bất kỳ lý do; không chuyển giao cho bên thứ ba
+				hoặc người khác khi chưa có sự chấp thuận bằng văn bản
+				của cấp có thẩm quyền; không sử dụng các thông tin, tài
+				liệu, nội dung trên vào mục đích của cá nhân.
+			</label>
+			<separator />
+			<label
+				style="font-size: 15px; font-family: 'Roboto';font-weight: 500; text-align: justify; display: block;">
+				3. Nếu vi phạm, tôi xin hoàn toàn chịu trách nhiệm trước
+				pháp luật Nhà nước và các hình thức xử lý kỷ luật của
+				Quân đội và Tập đoàn. Đồng thời sẽ chịu trách nhiệm bồi
+				thường mọi thiệt hại cho Tập đoàn, kể cả khi đã chuyển
+				ra khỏi Tập đoàn.
+			</label>
+			<separator />
+			<label
+				style="font-size: 15px; font-family: 'Roboto';font-weight: 500;color: black;">
+				Bạn có muốn tiếp tục thực hiện UPLOAD file không?
+			</label>
+			<separator />
+			<hlayout style="float:right;">
+				<button onClick="confirmUpload.close()"
+					style="color: black; font-family: 'Roboto';font-weight: 700; font-size: 15px;">
+					Không
+				</button>
+				<button onClick="@command('doUpload')"
+					style="color: black; font-family: 'Roboto';font-weight: 700; font-size:15px;">
+					Có, tôi đồng ý!
+				</button>
+			</hlayout>
+		</vlayout>
+	</popup>
+</div>

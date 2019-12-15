@@ -1,7 +1,11 @@
 "use strict";
 
+// Run me with Node to see my output!
+
 let util = require("util");
 let P = require("../parsimmon");
+
+///////////////////////////////////////////////////////////////////////
 
 // Turn escaped characters into real ones (e.g. "\\n" becomes "\n").
 function interpretEscapes(str) {
@@ -18,10 +22,7 @@ function interpretEscapes(str) {
         if (type === "u") {
             return String.fromCharCode(parseInt(hex, 16));
         }
-        if (escapes.hasOwnProperty(type)) {
-            return escapes[type];
-        }
-        return type;
+        return escapes.hasOwnProperty(type) ? escapes[type] : type;
     });
 }
 
@@ -34,10 +35,11 @@ const token = parser => parser.skip(whitespace);
 // Several parsers are just strings with optional whitespace.
 const word = str => P.string(str).thru(token);
 
-const JSONParser = P.createLanguage({
+let JSONParser = P.createLanguage({
     // This is the main entry point of the parser: a full JSON value.
-    value: r => P.alt(r.object, r.array, r.string, r.number, r.null, r.true, r.false)
-        .thru(parser => whitespace.then(parser)),
+    value: r => P.alt(r.object, r.array, r.string, r.number, r.null, r.true, r.false).thru(
+        parser => whitespace.then(parser)
+    ),
 
     // The basic tokens in JSON, with optional whitespace afterward.
     lbrace: () => word("{"),
@@ -53,8 +55,13 @@ const JSONParser = P.createLanguage({
     false: () => word("false").result(false),
 
     // Regexp based parsers should generally be named for better error reporting.
-    string: () => token(P.regexp(/"((?:\\.|.)*?)"/, 1)).map(interpretEscapes).desc("string"),
-    number: () => token(P.regexp(/-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?/)).map(Number).desc("number"),
+    string: () => token(P.regexp(/"((?:\\.|.)*?)"/, 1))
+        .map(interpretEscapes)
+        .desc("string"),
+
+    number: () => token(P.regexp(/-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?/))
+        .map(Number)
+        .desc("number"),
 
     // Array parsing is just ignoring brackets and commas and parsing as many nested
     // JSON documents as possible. Notice that we're using the parser `json` we just
@@ -67,16 +74,23 @@ const JSONParser = P.createLanguage({
     // object.
     pair: r => P.seq(r.string.skip(r.colon), r.value),
 
-    object: r =>
-        r.lbrace.then(r.pair.sepBy(r.comma)).skip(r.rbrace)
-            .map(pairs => pairs.reduce((object, pair) => {
+    object: r => r.lbrace
+        .then(r.pair.sepBy(r.comma))
+        .skip(r.rbrace)
+        .map(pairs => {
+            let object = {};
+            pairs.forEach(pair => {
                 let [key, value] = pair;
                 object[key] = value;
-                return object;
-            }, {}))
+            });
+            return object;
+        })
 });
 
-let text = `{
+///////////////////////////////////////////////////////////////////////
+
+let text = `\
+{
   "id": "a thing\\nice\tab",
   "another property!"
     : "also cool"
@@ -88,7 +102,8 @@ let text = `{
     {},
     {"": {}}
   ]
-}`;
+}
+`;
 
 function prettyPrint(x) {
     let opts = {depth: null, colors: "auto"};
@@ -97,5 +112,4 @@ function prettyPrint(x) {
 }
 
 let ast = JSONParser.value.tryParse(text);
-console.log("result:");
 prettyPrint(ast);

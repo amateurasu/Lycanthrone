@@ -1,0 +1,78 @@
+<div sclass="userinfo">
+	<separator />
+	<groupbox title=" User information" open="true" width="400px"
+		apply="viettel.com.sf.controller.UpdateUserInfoController">
+		<grid hflex="1" vflex="1" style="border: none;">
+			<columns>
+				<column width="50%" align="left" />
+				<column width="50%" />
+			</columns>
+			<rows>
+				<row>
+					<label>Login name</label>
+					<label>${sessionScope.login.loginName }</label>
+				</row>
+				<row>
+					<label>Full name</label>
+					<label>${sessionScope.login.fullName }</label>
+				</row>
+				<row>
+					<label>Created time</label>
+					<label  value = "@load(sessionScope.login.createdTime) @converter('formatedDate', format='dd/MM/yyy HH:MM:ss')" />
+				</row>
+				<row>
+					<label>Last modified</label>
+					<label value = "@load(sessionScope.login.lastUpdateTime) @converter('formatedDate', format='dd/MM/yyy HH:MM:ss')" ></label>
+				</row>
+				<row>
+					<label>Created by</label>
+					<label>
+						${sessionScope.login.createBy.loginName }
+					</label>
+				</row>
+				<row>
+					<label>Email</label>
+					<textbox id="email" width="100%"
+						value="${sessionScope.login.email }" />
+				</row>
+				<row>
+					<label>Phone number</label>
+					<textbox id="phone" width="100%"
+						value="${sessionScope.login.phoneNumber }" />
+				</row>
+				<row>
+					<label>Department</label>
+					<textbox id="depart" width="100%"
+						value="${sessionScope.login.departement }" />
+				</row>
+<!-- 				<row>
+					<label style="float: right">
+						Current password:
+					</label>
+					<textbox type="password"
+						placeholder="Enter current password" id="currentPw" />
+				</row>
+				<row>
+					<label style="float: right">New password:</label>
+					<textbox type="password"
+						placeholder="Enter new password" id="newPw" />
+				</row>
+				<row>
+					<label style="float: right">
+						Confirm new password:
+					</label>
+					<textbox type="password"
+						placeholder="Re-enter new password" id="confPw" />
+				</row> -->
+				<row> 
+					<cell align="center" colspan="2">
+						<button style="float: center;"
+							id="updateUserButton">
+							Update
+						</button>
+					</cell>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+</div>

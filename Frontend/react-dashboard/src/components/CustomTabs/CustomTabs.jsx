@@ -1,18 +1,15 @@
 import React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// nodejs library to set properties for components
 import PropTypes from "prop-types";
-// material-ui components
+
 import {makeStyles} from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import {Tab, Tabs} from "@material-ui/core";
 
-import Card from "../../components/Card/Card.jsx";
-import CardBody from "../../components/Card/CardBody.jsx";
-import CardHeader from "../../components/Card/CardHeader.jsx";
+import Card from "../Card/Card";
+import CardBody from "../Card/CardBody";
+import CardHeader from "../Card/CardHeader";
 
-import styles from "../../assets/js/material-dashboard-react/components/customTabsStyle.jsx";
+import styles from "./CustomTabsStyle";
 
 const useStyles = makeStyles(styles);
 

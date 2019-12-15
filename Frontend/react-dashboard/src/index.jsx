@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import {createBrowserHistory} from "history";
 import {Redirect, Route, Router, Switch} from "react-router-dom";
 
-import Admin from "./layouts/Admin.jsx";
-import RTL from "./layouts/RTL.jsx";
+import Admin from "./layouts/Admin";
+import RTL from "./layouts/RTL";
 
 const hist = createBrowserHistory();
 

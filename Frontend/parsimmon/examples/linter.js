@@ -1,12 +1,9 @@
 "use strict";
 
-// Run me with Node to see my output!
-
 let util = require("util");
 let P = require("../parsimmon");
 
-// -*- Parser -*-
-
+//region PARSER
 let Lang = P.createLanguage({
     s0: () => P.regexp(/[ ]*/),
     s1: () => P.regexp(/[ ]+/),
@@ -17,52 +14,50 @@ let Lang = P.createLanguage({
     End: r => P.alt(P.string(";"), r._, P.string("\n"), P.eof),
     _: r => r.Comment.sepBy(r.Whitespace).trim(r.Whitespace),
 
-    Program: r =>
-        r.Statement.many()
-            .trim(r._)
-            .node("Program"),
+    Program: r => r.Statement.many()
+        .trim(r._)
+        .node("Program"),
 
     Statement: r => P.alt(r.Declaration, r.Assignment, r.Call),
 
-    Declaration: r =>
-        P.seqObj(
-            P.string("var"),
-            r.s1,
-            ["identifier", r.Identifier],
-            r.s0,
-            P.string("="),
-            r.s0,
-            ["initialValue", r.Expression],
-            r.End
-        ).node("Declaration"),
+    Declaration: r => P.seqObj(
+        P.string("var"),
+        r.s1,
+        ["identifier", r.Identifier],
+        r.s0,
+        P.string("="),
+        r.s0,
+        ["initialValue", r.Expression],
+        r.End
+    ).node("Declaration"),
 
-    Assignment: r =>
-        P.seqObj(
-            ["identifier", r.Identifier],
-            r.s0,
-            P.string("="),
-            r.s0,
-            ["newValue", r.Expression],
-            r.End
-        ).node("Assignment"),
+    Assignment: r => P.seqObj(
+        ["identifier", r.Identifier],
+        r.s0,
+        P.string("="),
+        r.s0,
+        ["newValue", r.Expression],
+        r.End
+    ).node("Assignment"),
 
-    Call: r =>
-        P.seqObj(
-            ["function", r.Expression],
-            P.string("("),
-            ["arguments", r.Expression.trim(r._).sepBy(r.Comma)],
-            P.string(")")
-        ).node("Call"),
+    Call: r => P.seqObj(
+        ["function", r.Expression],
+        P.string("("),
+        ["arguments", r.Expression.trim(r._).sepBy(r.Comma)],
+        P.string(")")
+    ).node("Call"),
 
     Expression: r => P.alt(r.Number, r.Reference),
 
-    Number: () =>
-        P.regexp(/[0-9]+/)
-            .map(Number)
-            .node("Number"),
+    Number: () => P.regexp(/[0-9]+/)
+        .map(Number)
+        .node("Number"),
+
     Identifier: () => P.regexp(/[a-z]+/).node("Identifier"),
+
     Reference: r => r.Identifier.node("Reference")
 });
+//endregion PARSER
 
 // -*- Linter -*-
 
@@ -147,7 +142,4 @@ function prettyPrint(x) {
 let ast = Lang.Program.tryParse(text);
 let linterMessages = lint(ast);
 prettyPrint(linterMessages);
-console.log();
 prettyPrint(ast);
-console.log("------------------------------------");
-console.log(ast);

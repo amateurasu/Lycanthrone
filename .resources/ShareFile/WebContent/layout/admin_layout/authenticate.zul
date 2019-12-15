@@ -1,0 +1,27 @@
+<grid hflex="1" vflex="1" style="border: none;"
+	  viewModel="@id('authVM') @init('viettel.com.sf.viewmodel.admin.AuthVM')"
+	  apply="org.zkoss.bind.BindComposer">
+	<columns>
+		<column width="30%"/>
+		<column width="70%"/>
+	</columns>
+	<rows>
+		<row>
+			<label value="Domain"/>
+			<textbox value="@bind(authVM.ldapDomain)" width="100%"/>
+		</row>
+		<row>
+			<label value="Host"/>
+			<textbox value="@bind(authVM.ldapHost)" width="100%"/>
+		</row>
+		<row>
+			<label value="BaseDN"/>
+			<textbox value="@bind(authVM.searchBase)" width="100%"/>
+		</row>
+		<row>
+			<label value=""/>
+			<button label="Update"
+					onClick="@command('onClickUpdateAuthDetail')"/>
+		</row>
+	</rows>
+</grid>

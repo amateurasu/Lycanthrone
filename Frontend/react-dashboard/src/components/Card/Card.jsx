@@ -1,12 +1,8 @@
 import React from "react";
-
 import classNames from "classnames";
-
 import PropTypes from "prop-types";
-
 import {makeStyles} from "@material-ui/core/styles";
-
-import styles from "../../assets/js/material-dashboard-react/components/cardStyle.jsx";
+import styles from "./CardStyle";
 
 const useStyles = makeStyles(styles);
 

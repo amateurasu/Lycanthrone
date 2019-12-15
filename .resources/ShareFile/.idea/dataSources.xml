@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="5dc7dc18-381d-449e-bd38-6723ff37d6d3">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+D:/2. VTTEK/24. EMS/5. Prj/eclipse_mars/ws_test_zkee/ShareFile/src/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://172.16.28.46:5432/sharefile</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="sharefile@172.16.28.46" uuid="bd825b69-a58d-4e1c-a55d-77654d15ebef">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://172.16.28.46:5432/sharefile</jdbc-url>
+    </data-source>
+  </component>
+</project>

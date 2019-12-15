@@ -1,11 +1,12 @@
 package vn.elite.fundamental.java.properties;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class LoadPropFromClassPath {
 
     public static void main(String[] args) {
@@ -26,7 +27,7 @@ public class LoadPropFromClassPath {
             System.out.println(prop.getProperty("dbuser"));
             System.out.println(prop.getProperty("dbpassword"));
         } catch (IOException ex) {
-            Logger.getLogger(LoadPropFromClassPath.class.getName()).log(Level.SEVERE, "Oopsie!", ex);
+            log.error("Oopsie!", ex);
         }
     }
 }

@@ -15,10 +15,10 @@ import Notifications from "@material-ui/icons/Notifications";
 import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
-import CustomInput from "../../components/CustomInput/CustomInput.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
+import CustomInput from "../CustomInput/CustomInput";
+import Button from "../CustomButtons/Button";
 
-import styles from "../../assets/js/material-dashboard-react/components/rtlHeaderLinksStyle.jsx";
+import styles from "./RTLHeaderLinksStyle";
 
 const useStyles = makeStyles(styles);
 

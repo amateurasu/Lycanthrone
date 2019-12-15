@@ -1,6 +1,7 @@
 package vn.elite.core.crypto.compress.zip;
 
 import lombok.val;
+import lombok.var;
 
 import java.io.File;
 import java.io.FileInputStream;
