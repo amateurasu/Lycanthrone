@@ -1,4 +1,0 @@
-<div apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('vm') @init('viettel.com.sf.viewmodel.MainContentVM')">
-	<include id="mainInclude" src="@load(vm.includeSrc)" />
-</div>

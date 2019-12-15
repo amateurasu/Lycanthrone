@@ -9,9 +9,9 @@ dependencies {
     implementation("io.vertx:vertx-web:$vertxV")
     implementation("io.vertx:vertx-core:$vertxV")
     implementation("io.vertx:vertx-config:$vertxV")
-    implementation("io.vertx:vertx-redis-client:$vertxV")
-    implementation("io.vertx:vertx-auth-jwt:$vertxV")
     implementation("io.vertx:vertx-codegen:$vertxV")
+    implementation("io.vertx:vertx-auth-jwt:$vertxV")
+    implementation("io.vertx:vertx-redis-client:$vertxV")
 
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("commons-io:commons-io:2.6")
@@ -20,6 +20,7 @@ dependencies {
     implementation("org.apache.commons:commons-pool2:2.5.0")
     implementation("se.emirbuc.randomsentence:random-sentence-generator:0.0.7")
 
+    testImplementation("io.vertx:vertx-core:$vertxV")
     implementation("org.elasticsearch.client:transport:7.5.0")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.12.1")
 
@@ -40,7 +41,6 @@ buildscript {
 
     tasks.register<Exec>("buildReact") {
         workingDir = File("$projectDir/src/main/js")
-
         commandLine(project.extra["npm"], "run", "build", "--scripts-prepend-node-path=auto")
     }
 
