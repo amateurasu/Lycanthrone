@@ -40,7 +40,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootV")
 
     testImplementation("org.springframework:spring-test:$springV")
+    testImplementation("org.spockframework:spock-core:1.0-groovy-2.4")
     testImplementation("org.spockframework:spock-spring:1.0-groovy-2.4")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootV")
-    testImplementation("org.spockframework:spock-core:1.0-groovy-2.4")
 }

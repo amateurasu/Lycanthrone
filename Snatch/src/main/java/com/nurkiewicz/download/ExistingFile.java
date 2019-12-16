@@ -45,9 +45,9 @@ public class ExistingFile {
         Optional<String> requestEtagOpt, Optional<Date> ifModifiedSinceOpt,
         Function<FilePointer, ResponseEntity<Resource>> notCachedResponse
     ) {
-        if (cached(requestEtagOpt, ifModifiedSinceOpt))
-            return notModified(filePointer);
-        return notCachedResponse.apply(filePointer);
+        return cached(requestEtagOpt, ifModifiedSinceOpt)
+            ? notModified(filePointer)
+            : notCachedResponse.apply(filePointer);
     }
 
     private boolean cached(Optional<String> requestEtagOpt, Optional<Date> ifModifiedSinceOpt) {

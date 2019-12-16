@@ -1,4 +1,4 @@
 spring:
   data:
     rest:
-      base-path: /API
+      base-path: /api

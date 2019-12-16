@@ -1,7 +1,6 @@
 package com.nurkiewicz.download;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +12,10 @@ import java.util.UUID;
 /**
  * Stub implementation that for any UUID returns `logback.xml` file. Replace with real implementation.
  */
+@Slf4j
 @Component
 @Profile("!test")
 public class FileSystemStorage implements FileStorage {
-
-    private static final Logger log = LoggerFactory.getLogger(FileSystemStorage.class);
 
     @Override
     public Optional<FilePointer> findFile(UUID uuid) {
