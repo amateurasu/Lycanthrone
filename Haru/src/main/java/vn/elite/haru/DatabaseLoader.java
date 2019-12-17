@@ -3,6 +3,8 @@ package vn.elite.haru;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import vn.elite.haru.employee.Employee;
+import vn.elite.haru.employee.EmployeeRepository;
 
 @Component
 public class DatabaseLoader implements CommandLineRunner {

@@ -18,100 +18,27 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Data
 public class AdminstratorVM {
 	public static final char ACTION_LOG_IN_SUSCESS = '0';
 	public static final char ACTION_LOG_IN_FAIL = '1';
 	public static final char ACTION_LOG_OUT = '2';
 	public static final char ACTION_UPLOAD = '3';
 	public static final char ACTION_DOWNLOAD = '4';
-	private String newUserLoginName, newUserFullName, newUserEmail, newUserDepart, newUserPhone, newUserManagerList,
-		optionConfig = "MAIL", newUserRole = Constant.USER_ROLE.get(1),
-		newUserPermission = Constant.USER_PERMISSIONS.get(0);
+	private String newUserLoginName;
+	private String newUserFullName;
+	private String newUserEmail;
+	private String newUserDepart;
+	private String newUserPhone;
+	private String newUserManagerList;
+	private String optionConfig = "MAIL";
+	private String newUserRole = Constant.USER_ROLE.get(1);
+	private String newUserPermission = Constant.USER_PERMISSIONS.get(0);
 	private String gridSubject = "Email Server Config";
 	private String sourceConfig = "/layout/admin_layout/email.zul";
 
 	public AdminstratorVM() {
 		oncheckRadioButton();
-	}
-
-	public String getGridSubject() {
-		return gridSubject;
-	}
-
-	public void setGridSubject(String gridSubject) {
-		this.gridSubject = gridSubject;
-	}
-
-	public String getOptionConfig() {
-		return optionConfig;
-	}
-
-	public void setOptionConfig(String optionConfig) {
-		this.optionConfig = optionConfig;
-	}
-
-	public String getNewUserRole() {
-		return newUserRole;
-	}
-
-	public void setNewUserRole(String newUserRole) {
-		this.newUserRole = newUserRole;
-	}
-
-	public String getNewUserLoginName() {
-		return newUserLoginName;
-	}
-
-	public void setNewUserLoginName(String newUserLoginName) {
-		this.newUserLoginName = newUserLoginName;
-	}
-
-	public String getNewUserFullName() {
-		return newUserFullName;
-	}
-
-	public void setNewUserFullName(String newUserFullName) {
-		this.newUserFullName = newUserFullName;
-	}
-
-	public String getNewUserEmail() {
-		return newUserEmail;
-	}
-
-	public void setNewUserEmail(String newUserEmail) {
-		this.newUserEmail = newUserEmail;
-	}
-
-	public String getNewUserDepart() {
-		return newUserDepart;
-	}
-
-	public void setNewUserDepart(String newUserDepart) {
-		this.newUserDepart = newUserDepart;
-	}
-
-	public String getNewUserPhone() {
-		return newUserPhone;
-	}
-
-	public void setNewUserPhone(String newUserPhone) {
-		this.newUserPhone = newUserPhone;
-	}
-
-	public String getSourceConfig() {
-		return sourceConfig;
-	}
-
-	public void setSourceConfig(String sourceConfig) {
-		this.sourceConfig = sourceConfig;
-	}
-
-	public String getNewUserPermission() {
-		return newUserPermission;
-	}
-
-	public void setNewUserPermission(String newUserPermission) {
-		this.newUserPermission = newUserPermission;
 	}
 
 	public List<String> getRoles() {
@@ -122,23 +49,16 @@ public class AdminstratorVM {
 		return Constant.USER_PERMISSIONS;
 	}
 
-	public String getNewUserManagerList() {
-		return newUserManagerList;
-	}
-
-	public void setNewUserManagerList(String newUserManagerList) {
-		this.newUserManagerList = newUserManagerList;
-	}
-
 	@Command
 	@NotifyChange({"newUserLoginName", "newUserFullName", "newUserEmail", "newUserDepart", "newUserPhone",
 		"newUserManagerList", "newUserPermission"})
 	public void onClickCreateUser() {
 		// validate
-		if (newUserLoginName == null || newUserLoginName.trim().equals("") || newUserFullName == null
-			|| newUserFullName.trim().equals("") || newUserEmail == null || newUserEmail.trim().equals("")
-			|| newUserDepart == null || newUserDepart.trim().equals("") || newUserPhone == null
-			|| newUserPhone.trim().equals("")) {
+		if (newUserLoginName == null || newUserLoginName.trim().equals("")
+			|| newUserFullName == null || newUserFullName.trim().equals("")
+			|| newUserEmail == null || newUserEmail.trim().equals("")
+			|| newUserDepart == null || newUserDepart.trim().equals("")
+			|| newUserPhone == null || newUserPhone.trim().equals("")) {
 			Messagebox.show("Please fill all required fields", "Error", Messagebox.OK, Messagebox.ERROR);
 			return;
 		}

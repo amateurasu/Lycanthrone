@@ -12,6 +12,7 @@ import viettel.com.sf.entity.ConfigTable;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Data
 public class ServerConfigVM {
 	private String ipAddr, user, pwd;
 	private int port, maxDownload;
@@ -33,46 +34,6 @@ public class ServerConfigVM {
 			ipAddr = user = pwd = "";
 			port = maxDownload = 0;
 		}
-	}
-
-	public String getIpAddr() {
-		return ipAddr;
-	}
-
-	public void setIpAddr(String ipAddr) {
-		this.ipAddr = ipAddr;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	public int getMaxDownload() {
-		return maxDownload;
-	}
-
-	public void setMaxDownload(int maxDownload) {
-		this.maxDownload = maxDownload;
 	}
 
 	@Command

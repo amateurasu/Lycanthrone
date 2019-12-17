@@ -1,4 +1,4 @@
-package vn.elite.haru;
+package vn.elite.haru.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

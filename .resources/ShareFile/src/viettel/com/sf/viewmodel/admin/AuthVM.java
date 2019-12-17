@@ -12,6 +12,7 @@ import viettel.com.sf.entity.ConfigTable;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Data
 public class AuthVM {
 	private String ldapDomain, ldapHost, searchBase;
 	private ConfigDao configDao = new ConfigDao();
@@ -28,30 +29,6 @@ public class AuthVM {
 		} else {
 			ldapDomain = ldapHost = searchBase = "";
 		}
-	}
-
-	public String getLdapDomain() {
-		return ldapDomain;
-	}
-
-	public void setLdapDomain(String ldapDomain) {
-		this.ldapDomain = ldapDomain;
-	}
-
-	public String getLdapHost() {
-		return ldapHost;
-	}
-
-	public void setLdapHost(String ldapHost) {
-		this.ldapHost = ldapHost;
-	}
-
-	public String getSearchBase() {
-		return searchBase;
-	}
-
-	public void setSearchBase(String searchBase) {
-		this.searchBase = searchBase;
 	}
 
 	@Command

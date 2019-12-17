@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Data
 public class EmailVM {
 	private String emailAddr, emailPwd, emailHost;
 	private int emailPort;
@@ -40,54 +41,6 @@ public class EmailVM {
 			emailPort = 0;
 			emailTLS = false;
 		}
-	}
-
-	public String getEmailAddr() {
-		return emailAddr;
-	}
-
-	public void setEmailAddr(String emailAddr) {
-		this.emailAddr = emailAddr;
-	}
-
-	public String getEmailPwd() {
-		return emailPwd;
-	}
-
-	public void setEmailPwd(String emailPwd) {
-		this.emailPwd = emailPwd;
-	}
-
-	public String getEmailHost() {
-		return emailHost;
-	}
-
-	public void setEmailHost(String emailHost) {
-		this.emailHost = emailHost;
-	}
-
-	public int getEmailPort() {
-		return emailPort;
-	}
-
-	public void setEmailPort(int emailPort) {
-		this.emailPort = emailPort;
-	}
-
-	public boolean getEmailTLS() {
-		return emailTLS;
-	}
-
-	public void setEmailTLS(boolean emailTLS) {
-		this.emailTLS = emailTLS;
-	}
-
-	public List<Boolean> getListTLS() {
-		return listTLS;
-	}
-
-	public void setListTLS(List<Boolean> listTLS) {
-		this.listTLS = listTLS;
 	}
 
 	@Command

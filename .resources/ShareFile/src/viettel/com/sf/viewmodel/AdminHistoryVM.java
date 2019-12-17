@@ -61,22 +61,18 @@ public class AdminHistoryVM {
 	@NotifyChange("listAction")
 	public void clickSearchTraceButton() {
 		if (traceFrom == null) {
-			Messagebox.show("Please enter FromDate!", "Error", Messagebox.OK,
-				Messagebox.ERROR);
+			Messagebox.show("Please enter FromDate!", "Error", Messagebox.OK, Messagebox.ERROR);
 			return;
 		}
 		if (traceTo == null) {
-			Messagebox.show("Please enter ToDate!", "Error", Messagebox.OK,
-				Messagebox.ERROR);
+			Messagebox.show("Please enter ToDate!", "Error", Messagebox.OK, Messagebox.ERROR);
 			return;
 		}
 		if (traceTo.before(traceFrom)) {
-			Messagebox.show("From Date should be less than (or equals) To Date", "Error", Messagebox.OK,
-				Messagebox.ERROR);
+			Messagebox.show("From Date should be less than (or equals) To Date", "Error", Messagebox.OK, Messagebox.ERROR);
 			return;
 		}
 		ActionDao actDao = new ActionDao();
-		listAction = actDao.searchActionByParam(traceFilename, traceUser, traceFrom, traceTo,
-			listTraceAction.getSelection());
+		listAction = actDao.searchActionByParam(traceFilename, traceUser, traceFrom, traceTo, listTraceAction.getSelection());
 	}
 }
