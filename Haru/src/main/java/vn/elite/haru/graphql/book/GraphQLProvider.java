@@ -1,4 +1,4 @@
-package vn.elite.haru;
+package vn.elite.haru.graphql.book;
 
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -8,6 +8,7 @@ import graphql.schema.idl.SchemaParser;
 import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import vn.elite.haru.HaruApplication;
 
 import javax.annotation.PostConstruct;
 import java.io.File;

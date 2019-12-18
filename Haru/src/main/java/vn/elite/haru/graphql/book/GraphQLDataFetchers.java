@@ -1,4 +1,4 @@
-package vn.elite.haru;
+package vn.elite.haru.graphql.book;
 
 import graphql.schema.DataFetcher;
 import org.springframework.stereotype.Component;

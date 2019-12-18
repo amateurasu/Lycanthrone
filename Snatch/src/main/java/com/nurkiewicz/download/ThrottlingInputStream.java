@@ -46,8 +46,8 @@ public class ThrottlingInputStream extends InputStream {
     }
 
     @Override
-    public synchronized void mark(int readlimit) {
-        target.mark(readlimit);
+    public synchronized void mark(int readLimit) {
+        target.mark(readLimit);
     }
 
     @Override

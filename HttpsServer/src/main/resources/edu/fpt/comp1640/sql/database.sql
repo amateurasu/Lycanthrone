@@ -99,18 +99,17 @@ VALUES ('An Administrator', 'admin', 'dummy_pwd', 'duclmgch15319@fpt.edu.vn', 0,
        ('A Guest', 'guest', 'dummy_pwd', 'duclmgch15319@fpt.edu.vn', 4, 1);
 
 INSERT INTO Students(id, faculty_id, rollnumber)
-VALUES (1, 1, 'GCH15319'),
-       (2, 2, 'GBH15591'),
-       (3, 3, 'GGG12345');
+VALUES (1, 1, 'GCH15319'), (2, 2, 'GBH15591'), (3, 3, 'GGG12345');
 
-INSERT INTO Coordinators (faculty_id) VALUES (1);
-INSERT INTO Guests (faculty_id) VALUES (1);
+INSERT INTO Coordinators (faculty_id)
+VALUES (1);
+
+INSERT INTO Guests (faculty_id)
+VALUES (1);
 
 UPDATE Users
-SET hashed_password = '1000:a4fe87aaab4b4263e0ab02d78660228b:708efd7ff07fa8743029accbd5d' ||
-                      'ef0a25f08b8fdf1c68db6af0d7f03c97e82c32331fcd3d6b6784615d9f2ec9d22' ||
-                      'e9b460be1778840e1b48fb0c7c95e927478c'
-WHERE 1 = 1;
+SET hashed_password = '1000:a4fe87aaab4b4263e0ab02d78660228b:708efd7ff07fa8743029accbd5def0a25f08b8fdf1c68db6af0d7f03c9'
+    || '7e82c32331fcd3d6b6784615d9f2ec9d22e9b460be1778840e1b48fb0c7c95e927478c';
 
 INSERT INTO PublishYears(name, year, first_deadline, second_deadline)
 VALUES ('Annual Magazine 2018', 2018, '2018-03-31', '2018-03-20'),

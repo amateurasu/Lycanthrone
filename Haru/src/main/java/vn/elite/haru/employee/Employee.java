@@ -1,6 +1,7 @@
 package vn.elite.haru.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.Version;
 @Data
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Employee {
 
     private @Id @GeneratedValue Long id;
