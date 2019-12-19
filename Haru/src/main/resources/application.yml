@@ -2,3 +2,31 @@ spring:
   data:
     rest:
       base-path: /api
+  servlet:
+    multipart:
+      max-file-size: 128KB
+      max-request-size: 128KB
+  profiles:
+    active: prod
+  datasource:
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+---
+spring:
+  profiles: test
+name: test-YAML
+environment: test
+servers:
+  - www.abc.test.com
+  - www.xyz.test.com
+
+---
+spring:
+  profiles: prod
+name: prod-YAML
+environment: production
+servers:
+  - www.abc.com
+  - www.xyz.com

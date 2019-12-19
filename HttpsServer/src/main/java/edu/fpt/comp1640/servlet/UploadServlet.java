@@ -30,6 +30,7 @@ public class UploadServlet extends HttpServlet {
     static {
 //        ini = Configuration.getInstance().;
         UPLOAD_DIRECTORY = ini.get("GENERAL", "upload_dir");
+        System.out.println(UPLOAD_DIRECTORY);
     }
 
     @Override

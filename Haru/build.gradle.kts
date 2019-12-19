@@ -38,7 +38,7 @@ dependencies {
     implementation("com.graphql-java:graphql-java:11.0")
     implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
     implementation("com.github.tomakehurst:wiremock:2.24.1")
-    implementation("org.apache.tomcat:servlet-api:6.0.53")
+    // implementation("org.apache.tomcat:servlet-api:6.0.53")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootV")
     testImplementation("org.springframework.security:spring-security-test:$springSecurityV")

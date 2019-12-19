@@ -3,6 +3,7 @@ package edu.fpt.comp1640.utils;
 import edu.fpt.comp1640.database.Database;
 import edu.fpt.comp1640.database.ResultSetHandler;
 import lombok.val;
+import lombok.var;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

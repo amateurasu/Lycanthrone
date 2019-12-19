@@ -10,36 +10,36 @@ import lombok.val;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CreateGoogleFile {
 
-    public static File createGoogleFile(String googleFolderIdParent, String contentType, //
-                                        String customFileName, byte[] uploadData) throws IOException {
+    public static File createGoogleFile(
+        String googleFolderIdParent, String contentType, String customFileName, byte[] uploadData
+    ) throws IOException {
         val uploadStreamContent = new ByteArrayContent(contentType, uploadData);
         return _createGoogleFile(googleFolderIdParent, contentType, customFileName, uploadStreamContent);
     }
 
     private static File _createGoogleFile(
-            String googleFolderIdParent, String contentType, String customFileName,
-            AbstractInputStreamContent uploadStreamContent
+        String googleFolderIdParent, String contentType, String customFileName,
+        AbstractInputStreamContent uploadStreamContent
     ) throws IOException {
         File fileMetadata = new File().setName(customFileName);
 
-        List<String> parents = Arrays.asList(googleFolderIdParent);
+        List<String> parents = Collections.singletonList(googleFolderIdParent);
         fileMetadata.setParents(parents);
 
         Drive driveService = DriveUtils.getDriveService();
 
         return driveService.files().create(fileMetadata, uploadStreamContent)
-                .setFields("id, webContentLink, webViewLink, parents").execute();
+            .setFields("id, webContentLink, webViewLink, parents").execute();
     }
-
 
     // Create Google File from java.io.File
     public static File createGoogleFile(
-            String googleFolderIdParent, String contentType, String customFileName, java.io.File uploadFile
+        String googleFolderIdParent, String contentType, String customFileName, java.io.File uploadFile
     ) throws IOException {
         val uploadStreamContent = new FileContent(contentType, uploadFile);
         return _createGoogleFile(googleFolderIdParent, contentType, customFileName, uploadStreamContent);
@@ -47,7 +47,7 @@ public class CreateGoogleFile {
 
     // Create Google File from InputStream
     public static File createGoogleFile(
-            String googleFolderIdParent, String contentType, String customFileName, InputStream inputStream
+        String googleFolderIdParent, String contentType, String customFileName, InputStream inputStream
     ) throws IOException {
 
         val uploadStreamContent = new InputStreamContent(contentType, inputStream);
@@ -67,6 +67,5 @@ public class CreateGoogleFile {
 
         System.out.println("Done!");
     }
-
 }
 
