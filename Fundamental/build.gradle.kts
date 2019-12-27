@@ -10,6 +10,7 @@ repositories { jcenter() }
 
 dependencies {
     implementation(project(":Core"))
+    annotationProcessor(project(":Core"))
 
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("com.rabbitmq:amqp-client:5.7.1")
@@ -34,10 +35,10 @@ tasks.generateGrammarSource {
 
 val compileKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions.jvmTarget = "1.8"
-    doLast { println("Finished compiling Kotlin source code") }
+    doLast { print("Finished compiling Kotlin source code") }
 }
 
 val compileTestKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions.jvmTarget = "1.8"
-    doLast { println("Finished compiling Kotlin source code for testing") }
+    doLast { print("Finished compiling Kotlin source code for testing") }
 }

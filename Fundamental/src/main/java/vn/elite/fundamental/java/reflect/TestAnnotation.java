@@ -1,5 +1,9 @@
 package vn.elite.fundamental.java.reflect;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,8 +21,7 @@ import java.lang.reflect.Method;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@interface Normalize {
-}
+@interface Normalize { }
 
 class Hello {
     @MyAnnotation(name = "adw")
@@ -38,12 +41,14 @@ public class TestAnnotation {
         }
 
         Method m = h.getClass().getDeclaredMethod("sayHello");
-        MyAnnotation manno = m.getAnnotation(MyAnnotation.class);
-        System.out.println("value is: " + manno.value());
+        MyAnnotation annotation = m.getAnnotation(MyAnnotation.class);
+        System.out.println("value is: " + annotation.value());
 
         System.out.println("=========================================================================");
 
-        Employee employee = new Employee("Ng%^u*yen#@ Nhat^%%#@ Ho@a*đứng;!!!-", "Software%^$ Engineer@");
+        Employee employee = new Employee(
+            "Ng%^u*yen#@ Nhat^%%#@ Ho@a*đứng;!!!-",
+            "Soft%$#&%ware%^$ Eng^#$%#@$!ineer@");
         employee.normalize();
 
         System.out.println(employee.getName());
@@ -51,6 +56,8 @@ public class TestAnnotation {
     }
 }
 
+@Data
+@Getter(AccessLevel.PACKAGE)
 class Employee {
     @Normalize
     private String name;
@@ -62,27 +69,15 @@ class Employee {
         this.position = position;
     }
 
-    String getName() {
-        return name;
-    }
-
-    String getPosition() {
-        return position;
-    }
-
     void normalize() {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
             Normalize normalize = field.getAnnotation(Normalize.class);
-            if (normalize == null) {
-                continue;
-            }
+            if (normalize == null) continue;
             try {
                 field.setAccessible(true);
-                if (field.get(this) == null) {
-                    continue;
-                }
-                field.set(this, String.valueOf(field.get(this)).replaceAll("[^A-Za-z0-9 ]", ""));
+                if (field.get(this) == null) continue;
+                field.set(this, field.get(this).toString().replaceAll("[^A-Za-z0-9 ]", ""));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -81,9 +81,8 @@ public class CaptchaService implements ICaptchaService {
 
     private String getClientIP() {
         final String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null) {
-            return request.getRemoteAddr();
-        }
-        return xfHeader.split(",")[0];
+        return xfHeader == null
+            ? request.getRemoteAddr()
+            : xfHeader.split(",")[0];
     }
 }

@@ -308,8 +308,7 @@ class Yylex {
         }
 
         /* finally: fill the buffer with new input */
-        int numRead = zzReader.read(zzBuffer, zzEndRead,
-            zzBuffer.length - zzEndRead);
+        int numRead = zzReader.read(zzBuffer, zzEndRead, zzBuffer.length - zzEndRead);
 
         if (numRead > 0) {
             zzEndRead += numRead;
@@ -320,10 +319,9 @@ class Yylex {
             int c = zzReader.read();
             if (c == -1) {
                 return true;
-            } else {
-                zzBuffer[zzEndRead++] = (char) c;
-                return false;
             }
+            zzBuffer[zzEndRead++] = (char) c;
+            return false;
         }
 
         // numRead < 0

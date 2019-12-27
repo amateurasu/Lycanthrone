@@ -8,15 +8,22 @@ public class ReflectUtils {
     }
 
     @SuppressWarnings("rawtypes")
-    public static Object getValueOf(Object clazz, String lookingForValue) throws Exception {
-        Field field = clazz.getClass().getField(lookingForValue);
-        Class clazzType = field.getType();
-        if (clazzType.toString().equals("double")) {
-            return field.getDouble(clazz);
-        } else if (clazzType.toString().equals("int")) {
-            return field.getInt(clazz);
+    public static Object getValueOf(Object instance, String lookingForValue) throws Exception {
+        Field field = instance.getClass().getDeclaredField(lookingForValue);
+        if (!field.isAccessible()) {
+            System.out.println("");
+            field.setAccessible(true);
         }
-        return field.get(clazz);
+        Class type = field.getType();
+        System.out.println(type);
+        switch (type.toString()) {
+            case "double":
+                return field.getDouble(instance);
+            case "int":
+                return field.getInt(instance);
+            default:
+                return field.get(instance);
+        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -25,10 +32,10 @@ public class ReflectUtils {
         System.out.println(ReflectUtils.getValueOf(test, "secondValue"));
         System.out.println(ReflectUtils.getValueOf(test, "thirdValue"));
     }
-}
 
-class TestClass {
-    public double firstValue = 3.1416;
-    public int secondValue = 42;
-    public String thirdValue = "Hello world";
+    static class TestClass {
+        public double firstValue = 3.1416;
+        private int secondValue = 42;
+        public String thirdValue = "Hello world";
+    }
 }

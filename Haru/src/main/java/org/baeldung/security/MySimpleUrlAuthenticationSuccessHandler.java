@@ -29,7 +29,11 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
     private DeviceService deviceService;
 
     @Override
-    public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
+    ) throws IOException {
         handle(request, response, authentication);
         final HttpSession session = request.getSession(false);
         if (session != null) {
@@ -60,7 +64,11 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         }
     }
 
-    protected void handle(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
+    protected void handle(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
+    ) throws IOException {
         final String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
@@ -92,11 +100,13 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
             }
 
             return "/homepage.html?user=" + username;
-        } else if (isAdmin) {
-            return "/console.html";
-        } else {
-            throw new IllegalStateException();
         }
+
+        if (isAdmin) {
+            return "/console.html";
+        }
+
+        throw new IllegalStateException();
     }
 
     protected void clearAuthenticationAttributes(final HttpServletRequest request) {

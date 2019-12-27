@@ -17,27 +17,25 @@ import java.util.ArrayList;import java.util.List;public class ExampleCompiler/*@
 
 PARSER_END(ExampleCompiler)
 
-SKIP :
-{
-  " "
-| "\t"
-| "\n"
-| "\r"
-| "\f"
+SKIP: {
+      " "
+    | "\t"
+    | "\n"
+    | "\r"
+    | "\f"
 }
 
 /*Keywords*/
-TOKEN :
-{
-  < INT : "int" >
-| < STRING : "string" >
-| < BOOL : "boolean" >
-| < TRUE : "true" >
-| < FALSE : "false" >
-| < IF : "if" >
-| < ELSE : "else" >
-| < WHILE : "while" >
-| < PRINT : "print" >
+TOKEN: {
+      < INT : "int" >
+    | < STRING : "string" >
+    | < BOOL : "boolean" >
+    | < TRUE : "true" >
+    | < FALSE : "false" >
+    | < IF : "if" >
+    | < ELSE : "else" >
+    | < WHILE : "while" >
+    | < PRINT : "print" >
 }
 
 /*Operations*/

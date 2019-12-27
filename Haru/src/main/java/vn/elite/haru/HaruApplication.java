@@ -20,7 +20,9 @@ public class HaruApplication {
 
     private final YamlConfig config;
 
-    public HaruApplication(YamlConfig config) {this.config = config;}
+    public HaruApplication(YamlConfig config) {
+        this.config = config;
+    }
 
     public static void main(String[] args) {
         run(HaruApplication.class, args);

@@ -49,9 +49,9 @@ public class EmlMail {
 
     private static String filter(String text) {
         return text
-                .replace("\n", "")
-                .replace("\r", "")
-                .replace("\"", "");
+            .replace("\n", "")
+            .replace("\r", "")
+            .replace("\"", "");
     }
 
     public static void main(String[] args) {
@@ -144,9 +144,9 @@ public class EmlMail {
             Object mailContent = message.getContent();
             if (message.isMimeType("text/html")) {
                 return Jsoup.parse(mailContent.toString()).text();
-            } else {
-                return getTexMultipart((MimeMultipart) mailContent);
             }
+
+            return getTexMultipart((MimeMultipart) mailContent);
         } catch (Exception ignored) {
             return "";
         }
@@ -159,7 +159,8 @@ public class EmlMail {
             if (bodyPart.isMimeType("text/plain")) {
                 result.append(bodyPart.getContent());
                 break;
-            } else if (bodyPart.isMimeType("text/html")) {
+            }
+            if (bodyPart.isMimeType("text/html")) {
                 String html = (String) bodyPart.getContent();
                 result.append(Jsoup.parse(html).text());
             } else if (bodyPart.getContent() instanceof MimeMultipart) {
@@ -185,10 +186,11 @@ public class EmlMail {
     public List getAttachments() {
         List attachments = new ArrayList();
         try {
-            if (!message.isMimeType("multipart/mixed")) {return attachments;}
+            if (!message.isMimeType("multipart/mixed")) return attachments;
             Multipart multipart = (Multipart) message.getContent();
             int count = multipart.getCount();
-            if (count < 1) {return attachments;}
+
+            if (count < 1) return attachments;
 
             for (int j = 0; j < count; j++) {
                 MimeBodyPart bodyPart = (MimeBodyPart) multipart.getBodyPart(j);

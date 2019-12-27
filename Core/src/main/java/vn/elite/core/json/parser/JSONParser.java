@@ -96,7 +96,7 @@ public class JSONParser {
      * @param in
      * @param containerFactory - Use this factory to createyour own JSON object and JSON array containers.
      * @return Instance of the following: org.json.simple.JSONObject, org.json.simple.JSONArray, java.lang.String,
-     * java.lang.Number, java.lang.Boolean, null
+     *     java.lang.Number, java.lang.Boolean, null
      * @throws IOException
      * @throws ParseException
      */
@@ -134,8 +134,7 @@ public class JSONParser {
                     case S_IN_FINISHED_VALUE:
                         if (token.type == TYPE_EOF)
                             return valueStack.removeFirst();
-                        else
-                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                        throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
 
                     case S_IN_OBJECT:
                         switch (token.type) {
@@ -301,9 +300,9 @@ public class JSONParser {
      *
      * @param in
      * @param contentHandler
-     * @param isResume       - Indicates if it continues previous parsing operation. If set to true, resume parsing the
-     *                       old stream, and parameter 'in' will be ignored. If this method is called for the first time
-     *                       in this instance, isResume will be ignored.
+     * @param isResume - Indicates if it continues previous parsing operation. If set to true, resume parsing the
+     *     old stream, and parameter 'in' will be ignored. If this method is called for the first time in this instance,
+     *     isResume will be ignored.
      * @throws IOException
      * @throws ParseException
      * @see ContentHandler
@@ -428,7 +427,8 @@ public class JSONParser {
 
                     case S_IN_PAIR_VALUE:
                         /*
-                         * S_IN_PAIR_VALUE is just a marker to indicate the end of an object entry, it doesn't proccess any token,
+                         * S_IN_PAIR_VALUE is just a marker to indicate the end of an object entry, it doesn't
+                         * proccess any token,
                          * therefore delay consuming token until next round.
                          */
                         statusStack.removeFirst();

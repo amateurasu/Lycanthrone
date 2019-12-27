@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "conf")
 public class YamlConfig {
 
     private String name;

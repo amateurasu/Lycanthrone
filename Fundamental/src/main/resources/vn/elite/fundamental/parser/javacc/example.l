@@ -2,7 +2,8 @@ int var1;
 string var2;
 boolean var3;
 string var4;
-int var5 = 1 + 1;
+int var5;
+var5 = 1 + 1;
 
 var1 = 15 - 3 - 4 / 2 * (4);
 var1 = var1 * 4;

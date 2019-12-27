@@ -24,7 +24,7 @@ public class JSONValue {
      *
      * @param in
      * @return Instance of the following: org.json.simple.JSONObject, org.json.simple.JSONArray, java.lang.String,
-     * java.lang.Number, java.lang.Boolean, null
+     *     java.lang.Number, java.lang.Boolean, null
      * @see JSONParser#parse(Reader)
      * @see #parseWithException(Reader)
      */
@@ -47,7 +47,7 @@ public class JSONValue {
      *
      * @param in
      * @return Instance of the following: org.json.simple.JSONObject, org.json.simple.JSONArray, java.lang.String,
-     * java.lang.Number, java.lang.Boolean, null
+     *     java.lang.Number, java.lang.Boolean, null
      * @throws IOException
      * @throws ParseException
      * @see JSONParser
@@ -162,15 +162,14 @@ public class JSONValue {
         if (value instanceof Double) {
             if (((Double) value).isInfinite() || ((Double) value).isNaN())
                 return "null";
-            else
-                return value.toString();
+
+            return value.toString();
         }
 
         if (value instanceof Float) {
             if (((Float) value).isInfinite() || ((Float) value).isNaN())
                 return "null";
-            else
-                return value.toString();
+            return value.toString();
         }
 
         if (value instanceof Number)
@@ -206,7 +205,7 @@ public class JSONValue {
     }
 
     /**
-     * @param s  - Must not be null.
+     * @param s - Must not be null.
      * @param sb
      */
     static void escape(String s, StringBuffer sb) {
@@ -239,7 +238,9 @@ public class JSONValue {
                     break;
                 default:
                     //Reference: http://www.unicode.org/versions/Unicode5.1.0/
-                    if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+                    if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000'
+                                                                                                     && ch
+                                                                                                        <= '\u20FF')) {
                         String ss = Integer.toHexString(ch);
                         sb.append("\\u");
                         for (int k = 0; k < 4 - ss.length(); k++) {
@@ -252,5 +253,4 @@ public class JSONValue {
             }
         }//for
     }
-
 }
