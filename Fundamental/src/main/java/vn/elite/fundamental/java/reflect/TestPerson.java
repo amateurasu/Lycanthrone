@@ -28,12 +28,13 @@ public class TestPerson {
 
     public static void main(String[] args) {
         try {
-            Class<?> builder = Class.forName(Person.class.getCanonicalName() + "Builder");
+            Class<?> builder = Class.forName(TestPerson.class.getCanonicalName() + "Builder");
             System.out.println(builder);
+            TestPerson person = new TestPersonBuilder().setAge(25).setName("John").build();
+            System.out.println(person.age);
+            System.out.println(person.name);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        // Person person = new PersonBuilder().setAge(25).setName("John").build();
     }
 }

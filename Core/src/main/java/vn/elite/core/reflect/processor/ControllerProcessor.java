@@ -26,10 +26,7 @@ public class ControllerProcessor extends AbstractProcessor {
     }
 
     @Override
-    public boolean process(
-        Set<? extends TypeElement> annotations,
-        RoundEnvironment env
-    ) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
         log.info("\n\n");
         log.info(" ======================================================== ");
         log.info("#process(...) in " + this.getClass().getSimpleName());
@@ -51,8 +48,7 @@ public class ControllerProcessor extends AbstractProcessor {
             log.info(" ====> ann.getKind() = " + kind);
             Set<? extends Element> e2s = env.getElementsAnnotatedWith(ann);
 
-            log.info(" ====> env.getElementsAnnotatedWith(ann) count = "
-                       + e2s.size());
+            log.info(" ====> env.getElementsAnnotatedWith(ann) count = {}", e2s.size());
             for (Element e2 : e2s) {
                 log.info(" ========> ElementsAnnotatedWith: " + e2);
                 log.info("           - Kind : " + e2.getKind());
