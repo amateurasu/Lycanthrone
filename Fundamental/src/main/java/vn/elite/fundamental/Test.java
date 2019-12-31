@@ -1,5 +1,6 @@
 package vn.elite.fundamental;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import java.io.File;
@@ -8,64 +9,38 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 public class Test {
-    private static int id = 0;
-
-    private static int getId() {
-        return ++id;
-    }
-
     public static void main(String[] args) {
-        switch (getId()) {
-            case 0:
-                System.out.println(0);
-                break;
-            case 1:
-                System.out.println(1);
-                break;
-            case 2:
-                System.out.println(2);
-                break;
-            case 3:
-                System.out.println(3);
-        }
-
-        if (true) return;
         int mb = 1024 * 1024;
 
         val runtime = Runtime.getRuntime();
-        System.out.println("Total Memory: " + runtime.totalMemory() / mb);
-        System.out.println("Free Memory: " + runtime.freeMemory() / mb);
-        System.out.println("Used Memory: " + (runtime.totalMemory() - runtime.freeMemory()) / mb);
-        System.out.println("Max Memory: " + runtime.maxMemory() / mb);
+        log.info("Total Memory: {}", runtime.totalMemory() / mb);
+        log.info("Free Memory:  {}", runtime.freeMemory() / mb);
+        log.info("Used Memory:  {}", (runtime.totalMemory() - runtime.freeMemory()) / mb);
+        log.info("Max Memory:   {}", runtime.maxMemory() / mb);
 
-        String[] lis = Objects.requireNonNull(new File("").list());
-        Arrays.stream(lis).forEach(s -> {
-            File file = new File(s);
-            System.out.println(file);
-        });
-
+        String[] lis = Objects.requireNonNull(new File("./").list());
+        Arrays.stream(lis).forEach(s -> log.info(new File(s).getAbsolutePath()));
 
         System.setProperty("java.net.useSystemProxies", "true");
-        System.out.println("detecting proxies");
+        log.info("detecting proxies");
         try {
-            List l = ProxySelector.getDefault().select(new URI("http://foo/bar"));
+            List<Proxy> l = ProxySelector.getDefault().select(new URI("http://foo/bar"));
 
-            if (l != null) {
-                for (Object o : l) {
-                    Proxy proxy = (Proxy) o;
-                    System.out.println("proxy type: " + proxy.type());
+            for (Object o : l) {
+                Proxy proxy = (Proxy) o;
+                log.info("proxy type: " + proxy.type());
 
-                    InetSocketAddress addr = (InetSocketAddress) proxy.address();
+                InetSocketAddress addr = (InetSocketAddress) proxy.address();
 
-                    if (addr == null) {
-                        System.out.println("No Proxy");
-                    } else {
-                        System.out.println("proxy hostname: " + addr.getHostName());
-                        System.setProperty("http.proxyHost", addr.getHostName());
-                        System.out.println("proxy port: " + addr.getPort());
-                        System.setProperty("http.proxyPort", Integer.toString(addr.getPort()));
-                    }
+                if (addr == null) {
+                    log.info("No Proxy");
+                } else {
+                    log.info("proxy hostname: " + addr.getHostName());
+                    System.setProperty("http.proxyHost", addr.getHostName());
+                    log.info("proxy port: " + addr.getPort());
+                    System.setProperty("http.proxyPort", Integer.toString(addr.getPort()));
                 }
             }
         } catch (URISyntaxException e) {
@@ -76,11 +51,11 @@ public class Test {
 
         List<I> list = Arrays.asList(new A(), new B());
         I i = list.get(0);
-        i.set("haghdvaghvwdhvahwvdyh");
-        System.out.println(list);
+
+        log.info(list.toString());
 
         list.set(0, new A());
-        System.out.println(list);
+        log.info(list.toString());
 
         A.fn();
         C.fn();
@@ -96,7 +71,7 @@ public class Test {
         private String a = "String a";
 
         public static void fn() {
-            System.out.println("A - public static void fn()");
+            log.info("A - public static void fn()");
         }
 
         @Override
@@ -136,8 +111,7 @@ public class Test {
 
     public static class C extends A {
         public static void fn() {
-            System.out.println("A - public static void fn()");
+            log.info("A - public static void fn()");
         }
     }
-
 }

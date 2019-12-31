@@ -1,18 +1,9 @@
 package org.baeldung.test;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.baeldung.Application;
 import org.baeldung.persistence.dao.UserRepository;
 import org.baeldung.persistence.model.User;
@@ -29,10 +20,17 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { Application.class, TestDbConfig.class, TestIntegrationConfig.class }, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    classes = {Application.class, TestDbConfig.class, TestIntegrationConfig.class},
+    webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ChangePasswordIntegrationTest {
 
     @Autowired
@@ -46,8 +44,6 @@ public class ChangePasswordIntegrationTest {
 
     private FormAuthConfig formConfig;
     private String URL;
-
-    //
 
     @Before
     public void init() {
@@ -80,7 +76,11 @@ public class ChangePasswordIntegrationTest {
 
     @Test
     public void givenNotAuthenticatedUser_whenBadPasswordLoggingIn_thenCorrect() {
-        final RequestSpecification request = RestAssured.given().auth().form("XXXXXXXX@XXXXXXXXX.com", "XXXXXXXX", formConfig).redirects().follow(false);
+        final RequestSpecification request = RestAssured.given()
+            .auth()
+            .form("XXXXXXXX@XXXXXXXXX.com", "XXXXXXXX", formConfig)
+            .redirects()
+            .follow(false);
 
         request.when().get("/console.html").then().statusCode(IsNot.not(200)).body(isEmptyOrNullString());
     }
@@ -89,7 +89,7 @@ public class ChangePasswordIntegrationTest {
     public void givenLoggedInUser_whenChangingPassword_thenCorrect() {
         final RequestSpecification request = RestAssured.given().auth().form("test@test.com", "test", formConfig);
 
-        final Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<>();
         params.put("oldPassword", "test");
         params.put("newPassword", "newTest&12");
 
@@ -103,7 +103,7 @@ public class ChangePasswordIntegrationTest {
     public void givenWrongOldPassword_whenChangingPassword_thenBadRequest() {
         final RequestSpecification request = RestAssured.given().auth().form("test@test.com", "test", formConfig);
 
-        final Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<>();
         params.put("oldPassword", "abc");
         params.put("newPassword", "newTest&12");
 
@@ -115,7 +115,7 @@ public class ChangePasswordIntegrationTest {
 
     @Test
     public void givenNotAuthenticatedUser_whenChangingPassword_thenRedirect() {
-        final Map<String, String> params = new HashMap<String, String>();
+        final Map<String, String> params = new HashMap<>();
         params.put("oldPassword", "abc");
         params.put("newPassword", "xyz");
 
@@ -124,5 +124,4 @@ public class ChangePasswordIntegrationTest {
         assertEquals(302, response.statusCode());
         assertFalse(response.body().asString().contains("Password updated successfully"));
     }
-
 }

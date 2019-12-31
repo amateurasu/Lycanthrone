@@ -1,5 +1,7 @@
 package vn.elite.fundamental.java.concurrency;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -9,41 +11,41 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DeadlockSolver {
-}
+public class DeadlockSolver extends ReentrantLock {
+    private static List<DeadlockSolver> deadlockLocksRegistry = new ArrayList<>();
 
-class DeadlockDetectingLock extends ReentrantLock {
-    private static List deadlockLocksRegistry = new ArrayList();
-    private static Lock a = new DeadlockDetectingLock(false, true);
-    private static Lock b = new DeadlockDetectingLock(false, true);
-    private static Lock c = new DeadlockDetectingLock(false, true);
+    private static Lock a = new DeadlockSolver(false, true);
+    private static Lock b = new DeadlockSolver(false, true);
+    private static Lock c = new DeadlockSolver(false, true);
+
     private static Condition wa = a.newCondition();
     private static Condition wb = b.newCondition();
     private static Condition wc = c.newCondition();
+
     private List hardwaitingThreads = new ArrayList();
     private boolean debugging;
 
-    public DeadlockDetectingLock() {
+    public DeadlockSolver() {
         this(false, false);
     }
 
-    public DeadlockDetectingLock(boolean fair) {
+    public DeadlockSolver(boolean fair) {
         this(fair, false);
     }
 
-    public DeadlockDetectingLock(boolean fair, boolean debug) {
+    public DeadlockSolver(boolean fair, boolean debug) {
         super(fair);
         debugging = debug;
         registerLock(this);
     }
 
-    private static synchronized void registerLock(DeadlockDetectingLock ddl) {
+    private static synchronized void registerLock(DeadlockSolver ddl) {
         if (!deadlockLocksRegistry.contains(ddl)) {
             deadlockLocksRegistry.add(ddl);
         }
     }
 
-    private static synchronized void unregisterLock(DeadlockDetectingLock ddl) {
+    private static synchronized void unregisterLock(DeadlockSolver ddl) {
         deadlockLocksRegistry.remove(ddl);
     }
 
@@ -58,12 +60,12 @@ class DeadlockDetectingLock extends ReentrantLock {
     }
 
     private static Iterator getAllLocksOwned(Thread t) {
-        DeadlockDetectingLock current;
+        DeadlockSolver current;
         ArrayList results = new ArrayList();
         Iterator itr = deadlockLocksRegistry.iterator();
 
         while (itr.hasNext()) {
-            current = (DeadlockDetectingLock) itr.next();
+            current = (DeadlockSolver) itr.next();
             if (current.getOwner() == t) {
                 results.add(current);
             }
@@ -71,14 +73,14 @@ class DeadlockDetectingLock extends ReentrantLock {
         return results.iterator();
     }
 
-    private static Iterator getAllThreadsHardwaiting(DeadlockDetectingLock l) {
-        return l.hardwaitingThreads.iterator();
+    private static Iterator getAllThreadsHardwaiting(DeadlockSolver solver) {
+        return solver.hardwaitingThreads.iterator();
     }
 
-    private static synchronized boolean canThreadWaitOnLock(Thread t, DeadlockDetectingLock l) {
+    private static synchronized boolean canThreadWaitOnLock(Thread t, DeadlockSolver l) {
         Iterator locksOwned = getAllLocksOwned(t);
         while (locksOwned.hasNext()) {
-            DeadlockDetectingLock current = (DeadlockDetectingLock) locksOwned.next();
+            DeadlockSolver current = (DeadlockSolver) locksOwned.next();
             if (current == l) {
                 return false;
             }
@@ -189,36 +191,14 @@ class DeadlockDetectingLock extends ReentrantLock {
         }).start();
     }
 
-    public static void main(String[] args) {
-        int test = 1;
-        if (args.length > 0) {
-            test = Integer.parseInt(args[0]);
-        }
-        switch (test) {
-            case 1:
-                testOne();
-                break;
-            case 2:
-                testTwo();
-                break;
-            case 3:
-                testThree();
-                break;
-            default:
-                System.err.println("usage: java DeadlockDetectingLock [ test# ]");
-        }
-        delaySeconds(60);
-        System.out.println("--- End Program ---");
-        System.exit(0);
-    }
-
     public void lock() {
         if (isHeldByCurrentThread()) {
             if (debugging) {
                 System.out.println("Already Own Lock");
             }
             super.lock();
-            freeIfHardwait(hardwaitingThreads,
+            freeIfHardwait(
+                hardwaitingThreads,
                 Thread.currentThread());
             return;
         }
@@ -247,6 +227,7 @@ class DeadlockDetectingLock extends ReentrantLock {
     }
 
     public class DeadlockDetectingCondition implements Condition {
+
         Condition embedded;
 
         protected DeadlockDetectingCondition(ReentrantLock lock, Condition embedded) {
@@ -303,10 +284,33 @@ class DeadlockDetectingLock extends ReentrantLock {
             embedded.signalAll();
         }
     }
-}
 
-class DeadlockDetectedException extends RuntimeException {
-    public DeadlockDetectedException(String s) {
-        super(s);
+    static class DeadlockDetectedException extends RuntimeException {
+        public DeadlockDetectedException(String s) {
+            super(s);
+        }
+    }
+
+    public static void main(@NotNull String[] args) {
+        int test = 1;
+        if (args.length > 0) {
+            test = Integer.parseInt(args[0]);
+        }
+        switch (test) {
+            case 1:
+                testOne();
+                break;
+            case 2:
+                testTwo();
+                break;
+            case 3:
+                testThree();
+                break;
+            default:
+                System.err.println("usage: java DeadlockDetectingLock [ test# ]");
+        }
+        delaySeconds(60);
+        System.out.println("--- End Program ---");
+        System.exit(0);
     }
 }

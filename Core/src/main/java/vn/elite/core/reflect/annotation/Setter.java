@@ -1,4 +1,3 @@
 package vn.elite.core.reflect.annotation;
 
-public @interface Setter {
-}
+public @interface Setter {}

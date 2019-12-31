@@ -2,7 +2,7 @@ package vn.elite.fundamental.java.reflect;
 
 import vn.elite.core.reflect.annotation.BuilderProperty;
 
-public class TestPerson {
+public class TestBuilder {
 
     private int age;
 
@@ -28,9 +28,9 @@ public class TestPerson {
 
     public static void main(String[] args) {
         try {
-            Class<?> builder = Class.forName(TestPerson.class.getCanonicalName() + "Builder");
+            Class<?> builder = Class.forName(TestBuilder.class.getCanonicalName() + "Builder");
             System.out.println(builder);
-            TestPerson person = new TestPersonBuilder().setAge(25).setName("John").build();
+            TestBuilder person = new TestBuilderBuilder().setAge(25).setName("John").build();
             System.out.println(person.age);
             System.out.println(person.name);
         } catch (ClassNotFoundException e) {

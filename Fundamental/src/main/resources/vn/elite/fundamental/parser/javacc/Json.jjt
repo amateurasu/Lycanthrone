@@ -21,10 +21,6 @@ import java.util.Map;
 
 public class JSONParser {
 
-    static String stripOffQuotes(String quotedString) {
-        return quotedString.substring(1, quotedString.length() - 1);
-    }
-
     public static String TRUE_ATOM = stripOffQuotes(tokenImage[K_TRUE]);
     public static String FALSE_ATOM = stripOffQuotes(tokenImage[K_FALSE]);
 
@@ -32,7 +28,11 @@ public class JSONParser {
         super();
     }
 
-    //cheat to sorta get generics on productions
+    static String stripOffQuotes(String quotedString) {
+        return quotedString.substring(1, quotedString.length() - 1);
+    }
+
+    // cheat to sorta get generics on productions
     public <A> List<A> array() throws ParseException {
         return _array();
     }

@@ -4,7 +4,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public final class GenerationUtils {
     public static String generateId() {
         return UUID.randomUUID().toString();

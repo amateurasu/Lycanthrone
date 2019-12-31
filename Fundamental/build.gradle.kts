@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.3.50"
     antlr
+    idea
     war
 }
 
@@ -41,4 +42,8 @@ val compileKotlin by tasks.getting(KotlinCompile::class) {
 val compileTestKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions.jvmTarget = "1.8"
     doLast { print("Finished compiling Kotlin source code for testing") }
+}
+
+task("ideaProject") {
+
 }

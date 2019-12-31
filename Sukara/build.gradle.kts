@@ -8,6 +8,10 @@ repositories {
     }
 }
 
+tasks.withType<ScalaCompile> {
+    sourceCompatibility = "1.8"
+}
+
 val scalaVersion = "2.12.8"
 val scalaV = "2.12"
 dependencies {

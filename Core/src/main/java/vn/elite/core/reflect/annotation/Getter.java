@@ -1,4 +1,3 @@
 package vn.elite.core.reflect.annotation;
 
-public @interface Getter {
-}
+public @interface Getter {}

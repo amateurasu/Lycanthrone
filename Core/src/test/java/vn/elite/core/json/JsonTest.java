@@ -7,6 +7,7 @@ import vn.elite.core.json.parser.JSONParser;
 import vn.elite.core.json.parser.ParseException;
 import vn.elite.core.utils.StringUtils;
 
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.*;
 
@@ -312,7 +313,7 @@ public class JsonTest {
         System.out.println();
         assertEquals("[\"abc\\u0010a\\/\",123,222.123,true,{\"weight\":60.21,\"age\":27,\"name\":\"fang\",\"is_developer\":true}]", array1.toString());
 
-        List<java.io.Serializable> list = new ArrayList<java.io.Serializable>();
+        List<Serializable> list = new ArrayList<>();
         list.add("abc\u0010a/");
         list.add(123);
         list.add(222.123);
@@ -334,9 +335,9 @@ public class JsonTest {
         System.out.println();
         assertEquals("{\"array1\":[\"abc\\u0010a\\/\",123,222.123,true,null],\"weight\":60.21,\"age\":27,\"name\":\"fang\",\"is_developer\":true}", JSONObject.toJSONString(map));
 
-        Map<String, Object> m1 = new LinkedHashMap<String, Object>();
-        Map<String, Object> m2 = new HashMap<String, Object>();
-        List<Map<String, Object>> l1 = new LinkedList<Map<String, Object>>();
+        Map<String, Object> m1 = new LinkedHashMap<>();
+        Map<String, Object> m2 = new HashMap<>();
+        List<Map<String, Object>> l1 = new LinkedList<>();
 
         m1.put("k11", "v11");
         m1.put("k12", "v12");
@@ -356,7 +357,7 @@ public class JsonTest {
         System.out.println(jsonString);
         assertEquals("[{\"k11\":\"v11\",\"k12\":\"v12\",\"k13\":\"v13\"},{\"k22\":\"v22\",\"k21\":\"v21\",\"k23\":\"v23\"}]", jsonString);
 
-        List<java.io.Serializable> l2 = new LinkedList<java.io.Serializable>();
+        List<Serializable> l2 = new LinkedList<>();
         Map<String, Object> m3 = new LinkedHashMap<>();
         m3.put("k31", "v3");
         m3.put("k32", 123.45);

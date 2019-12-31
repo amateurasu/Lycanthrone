@@ -89,7 +89,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         logger.error("500 Status Code", ex);
         final GenericResponse bodyOfResponse = new GenericResponse(
             messages.getMessage("message.email.config.error", null, request.getLocale()), "MailError");
-        return new ResponseEntity<Object>(bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({ReCaptchaUnavailableException.class})
@@ -106,6 +106,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         logger.error("500 Status Code", ex);
         final GenericResponse bodyOfResponse = new GenericResponse(
             messages.getMessage("message.error", null, request.getLocale()), "InternalError");
-        return new ResponseEntity<Object>(bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

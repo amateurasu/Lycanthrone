@@ -1,10 +1,13 @@
-package vn.elite.core.reflect.annotation;
+package vn.elite.core.compiler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Action { }
+public @interface CC {
+    String javacc();
+
+}

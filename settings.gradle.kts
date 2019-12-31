@@ -8,4 +8,4 @@ rootProject.name = "Lycanthrone"
 /* 06 */ include(":Haru")
 /* 07 */ include(":HttpsServer")
 /* 08 */ include(":Snatch")
-/* 09 */ include(":Sukara")
+// /* 09 */ include(":Sukara")

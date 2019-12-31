@@ -2,6 +2,11 @@
 
 package vn.elite.core.json.parser;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 class Yylex {
 
     /** This character denotes the end of file */
@@ -146,7 +151,7 @@ class Yylex {
      */
     private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute();
     /** the input device */
-    private java.io.Reader zzReader;
+    private Reader zzReader;
     /** the current state of the DFA */
     private int zzState;
     /** the current lexical state */
@@ -187,7 +192,7 @@ class Yylex {
      *
      * @param in the java.io.Reader to read input from.
      */
-    Yylex(java.io.Reader in) {
+    Yylex(Reader in) {
         this.zzReader = in;
     }
 
@@ -196,8 +201,8 @@ class Yylex {
      *
      * @param in the java.io.Inputstream to read input from.
      */
-    Yylex(java.io.InputStream in) {
-        this(new java.io.InputStreamReader(in));
+    Yylex(InputStream in) {
+        this(new InputStreamReader(in));
     }
 
     private static int[] zzUnpackAction() {
@@ -282,9 +287,9 @@ class Yylex {
      * Refills the input buffer.
      *
      * @return <code>false</code>, iff there was new input.
-     * @throws java.io.IOException if any I/O-Error occurs
+     * @throws IOException if any I/O-Error occurs
      */
-    private boolean zzRefill() throws java.io.IOException {
+    private boolean zzRefill() throws IOException {
 
         /* first: make room (if you can) */
         if (zzStartRead > 0) {
@@ -331,7 +336,7 @@ class Yylex {
     /**
      * Closes the input stream.
      */
-    public final void yyclose() throws java.io.IOException {
+    public final void yyclose() throws IOException {
         zzAtEOF = true;            /* indicate end of file */
         zzEndRead = zzStartRead;  /* invalidate buffer    */
 
@@ -348,7 +353,7 @@ class Yylex {
      *
      * @param reader the new input stream
      */
-    public final void yyreset(java.io.Reader reader) {
+    public final void yyreset(Reader reader) {
         zzReader = reader;
         zzAtBOL = true;
         zzAtEOF = false;
@@ -441,9 +446,9 @@ class Yylex {
      * occurs.
      *
      * @return the next token
-     * @throws java.io.IOException if any I/O-Error occurs
+     * @throws IOException if any I/O-Error occurs
      */
-    public Yytoken yylex() throws java.io.IOException, ParseException {
+    public Yytoken yylex() throws IOException, ParseException {
         int zzInput;
         int zzAction;
 

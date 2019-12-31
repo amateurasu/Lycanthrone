@@ -21,15 +21,13 @@ public class FileUtils {
             channel.write(buffer);
         }
         // verify
-        //        RandomAccessFile reader = new RandomAccessFile(fileName, "r");
-        //        assertEquals(value, reader.readLine());
-        //        reader.close();
+        // RandomAccessFile reader = new RandomAccessFile(fileName, "r");
+        // assertEquals(value, reader.readLine());
+        // reader.close();
     }
 
     public static boolean save(String content, File file) {
-        if (invalidCreation(file)) {
-            return false;
-        }
+        if (invalidCreation(file)) return false;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(content);
@@ -44,9 +42,7 @@ public class FileUtils {
     }
 
     public static void save(byte[] content, File file, boolean append) throws IOException {
-        if (invalidCreation(file)) {
-            return;
-        }
+        if (invalidCreation(file)) return;
 
         try (OutputStream stream = new FileOutputStream(file, append)) {
             stream.write(content);
@@ -54,9 +50,7 @@ public class FileUtils {
     }
 
     public static boolean remove(File dir) {
-        if (dir == null || !dir.exists()) {
-            return true;
-        }
+        if (dir == null || !dir.exists()) return true;
         if (dir.isDirectory()) {
             File[] files = dir.listFiles();
             if (valid(files)) {

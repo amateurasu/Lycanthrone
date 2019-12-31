@@ -26,19 +26,19 @@ public class PublicFinalProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-        log.info("#process(...) in {}", this.getClass().getSimpleName());
-        log.info(" annotations count = {}", annotations.size());
+        System.out.println("#process(...) in " + this.getClass().getSimpleName());
+        System.out.println(" annotations count = " + annotations.size());
 
         for (TypeElement ann : annotations) {
             Set<? extends Element> e2s = env.getElementsAnnotatedWith(ann);
             for (Element e2 : e2s) {
-                log.info("- e2 = {}", e2);
+                System.out.println("- e2 = " + e2);
 
                 Set<Modifier> modifiers = e2.getModifiers();
 
                 // @PublicFinal only using for public & final
                 // Notify if misuse
-                if (!(modifiers.contains(Modifier.FINAL) && modifiers.contains(Modifier.PUBLIC))) {
+                if (!modifiers.contains(Modifier.FINAL) || !modifiers.contains(Modifier.PUBLIC)) {
                     log.info("- Error!!!");
                     messager.printMessage(Kind.ERROR, "Method/field wasn't public and final", e2);
                 }

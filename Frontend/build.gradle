@@ -30,7 +30,6 @@ task webpack(type: Exec) {
     inputs.file("webpack.config.js").withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.cacheIf { true }
 //    workingDir "$projectDir"
-    println "---------------------------------------------------------------------"
     commandLine "webpack", "./ed/components/App.jsx", "./ed/bundle/ed.js"
 }
 

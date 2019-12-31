@@ -28,10 +28,7 @@ public class ActionProcessor extends AbstractProcessor {
     }
 
     @Override
-    public boolean process(
-        Set<? extends TypeElement> annotations,
-        RoundEnvironment env
-    ) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
         log.info("#process(...) in " + this.getClass().getSimpleName());
 
         for (TypeElement ann : annotations) {
