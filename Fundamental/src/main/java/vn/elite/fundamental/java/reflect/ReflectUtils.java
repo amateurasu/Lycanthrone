@@ -11,7 +11,7 @@ public class ReflectUtils {
     public static Object getValueOf(Object instance, String lookingForValue) throws Exception {
         Field field = instance.getClass().getDeclaredField(lookingForValue);
         if (!field.isAccessible()) {
-            System.out.println("");
+            System.out.println();
             field.setAccessible(true);
         }
         Class type = field.getType();

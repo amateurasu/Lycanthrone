@@ -1,5 +1,7 @@
 package vn.elite.fundamental.java;
 
+import lombok.NoArgsConstructor;
+
 public class StaticDemo {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("vn.elite.fundamental.main");
@@ -11,8 +13,11 @@ public class StaticDemo {
     }
 }
 
+@NoArgsConstructor
 class A {
     static String b;
+
+    String a;
 
     static {
         System.out.println("static truoc: " + b);
@@ -20,7 +25,10 @@ class A {
         System.out.println("static sau: " + b);
     }
 
-    String a;
+    public A(String a) {
+        this.a = a;
+    }
+
 
     public A() {
         this.a = "gia tri a";

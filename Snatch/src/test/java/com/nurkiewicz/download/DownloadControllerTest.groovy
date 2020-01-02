@@ -26,10 +26,10 @@ class DownloadControllerSpec extends Specification {
 
     private MockMvc mockMvc
 
-    private static final String TEXT_FILE = '/download/' + FileExamples.TXT_FILE_UUID + '/file.txt';
+    private static final String TEXT_FILE = '/download/' + FileExamples.TXT_FILE_UUID + '/file.txt'
 
     @Autowired
-    public void setWebApplicationContext(WebApplicationContext wac) {
+    void setWebApplicationContext(WebApplicationContext wac) {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build()
     }
 

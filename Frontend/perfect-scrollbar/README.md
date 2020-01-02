@@ -282,7 +282,7 @@ that Y axis scroll bar is not enabled just because of a few pixels.
 perfect-scrollbar dispatches custom events.
 
 ```js
-container.addEventListener('ps-scroll-x', () => ...);
+container.addEventListener('ps-scroll-x', () =>; ...)
 ```
 
 ### `ps-scroll-y`

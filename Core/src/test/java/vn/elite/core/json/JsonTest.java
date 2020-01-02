@@ -170,7 +170,6 @@ public class JsonTest {
                 return true;
             }
         }
-        ;
 
         try {
             Map json = (Map) parser.parse(s, containerFactory);

@@ -20,7 +20,6 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
 
     private Messager messager;
 
-
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -34,16 +33,14 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
             Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
 
             Map<Boolean, List<Element>> annotatedMethods = annotatedElements.stream()
-                .collect(
-                    Collectors.partitioningBy(element -> {
-                        ExecutableType type = (ExecutableType) element.asType();
-                        return type.getParameterTypes().size() == 1
-                            && element.getSimpleName().toString().startsWith("set");
-                    }));
+                .collect(Collectors.partitioningBy(element -> {
+                    ExecutableType type = (ExecutableType) element.asType();
+                    return type.getParameterTypes().size() == 1
+                        && element.getSimpleName().toString().startsWith("set");
+                }));
 
             List<Element> setters = annotatedMethods.get(true);
             List<Element> otherMethods = annotatedMethods.get(false);
-
 
             otherMethods.forEach(element -> messager
                 .printMessage(
@@ -53,14 +50,13 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
 
             if (setters.isEmpty()) continue;
 
-
             Map<String, String> setterMap = setters.stream()
                 .collect(Collectors.toMap(
                     setter -> setter.getSimpleName().toString(),
                     setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
 
             try {
-                String className = setters.get(0).getEnclosingElement().getSimpleName().toString();
+                String className = setters.get(0).getEnclosingElement().toString();
                 writeBuilderFile(className, setterMap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -77,6 +73,8 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
         if (lastDot > 0) {
             packageName = className.substring(0, lastDot);
         }
+
+        System.out.println(packageName);
 
         System.out.println(className);
         String simpleClassName = className.substring(lastDot + 1);
