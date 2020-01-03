@@ -15,31 +15,28 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class PublicFinalProcessor extends AbstractProcessor {
 
-    private Filer filer;
     private Messager messager;
 
     @Override
     public void init(ProcessingEnvironment env) {
-        filer = env.getFiler();
         messager = env.getMessager();
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-        System.out.println("#process(...) in " + this.getClass().getSimpleName());
-        System.out.println(" annotations count = " + annotations.size());
+        log.debug("#process(...) in {}, annotations count = {}", this.getClass().getSimpleName(), annotations.size());
 
         for (TypeElement ann : annotations) {
             Set<? extends Element> e2s = env.getElementsAnnotatedWith(ann);
             for (Element e2 : e2s) {
-                System.out.println("- e2 = " + e2);
+                log.debug("- e2 = {}", e2);
 
                 Set<Modifier> modifiers = e2.getModifiers();
 
                 // @PublicFinal only using for public & final
                 // Notify if misuse
                 if (!modifiers.contains(Modifier.FINAL) || !modifiers.contains(Modifier.PUBLIC)) {
-                    log.info("- Error!!!");
+                    log.debug("- Error!!!");
                     messager.printMessage(Kind.ERROR, "Method/field wasn't public and final", e2);
                 }
             }

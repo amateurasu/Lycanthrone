@@ -1,30 +1,38 @@
 package vn.elite.core.reflect.processor;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ExecutableType;
-import javax.tools.Diagnostic;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static javax.tools.Diagnostic.Kind.ERROR;
+
+@Slf4j
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("vn.elite.core.reflect.annotation.BuilderProperty")
 public class BuilderPropertyProcessor extends AbstractProcessor {
 
     private Messager messager;
+    private Filer filer;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
 
         messager = processingEnv.getMessager();
+        filer = processingEnv.getFiler();
     }
 
     @Override
@@ -35,29 +43,35 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
             Map<Boolean, List<Element>> annotatedMethods = annotatedElements.stream()
                 .collect(Collectors.partitioningBy(element -> {
                     ExecutableType type = (ExecutableType) element.asType();
-                    return type.getParameterTypes().size() == 1
-                        && element.getSimpleName().toString().startsWith("set");
+                    String name = element.getSimpleName().toString();
+
+                    return type.getParameterTypes().size() == 1 && name.startsWith("set");
                 }));
 
             List<Element> setters = annotatedMethods.get(true);
             List<Element> otherMethods = annotatedMethods.get(false);
 
-            otherMethods.forEach(element -> messager
-                .printMessage(
-                    Diagnostic.Kind.ERROR,
-                    "@BuilderProperty must be applied to a setXxx method with a single argument",
-                    element));
+            otherMethods.forEach(element -> messager.printMessage(
+                ERROR, "@BuilderProperty must be applied to a setXxx method with a single argument", element));
 
             if (setters.isEmpty()) continue;
 
-            Map<String, String> setterMap = setters.stream()
+            Map<TypeMirror, Integer> typeMap = new HashMap<>();
+            Map<String, ? extends TypeMirror> setterMap = setters.stream()
                 .collect(Collectors.toMap(
                     setter -> setter.getSimpleName().toString(),
-                    setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
+                    setter -> {
+                        TypeMirror type = ((ExecutableType) setter.asType()).getParameterTypes().get(0);
+                        if (!type.getKind().isPrimitive()) {
+                            typeMap.compute(type, (key, value) -> value == null ? 1 : value + 1);
+                        }
+                        return type;
+                    }));
+            log.debug("Setters: {}", setterMap);
 
             try {
                 String className = setters.get(0).getEnclosingElement().toString();
-                writeBuilderFile(className, setterMap);
+                writeBuilderFile(className, setterMap, typeMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -66,7 +80,11 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void writeBuilderFile(String className, Map<String, String> setterMap) throws IOException {
+    private void writeBuilderFile(
+        String className,
+        Map<String, ? extends TypeMirror> setterMap,
+        Map<TypeMirror, Integer> typeMap
+    ) throws IOException {
 
         String packageName = null;
         int lastDot = className.lastIndexOf('.');
@@ -74,17 +92,16 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
             packageName = className.substring(0, lastDot);
         }
 
-        System.out.println(packageName);
-
-        System.out.println(className);
         String simpleClassName = className.substring(lastDot + 1);
         String builderClassName = className + "Builder";
-        System.out.println(builderClassName);
         String builderSimpleClassName = builderClassName.substring(lastDot + 1);
 
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(builderClassName);
-        try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+        // System.out.println(packageName);
+        // System.out.println(className);
+        // System.out.println(builderClassName);
 
+        JavaFileObject builderFile = filer.createSourceFile(builderClassName);
+        try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
             if (packageName != null) {
                 out.format("package %s;\n\n", packageName);
             }

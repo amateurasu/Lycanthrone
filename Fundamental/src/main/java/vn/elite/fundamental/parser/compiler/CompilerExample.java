@@ -23,8 +23,12 @@ public class CompilerExample {
         }
 
         for (val diagnostic : diagnostics.getDiagnostics()) {
-            System.out.format("%s, line %d in %s",
-                diagnostic.getMessage(null), diagnostic.getLineNumber(), diagnostic.getSource().getName());
+            System.out.format(
+                "%s, line %d:%d in %s\n",
+                diagnostic.getMessage(null),
+                diagnostic.getLineNumber(),
+                diagnostic.getColumnNumber(),
+                diagnostic.getCode());
         }
     }
 }

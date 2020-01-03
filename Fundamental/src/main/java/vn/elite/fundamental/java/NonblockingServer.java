@@ -18,7 +18,7 @@ public class NonblockingServer {
         serverSocketChannel.configureBlocking(false);
         serverSocketChannel.bind(new InetSocketAddress(host, 1234));
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        SelectionKey key;
+
         while (true) {
             if (selector.select() <= 0) {
                 continue;
@@ -26,15 +26,13 @@ public class NonblockingServer {
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
             Iterator<SelectionKey> iterator = selectedKeys.iterator();
             while (iterator.hasNext()) {
-                key = iterator.next();
+                SelectionKey key = iterator.next();
                 iterator.remove();
                 if (key.isAcceptable()) {
                     SocketChannel sc = serverSocketChannel.accept();
                     sc.configureBlocking(false);
-                    sc.register(selector, SelectionKey.
-                        OP_READ);
-                    System.out.println("Connection Accepted: "
-                        + sc.getLocalAddress() + "\n");
+                    sc.register(selector, SelectionKey.OP_READ);
+                    System.out.println("Connection Accepted: " + sc.getLocalAddress() + "\n");
                 }
                 if (key.isReadable()) {
                     SocketChannel sc = (SocketChannel) key.channel();

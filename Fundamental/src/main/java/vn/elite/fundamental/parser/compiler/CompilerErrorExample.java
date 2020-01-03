@@ -7,7 +7,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
@@ -16,25 +15,21 @@ public class CompilerErrorExample {
         val compiler = ToolProvider.getSystemJavaCompiler();
         val diagnostics = new DiagnosticCollector<JavaFileObject>();
 
-        try (
-            val manager = compiler.getStandardFileManager(diagnostics, null, StandardCharsets.UTF_8)
-        ) {
-            URL url = CompilerErrorExample.class.getResource("SampleClassWithErrors.java");
-            System.out.println(url);
-            String resource = url.getPath();
-            System.out.println(resource);
-            val file = new File(resource);
-            val sources = manager.getJavaFileObjectsFromFiles(Collections.singletonList(file));
+        try (val manager = compiler.getStandardFileManager(diagnostics, null, StandardCharsets.UTF_8)) {
+            String path = CompilerErrorExample.class.getResource("SampleClassWithErrors.java").getPath();
+            val sources = manager.getJavaFileObjectsFromFiles(Collections.singletonList(new File(path)));
 
             val task = compiler.getTask(null, manager, diagnostics, null, null, sources);
             task.call();
         }
 
         for (val diagnostic : diagnostics.getDiagnostics()) {
-            System.out.format("%s, line %d in %s",
+            System.out.format(
+                "%s, line %d:%d in %s\n",
                 diagnostic.getMessage(null),
                 diagnostic.getLineNumber(),
-                diagnostic.getSource().getName());
+                diagnostic.getColumnNumber(),
+                diagnostic.getCode());
         }
     }
 }

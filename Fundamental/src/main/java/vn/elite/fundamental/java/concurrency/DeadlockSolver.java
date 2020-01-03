@@ -1,7 +1,5 @@
 package vn.elite.fundamental.java.concurrency;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -22,7 +20,7 @@ public class DeadlockSolver extends ReentrantLock {
     private static Condition wb = b.newCondition();
     private static Condition wc = c.newCondition();
 
-    private List hardwaitingThreads = new ArrayList();
+    private List<Thread> hardwaitingThreads = new ArrayList<>();
     private boolean debugging;
 
     public DeadlockSolver() {
@@ -49,23 +47,20 @@ public class DeadlockSolver extends ReentrantLock {
         deadlockLocksRegistry.remove(ddl);
     }
 
-    private static synchronized void markAsHardwait(List l, Thread t) {
+    private static synchronized void markAsHardwait(List<Thread> l, Thread t) {
         if (!l.contains(t)) {
             l.add(t);
         }
     }
 
-    private static synchronized void freeIfHardwait(List l, Thread t) {
+    private static synchronized void freeIfHardwait(List<Thread> l, Thread t) {
         l.remove(t);
     }
 
-    private static Iterator getAllLocksOwned(Thread t) {
-        DeadlockSolver current;
-        ArrayList results = new ArrayList();
-        Iterator itr = deadlockLocksRegistry.iterator();
+    private static Iterator<DeadlockSolver> getAllLocksOwned(Thread t) {
+        ArrayList<DeadlockSolver> results = new ArrayList<>();
 
-        while (itr.hasNext()) {
-            current = (DeadlockSolver) itr.next();
+        for (DeadlockSolver current : deadlockLocksRegistry) {
             if (current.getOwner() == t) {
                 results.add(current);
             }
@@ -73,21 +68,21 @@ public class DeadlockSolver extends ReentrantLock {
         return results.iterator();
     }
 
-    private static Iterator getAllThreadsHardwaiting(DeadlockSolver solver) {
+    private static Iterator<Thread> getAllThreadsHardwaiting(DeadlockSolver solver) {
         return solver.hardwaitingThreads.iterator();
     }
 
     private static synchronized boolean canThreadWaitOnLock(Thread t, DeadlockSolver l) {
-        Iterator locksOwned = getAllLocksOwned(t);
+        Iterator<DeadlockSolver> locksOwned = getAllLocksOwned(t);
         while (locksOwned.hasNext()) {
-            DeadlockSolver current = (DeadlockSolver) locksOwned.next();
+            DeadlockSolver current = locksOwned.next();
             if (current == l) {
                 return false;
             }
-            Iterator waitingThreads = getAllThreadsHardwaiting(current);
+            Iterator<Thread> waitingThreads = getAllThreadsHardwaiting(current);
 
             while (waitingThreads.hasNext()) {
-                Thread otherThread = (Thread) waitingThreads.next();
+                Thread otherThread = waitingThreads.next();
                 if (!canThreadWaitOnLock(otherThread, l)) {
                     return false;
                 }
@@ -100,6 +95,7 @@ public class DeadlockSolver extends ReentrantLock {
         try {
             Thread.sleep(seconds * 1000);
         } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -107,6 +103,7 @@ public class DeadlockSolver extends ReentrantLock {
         try {
             c.await(seconds, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -291,7 +288,7 @@ public class DeadlockSolver extends ReentrantLock {
         }
     }
 
-    public static void main(@NotNull String[] args) {
+    public static void main(String[] args) {
         int test = 1;
         if (args.length > 0) {
             test = Integer.parseInt(args[0]);

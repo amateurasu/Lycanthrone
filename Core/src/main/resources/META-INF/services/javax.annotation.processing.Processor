@@ -1,1 +1,4 @@
+vn.elite.core.reflect.processor.ActionProcessor
 vn.elite.core.reflect.processor.BuilderPropertyProcessor
+vn.elite.core.reflect.processor.ControllerProcessor
+vn.elite.core.reflect.processor.PublicFinalProcessor

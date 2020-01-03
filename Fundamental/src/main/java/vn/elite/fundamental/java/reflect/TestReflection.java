@@ -12,7 +12,7 @@ public class TestReflection {
         System.out.println(new Person2().toString());
 
         Package _package = TestReflection.class.getPackage();
-        Class clazz = Class.forName(_package.getName() + ".Person");
+        Class<?> clazz = Class.forName(_package.getName() + ".Person");
         for (Field f : clazz.getDeclaredFields()) {
             System.out.println(f.getName());
         }

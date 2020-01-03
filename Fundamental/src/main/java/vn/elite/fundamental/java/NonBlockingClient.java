@@ -34,43 +34,49 @@ public class NonBlockingClient {
         sc.close();
     }
 
-    public static Boolean processReadySet(Set readySet) throws Exception {
-        Iterator iterator = readySet.iterator();
+    public static Boolean processReadySet(Set<SelectionKey> readySet) throws Exception {
         SelectionKey key = null;
+        Iterator<SelectionKey> iterator = readySet.iterator();
         while (iterator.hasNext()) {
-            key = (SelectionKey) iterator.next();
+            key = iterator.next();
             iterator.remove();
         }
+
+        if (key == null) return false;
+
         if (key.isConnectable()) {
             Boolean connected = processConnect(key);
             if (!connected) {
                 return true;
             }
         }
+
         if (key.isReadable()) {
             SocketChannel sc = (SocketChannel) key.channel();
             ByteBuffer bb = ByteBuffer.allocate(1024);
             sc.read(bb);
             String result = new String(bb.array()).trim();
-            System.out.println("Message received from Server: " + result + " Message length= "
-                + result.length());
+            System.out.println("Message received from Server: " + result + " Message length= " + result.length());
         }
+
         if (key.isWritable()) {
             System.out.print("Type a message (type quit to stop): ");
             String msg = input.readLine();
             if (msg.equalsIgnoreCase("quit")) {
                 return true;
             }
+            // try (
             SocketChannel sc = (SocketChannel) key.channel();
+            // ) {
             ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
             sc.write(bb);
+            // }
         }
         return false;
     }
 
     public static Boolean processConnect(SelectionKey key) {
-        SocketChannel sc = (SocketChannel) key.channel();
-        try {
+        try (SocketChannel sc = (SocketChannel) key.channel()) {
             while (sc.isConnectionPending()) {
                 sc.finishConnect();
             }

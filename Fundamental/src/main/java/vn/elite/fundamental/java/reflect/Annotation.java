@@ -18,7 +18,6 @@ public class Annotation {
 
         Runtime runtime = Runtime.getRuntime();
 
-
         int processors = runtime.availableProcessors();
         System.out.println(processors);
 

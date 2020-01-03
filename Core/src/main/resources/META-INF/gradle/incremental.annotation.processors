@@ -1,6 +1,0 @@
-# tag::registering-incremental-annotation-processors[]
-vn.elite.core.reflect.processor.ActionProcessor,isolating
-vn.elite.core.reflect.processor.BuilderPropertyProcessor,dynamic
-vn.elite.core.reflect.processor.ControllerProcessor,dynamic
-vn.elite.core.reflect.processor.PublicFinalProcessor,dynamic
-# end::registering-incremental-annotation-processors[]

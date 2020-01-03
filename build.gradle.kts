@@ -8,6 +8,11 @@ val os = extra["os"] as OperatingSystem
 
 println("Building '${rootProject.name}' on ${os.name} ver ${os.version} with ${Jvm.current()}...")
 
+repositories {
+    mavenCentral()
+}
+
+
 plugins { java }
 
 java {
@@ -47,20 +52,19 @@ subprojects {
             println(" - Module ${"%-12s".format(project.name)} -> $buildDir")
         }
     }
-    if (project.name !== "Core") {
-        dependencies {
-            val lombokV = "1.18.10"
-            // implementation(fileTree("/libs"))
 
-            implementation("org.slf4j:slf4j-api:1.7.26")
-            implementation("ch.qos.logback:logback-core:1.2.3")
-            implementation("ch.qos.logback:logback-classic:1.2.3")
+    dependencies {
+        val lombokV = "1.18.10"
+        // implementation(fileTree("/libs"))
 
-            compileOnly("org.projectlombok:lombok:$lombokV")
-            annotationProcessor("org.projectlombok:lombok:$lombokV")
+        implementation("org.slf4j:slf4j-api:1.7.26")
+        implementation("ch.qos.logback:logback-core:1.2.3")
+        implementation("ch.qos.logback:logback-classic:1.2.3")
 
-            testImplementation("junit:junit:4.12")
-            testAnnotationProcessor("org.projectlombok:lombok:$lombokV")
-        }
+        compileOnly("org.projectlombok:lombok:$lombokV")
+        annotationProcessor("org.projectlombok:lombok:$lombokV")
+
+        testImplementation("junit:junit:4.12")
+        testAnnotationProcessor("org.projectlombok:lombok:$lombokV")
     }
 }
