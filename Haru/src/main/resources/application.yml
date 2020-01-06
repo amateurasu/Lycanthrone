@@ -1,19 +1,45 @@
 spring:
+  profiles:
+    active: prod
+
   data:
     rest:
       base-path: /api
+
   servlet:
     multipart:
       max-file-size: 128KB
       max-request-size: 128KB
-  profiles:
-    active: prod
+
   datasource:
     hikari:
       connectionTimeout: 30000
       idleTimeout: 600000
       maxLifetime: 1800000
 
+server:
+  port: 8081
+
+support:
+  email: duclmdev@gmail.com
+
+---
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    protocol: smtps
+    username: USERNAME@gmail.com
+    password: PASSWORD
+    properties:
+      mail:
+        transport:
+          protocol: smtps
+        smtps:
+          auth: true
+          starttls:
+            enable: true
+            timeout: 8000
 ---
 spring:
   profiles: test

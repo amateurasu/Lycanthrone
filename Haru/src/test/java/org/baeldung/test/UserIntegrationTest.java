@@ -1,12 +1,5 @@
 package org.baeldung.test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.UUID;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.baeldung.persistence.dao.UserRepository;
 import org.baeldung.persistence.dao.VerificationTokenRepository;
 import org.baeldung.persistence.model.User;
@@ -15,7 +8,6 @@ import org.baeldung.spring.LoginNotificationConfig;
 import org.baeldung.spring.ServiceConfig;
 import org.baeldung.spring.TestDbConfig;
 import org.baeldung.spring.TestIntegrationConfig;
-import org.baeldung.validation.EmailExistsException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,6 +19,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.UUID;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TestDbConfig.class, ServiceConfig.class, TestIntegrationConfig.class, LoginNotificationConfig.class})
@@ -51,7 +49,7 @@ public class UserIntegrationTest {
     //
 
     @Before
-    public void givenUserAndVerificationToken() throws EmailExistsException {
+    public void givenUserAndVerificationToken() {
         User user = new User();
         user.setEmail("test@example.com");
         user.setPassword("SecretPassword");

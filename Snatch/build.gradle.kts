@@ -23,7 +23,7 @@ dependencies {
 
     implementation("cglib:cglib-nodep:3.1")
     implementation("commons-io:commons-io:2.4")
-    implementation("com.google.guava:guava:18.0")
+    implementation("com.google.guava:guava:28.1-jre")
     implementation("commons-codec:commons-codec:1.10")
     implementation("org.codehaus.groovy:groovy-all:2.5.8")
 

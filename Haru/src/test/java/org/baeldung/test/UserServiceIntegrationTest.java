@@ -1,16 +1,5 @@
 package org.baeldung.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.UUID;
-
 import org.baeldung.persistence.dao.RoleRepository;
 import org.baeldung.persistence.dao.UserRepository;
 import org.baeldung.persistence.dao.VerificationTokenRepository;
@@ -24,7 +13,6 @@ import org.baeldung.spring.LoginNotificationConfig;
 import org.baeldung.spring.ServiceConfig;
 import org.baeldung.spring.TestDbConfig;
 import org.baeldung.spring.TestIntegrationConfig;
-import org.baeldung.validation.EmailExistsException;
 import org.baeldung.web.dto.UserDto;
 import org.baeldung.web.error.UserAlreadyExistException;
 import org.junit.Assert;
@@ -38,8 +26,17 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { TestDbConfig.class, ServiceConfig.class, TestIntegrationConfig.class, LoginNotificationConfig.class})
+@SpringBootTest(classes = {TestDbConfig.class, ServiceConfig.class, TestIntegrationConfig.class,
+    LoginNotificationConfig.class})
 public class UserServiceIntegrationTest {
 
     @Autowired
@@ -59,7 +56,7 @@ public class UserServiceIntegrationTest {
     //
 
     @Test
-    public void givenNewUser_whenRegistered_thenCorrect() throws EmailExistsException {
+    public void givenNewUser_whenRegistered_thenCorrect() {
         final String userEmail = UUID.randomUUID().toString();
         final UserDto userDto = createUserDto(userEmail);
 
@@ -72,26 +69,33 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void givenDetachedUser_whenAccessingEntityAssociations_thenCorrect() throws EmailExistsException {
+    public void givenDetachedUser_whenAccessingEntityAssociations_thenCorrect() {
         final User user = registerUser();
         assertNotNull(user.getRoles());
-        user.getRoles().stream().filter(r -> r != null).forEach(Role::getId);
-        user.getRoles().stream().filter(r -> r != null).forEach(Role::getName);
-        user.getRoles().stream().filter(r -> r != null).forEach(r -> r.getPrivileges());
-        user.getRoles().stream().filter(r -> r != null).forEach(r -> r.getPrivileges().stream().filter(p -> p != null).forEach(Privilege::getId));
-        user.getRoles().stream().filter(r -> r != null).forEach(r -> r.getPrivileges().stream().filter(p -> p != null).forEach(Privilege::getName));
-        user.getRoles().stream().filter(r -> r != null).forEach(r -> r.getPrivileges().stream().map(Privilege::getRoles).forEach(Assert::assertNotNull));
+        user.getRoles().stream().filter(Objects::nonNull).forEach(Role::getId);
+        user.getRoles().stream().filter(Objects::nonNull).forEach(Role::getName);
+        user.getRoles().stream().filter(Objects::nonNull).forEach(Role::getPrivileges);
+
+        user.getRoles().stream()
+            .filter(Objects::nonNull)
+            .forEach(r -> r.getPrivileges().stream().filter(Objects::nonNull).forEach(Privilege::getId));
+        user.getRoles().stream()
+            .filter(Objects::nonNull)
+            .forEach(r -> r.getPrivileges().stream().filter(Objects::nonNull).forEach(Privilege::getName));
+        user.getRoles().stream()
+            .filter(Objects::nonNull)
+            .forEach(r -> r.getPrivileges().stream().map(Privilege::getRoles).forEach(Assert::assertNotNull));
     }
 
     @Test
-    public void givenDetachedUser_whenServiceLoadById_thenCorrect() throws EmailExistsException {
+    public void givenDetachedUser_whenServiceLoadById_thenCorrect() {
         final User user = registerUser();
         final User user2 = userService.getUserByID(user.getId()).get();
         assertEquals(user, user2);
     }
 
     @Test
-    public void givenDetachedUser_whenServiceLoadByEmail_thenCorrect() throws EmailExistsException {
+    public void givenDetachedUser_whenServiceLoadByEmail_thenCorrect() {
         final User user = registerUser();
         final User user2 = userService.findUserByEmail(user.getEmail());
         assertEquals(user, user2);
@@ -233,7 +237,8 @@ public class UserServiceIntegrationTest {
         userService.createVerificationTokenForUser(user, token);
         user.getId();
         final VerificationToken verificationToken = userService.getVerificationToken(token);
-        verificationToken.setExpiryDate(Date.from(verificationToken.getExpiryDate().toInstant().minus(2, ChronoUnit.DAYS)));
+        verificationToken.setExpiryDate(
+            Date.from(verificationToken.getExpiryDate().toInstant().minus(2, ChronoUnit.DAYS)));
         tokenRepository.saveAndFlush(verificationToken);
         final String token_status = userService.validateVerificationToken(token);
         assertNotNull(token_status);
@@ -262,5 +267,4 @@ public class UserServiceIntegrationTest {
         assertEquals(email, user.getEmail());
         return user;
     }
-
 }

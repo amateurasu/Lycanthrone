@@ -28,7 +28,10 @@ public class CountElements {
             task.call();
         }
 
-        System.out.format("Classes %d, methods/constructors %d, fields %d", scanner.getNumberOfClasses(),
-            scanner.getNumberOfMethods(), scanner.getNumberOfFields());
+        System.out.format(
+            "Classes %d, methods/constructors %d, fields %d",
+            scanner.getNumberOfClasses(),
+            scanner.getNumberOfMethods(),
+            scanner.getNumberOfFields());
     }
 }

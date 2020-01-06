@@ -1,29 +1,10 @@
 package vn.elite.core.utils;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 public class FileUtils {
     public static boolean mkdirs(File file) {
         return invalidCreation(file);
-    }
-
-    public static void saveLargeFile(String content, String fileName) throws IOException {
-        try (
-            RandomAccessFile stream = new RandomAccessFile(fileName, "rw");
-            FileChannel channel = stream.getChannel()
-        ) {
-            byte[] strBytes = content.getBytes();
-            ByteBuffer buffer = ByteBuffer.allocate(strBytes.length);
-            buffer.put(strBytes);
-            buffer.flip();
-            channel.write(buffer);
-        }
-        // verify
-        // RandomAccessFile reader = new RandomAccessFile(fileName, "r");
-        // assertEquals(value, reader.readLine());
-        // reader.close();
     }
 
     public static boolean save(String content, File file) {

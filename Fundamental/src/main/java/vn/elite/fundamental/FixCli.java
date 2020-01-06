@@ -1,16 +1,16 @@
-//package vn.duclm.test;
+// package vn.elite.fundamental;
 //
-//import com.elite.markup.Markup;
-//import com.elite.markup.xml.nodes.Document;
-//import com.elite.markup.xml.nodes.Element;
-//import com.elite.markup.xml.parser.MarkupParser;
+// import com.elite.markup.Markup;
+// import com.elite.markup.xml.nodes.Document;
+// import com.elite.markup.xml.nodes.Element;
+// import com.elite.markup.xml.parser.MarkupParser;
 //
-//import java.io.*;
+// import java.io.*;
 //
-//public class vn.duclm.fbsnatcher.examples.FixCli {
+// public class FixCli {
 //    private static int counter;
 //
-//    public static void vn.elite.fundamental.main(String[] args) {
+//    public static void main(String[] args) {
 //        counter = 0;
 //
 //        File listFolder = new File("D:\\Projects\\web_6cell\\web_6cell\\cli\\list");
@@ -54,4 +54,4 @@
 //            writer.write(content);
 //        }
 //    }
-//}
+// }

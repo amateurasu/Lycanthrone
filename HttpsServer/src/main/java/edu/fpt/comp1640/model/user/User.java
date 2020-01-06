@@ -39,7 +39,12 @@ public abstract class User {
     }
 
     public static User getUser(
-        String name, String username, String hashedPassword, String email, int role, int roleId
+        String name,
+        String username,
+        String hashedPassword,
+        String email,
+        int role,
+        int roleId
     ) throws Exception {
         System.out.println("getuser");
         switch (role) {

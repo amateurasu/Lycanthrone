@@ -1,4 +1,5 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 plugins {
     war
@@ -15,6 +16,16 @@ dependencies {
     val springRetryV = "1.2.5.RELEASE"
     val springSecurityV = "5.2.1.RELEASE"
 
+    // implementation("com.unboundid:unboundid-ldapsdk:4.0.14")
+    implementation("$spring:spring-tx:$springV")
+    implementation("$spring:spring-web:$springV")
+    implementation("$spring.retry:spring-retry:$springRetryV")
+    // implementation("$spring.ldap:spring-ldap-core:2.3.2.RELEASE")
+    // implementation("$spring.security:spring-security-ldap:$springSecurityV")
+    implementation("$spring.security:spring-security-jwt:1.1.0.RELEASE")
+    implementation("$spring.security:spring-security-core:$springSecurityV")
+    implementation("$spring.security.oauth:spring-security-oauth2:2.4.0.RELEASE")
+
     implementation("$springBoot:spring-boot-starter:$springBootV")
     implementation("$springBoot:spring-boot-devtools:$springBootV")
     implementation("$springBoot:spring-boot-starter-web:$springBootV")
@@ -27,22 +38,14 @@ dependencies {
     implementation("$springBoot:spring-boot-starter-thymeleaf:$springBootV")
     annotationProcessor("$springBoot:spring-boot-configuration-processor:$springBootV")
 
-    // implementation("com.unboundid:unboundid-ldapsdk:4.0.14")
-    implementation("$spring:spring-tx:$springV")
-    implementation("$spring:spring-web:$springV")
-    implementation("$spring.retry:spring-retry:$springRetryV")
-    // implementation("$spring.ldap:spring-ldap-core:2.3.2.RELEASE")
-    // implementation("$spring.security:spring-security-ldap:$springSecurityV")
-    implementation("$spring.security:spring-security-core:$springSecurityV")
-
     val jacksonV = "2.10.1"
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonV")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonV")
-
     implementation("com.h2database:h2:1.4.199")
     implementation("com.google.guava:guava:26.0-jre")
-    implementation("com.graphql-java:graphql-java:11.0")
-    implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
+    // implementation("com.graphql-java:graphql-java:11.0")
+    implementation("com.jayway.jsonpath:json-path:2.4.0")
+    // implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.4.RELEASE")
     implementation("com.github.tomakehurst:wiremock:2.24.1")
 
@@ -66,4 +69,8 @@ dependencies {
 
 tasks.getByName<BootJar>("bootJar") {
     mainClassName = "vn.elite.haru.HaruApplication"
+}
+
+tasks.getByName<BootWar>("bootWar") {
+    mainClassName = "org.baeldung.Application"
 }

@@ -30,7 +30,7 @@ public class Crypto {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // val bytes = encrypt("Le Minh Duc", "Lê Minh Đức".getBytes());
         // System.out.println(Arrays.toString(bytes));
         // System.out.println(new String(bytes));

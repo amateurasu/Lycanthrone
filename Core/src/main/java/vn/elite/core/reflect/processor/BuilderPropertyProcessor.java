@@ -67,7 +67,7 @@ public class BuilderPropertyProcessor extends AbstractProcessor {
                         }
                         return type;
                     }));
-            log.debug("Setters: {}", setterMap);
+            log.trace("Setters: {}", setterMap);
 
             try {
                 String className = setters.get(0).getEnclosingElement().toString();

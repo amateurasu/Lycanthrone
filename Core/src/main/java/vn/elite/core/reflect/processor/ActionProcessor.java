@@ -29,24 +29,24 @@ public class ActionProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-        log.debug("#process(...) in {}, count = {}", this.getClass().getSimpleName(), annotations.size());
+        log.trace("#process(...) in {}, count = {}", this.getClass().getSimpleName(), annotations.size());
 
         for (TypeElement ann : annotations) {
-            log.debug("TypeElement ann = {}", ann);
-            log.debug("{}", ann.getQualifiedName());
+            log.trace("TypeElement ann = {}", ann);
+            log.trace("{}", ann.getQualifiedName());
 
             List<? extends Element> es = ann.getEnclosedElements();
-            log.debug("ann.getEnclosedElements() count = {}", es.size());
-            es.forEach(e -> log.debug("EnclosedElement: {}", e));
+            log.trace("ann.getEnclosedElements() count = {}", es.size());
+            es.forEach(e -> log.trace("EnclosedElement: {}", e));
 
             Element enclosingElement = ann.getEnclosingElement();
-            log.debug("ann.getEnclosingElement() = {}", enclosingElement);
+            log.trace("ann.getEnclosingElement() = {}", enclosingElement);
 
             ElementKind kind = ann.getKind();
-            log.debug("ann.getKind() = {}", kind);
+            log.trace("ann.getKind() = {}", kind);
 
             Set<? extends Element> e2s = env.getElementsAnnotatedWith(ann);
-            log.debug("env.getElementsAnnotatedWith(ann) count = {}", e2s.size());
+            log.trace("env.getElementsAnnotatedWith(ann) count = {}", e2s.size());
 
             // The name of the method is annotated by @Action
             // (ExecutableElement described for method, constructor,...)
@@ -55,12 +55,12 @@ public class ActionProcessor extends AbstractProcessor {
             e2s.forEach(e2 -> {
                 ExecutableElement method = (ExecutableElement) e2;
                 TypeMirror retType = method.getReturnType();
-                log.debug("- {} {}: {}", e2.getKind(), e2, retType);
+                log.trace("- {} {}: {}", e2.getKind(), e2, retType);
 
                 if (String.class.getName().equals(retType.toString())) return;
 
                 String msg = "Method using @Action must return String";
-                log.debug(msg);
+                log.trace(msg);
                 messager.printMessage(Diagnostic.Kind.ERROR, msg, e2);
             });
         }
