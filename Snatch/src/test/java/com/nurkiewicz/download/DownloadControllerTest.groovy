@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = [MainApplication])
 @ActiveProfiles("test")
-class DownloadControllerSpec extends Specification {
+class  DownloadControllerSpec extends Specification {
 
     private MockMvc mockMvc
 

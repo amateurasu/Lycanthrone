@@ -1,24 +1,14 @@
 import React from "react";
 import classNames from "classnames";
-
-import {makeStyles} from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Hidden from "@material-ui/core/Hidden";
+import {ClickAwayListener, Grow, Hidden, makeStyles, MenuItem, MenuList, Paper} from "@material-ui/core";
 import Poppers from "@material-ui/core/Popper";
-// @material-ui/icons
-import Person from "@material-ui/icons/Person";
-import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
-import Search from "@material-ui/icons/Search";
+
+import {Dashboard, Notifications, Person, Search} from "@material-ui/icons";
 
 import CustomInput from "../CustomInput/CustomInput";
 import Button from "../CustomButtons/Button";
 
-import styles from "./RTLHeaderLinksStyle";
+import styles from "./HeaderLinksStyle";
 
 const useStyles = makeStyles(styles);
 
@@ -44,9 +34,7 @@ export default function RTLNavbarLinks() {
                     }}
                     inputProps={{
                         placeholder: "جستجو...",
-                        inputProps: {
-                            "aria-label": "Search"
-                        }
+                        inputProps: {"aria-label": "Search"}
                     }}
                 />
                 <Button color="white" aria-label="edit" justIcon round>

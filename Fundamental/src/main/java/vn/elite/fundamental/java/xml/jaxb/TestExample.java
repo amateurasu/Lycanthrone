@@ -27,11 +27,13 @@ public class TestExample {
 
         try {
             val context = JAXBContext.newInstance(Department.class);
+
             val m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             m.marshal(department, System.out);
             m.marshal(department, new File(XML_FILE));
 
+            System.out.println("----------------------------------------------");
             val um = context.createUnmarshaller();
             val deptFromFile = (Department) um.unmarshal(new FileReader(XML_FILE));
             val employeeList = deptFromFile.getEmployees();

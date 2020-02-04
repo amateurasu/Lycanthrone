@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class LargeFile {
@@ -17,11 +18,9 @@ public class LargeFile {
         String file = "D:\\Software\\HaskellPlatform-8.6.5-core-x86_64-setup.exe";
         // readLine(file, System.out::println);
         try (val fos = new FileOutputStream("D:\\Software\\HaskellPlatform.exe")) {
-            readBytes(file, bytes -> {
+            readBytes(file, (bytes, read) -> {
                 try {
-                    // val read = new ByteArrayInputStream(bytes);
-                    // save("file.json", read);
-                    fos.write(bytes);
+                    fos.write(bytes, 0, read);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -42,13 +41,13 @@ public class LargeFile {
         }
     }
 
-    public static void readBytes(String file, Consumer<? super byte[]> consumer) throws IOException {
+    public static void readBytes(String file, BiConsumer<? super byte[], Integer> consumer) throws IOException {
         try (val fis = new FileInputStream(file)) {
             readBytes0(fis, consumer);
         }
     }
 
-    public static void readBytes(File file, Consumer<? super byte[]> consumer) throws IOException {
+    public static void readBytes(File file, BiConsumer<? super byte[], Integer> consumer) throws IOException {
         try (val fis = new FileInputStream(file)) {
             readBytes0(fis, consumer);
         }
@@ -94,16 +93,20 @@ public class LargeFile {
         }
     }
 
-    static void readBytes0(FileInputStream fis, Consumer<? super byte[]> action) throws IOException {
-        val buffer = new byte[1024];
+    static void readBytes0(FileInputStream fis, BiConsumer<? super byte[], Integer> action) throws IOException {
+        readBytes0(fis, 1024, action);
+    }
+
+    static void readBytes0(
+        FileInputStream fis,
+        int bufferSize,
+        BiConsumer<? super byte[], Integer> action
+    ) throws IOException {
+        val buffer = new byte[bufferSize];
         int read;
         while ((read = fis.read(buffer)) != -1) {
-            if (read == 1024) {
-                action.accept(buffer);
-            } else {
-                val temp = new byte[read];
-                System.arraycopy(buffer, 0, temp, 0, read);
-                action.accept(temp);
+            if (read == bufferSize) {
+                action.accept(buffer, read);
             }
         }
     }

@@ -43,8 +43,10 @@ export default function Admin({...rest}) {
     const [color, setColor] = React.useState("blue");
     const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
     const handleImageClick = image => setImage(image);
     const handleColorClick = color => setColor(color);
+
     const handleFixedClick = () => setFixedClasses("dropdown" + (fixedClasses === "dropdown" ? " show" : ""));
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
     const getRoute = () => window.location.pathname !== "/admin/maps";
@@ -53,6 +55,7 @@ export default function Admin({...rest}) {
             setMobileOpen(false);
         }
     };
+
     // initialize and destroy the PerfectScrollbar plugin
     React.useEffect(() => {
         if (navigator.platform.indexOf("Win") > -1) {

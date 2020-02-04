@@ -13,10 +13,7 @@ const hexToRgb = input => {
         throw new Error("input is not a valid hex color.");
     }
     if (input.length === 3) {
-        let first = input[0];
-        let second = input[1];
-        let last = input[2];
-        input = first + first + second + second + last + last;
+        input = input[0] + input[0] + input[1] + input[1] + input[2] + input[2];
     }
     input = input.toUpperCase(input);
     let first = input[0] + input[1];

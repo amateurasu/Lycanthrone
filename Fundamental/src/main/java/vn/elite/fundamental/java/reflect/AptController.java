@@ -21,14 +21,14 @@ public class AptController {
     }
 
     @Action
-    // public void print() {
+    // public void print() {}
     public String print() {
         System.out.println(AptController.class.getCanonicalName() + "#print");
         return null;
     }
 
     @Action
-    // public int error() {
+    // public int error() {}
     public String error() {
         return null;
     }

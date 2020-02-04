@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(namespace = "//o7planning.org/jaxb")
+@XmlRootElement(namespace = "//vn.elite/jaxb")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Department {
     private String deptNo;

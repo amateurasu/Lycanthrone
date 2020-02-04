@@ -3,7 +3,6 @@ import classNames from "classnames";
 
 import {makeStyles} from "@material-ui/core/styles";
 import {ClickAwayListener, Divider, Grow, Hidden, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
-
 import {Dashboard, Notifications, Person, Search} from "@material-ui/icons";
 
 import CustomInput from "../CustomInput/CustomInput";
@@ -42,27 +41,26 @@ export default function AdminNavbarLinks() {
                     }}
                     inputProps={{
                         placeholder: "Search",
-                        inputProps: {
-                            "aria-label": "Search"
-                        }
-                    }}
-                />
+                        inputProps: {"aria-label": "Search"}
+                    }}/>
                 <Button color="white" aria-label="edit" justIcon round>
                     <Search/>
                 </Button>
             </div>
+
             <Button
                 color={window.innerWidth > 959 ? "transparent" : "white"}
                 justIcon={window.innerWidth > 959}
                 simple={!(window.innerWidth > 959)}
                 aria-label="Dashboard"
-                className={classes.buttonLink}
-            >
+                className={classes.buttonLink}>
+
                 <Dashboard className={classes.icons}/>
                 <Hidden mdUp implementation="css">
                     <p className={classes.linkText}>Dashboard</p>
                 </Hidden>
             </Button>
+
             <div className={classes.manager}>
                 <Button
                     color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -76,18 +74,15 @@ export default function AdminNavbarLinks() {
                     <Notifications className={classes.icons}/>
                     <span className={classes.notifications}>5</span>
                     <Hidden mdUp implementation="css">
-                        <p onClick={handleCloseNotification} className={classes.linkText}>
-                            Notification
-                        </p>
+                        <p onClick={handleCloseNotification} className={classes.linkText}>Notification</p>
                     </Hidden>
                 </Button>
                 <Popper
                     open={Boolean(openNotification)}
                     anchorEl={openNotification}
-                    transition
-                    disablePortal
                     className={`${classNames({[classes.popperClose]: !openNotification})} ${classes.popperNav}`}
-                >
+                    disablePortal
+                    transition>
                     {({TransitionProps, placement}) => (
                         <Grow id="notification-menu-list-grow"
                             style={{transformOrigin: placement === "bottom" ? "center top" : "center bottom"}}
@@ -141,39 +136,23 @@ export default function AdminNavbarLinks() {
                     anchorEl={openProfile}
                     transition
                     disablePortal
-                    className={
-                        `${classNames({[classes.popperClose]: !openProfile})} ${classes.popperNav}`
-                    }
-                >
+                    className={`${classNames({[classes.popperClose]: !openProfile})} ${classes.popperNav}`}>
                     {({TransitionProps, placement}) => (
                         <Grow
-                            {...TransitionProps}
                             id="profile-menu-list-grow"
-                            style={{
-                                transformOrigin:
-                                    placement === "bottom" ? "center top" : "center bottom"
-                            }}
-                        >
+                            style={{transformOrigin: placement === "bottom" ? "center top" : "center bottom"}}
+                            {...TransitionProps}>
                             <Paper>
                                 <ClickAwayListener onClickAway={handleCloseProfile}>
                                     <MenuList role="menu">
-                                        <MenuItem
-                                            onClick={handleCloseProfile}
-                                            className={classes.dropdownItem}
-                                        >
+                                        <MenuItem className={classes.dropdownItem} onClick={handleCloseProfile}>
                                             Profile
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseProfile}
-                                            className={classes.dropdownItem}
-                                        >
+                                        <MenuItem className={classes.dropdownItem} onClick={handleCloseProfile}>
                                             Settings
                                         </MenuItem>
                                         <Divider light/>
-                                        <MenuItem
-                                            onClick={handleCloseProfile}
-                                            className={classes.dropdownItem}
-                                        >
+                                        <MenuItem className={classes.dropdownItem} onClick={handleCloseProfile}>
                                             Logout
                                         </MenuItem>
                                     </MenuList>

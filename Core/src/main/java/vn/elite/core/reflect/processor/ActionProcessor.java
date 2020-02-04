@@ -32,8 +32,7 @@ public class ActionProcessor extends AbstractProcessor {
         log.trace("#process(...) in {}, count = {}", this.getClass().getSimpleName(), annotations.size());
 
         for (TypeElement ann : annotations) {
-            log.trace("TypeElement ann = {}", ann);
-            log.trace("{}", ann.getQualifiedName());
+            log.trace("TypeElement ann = {}, getQualifiedName {}", ann, ann.getQualifiedName());
 
             List<? extends Element> es = ann.getEnclosedElements();
             log.trace("ann.getEnclosedElements() count = {}", es.size());

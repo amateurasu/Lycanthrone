@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class DownloadServlet extends HttpServlet {
                 }
                 sendFile(response, fileOut);
             };
-            DatabaseUtils.getResult(sql, new Object[]{submissions}, rh);
+            DatabaseUtils.getResult(sql, new Object[] {submissions}, rh);
         } catch (Exception e) {
             response.setContentType("application/json");
             response.getWriter().print("{\"error\": \"You don't have privilege to download this resource!\"}");
@@ -59,7 +58,7 @@ public class DownloadServlet extends HttpServlet {
         String fileSql = "SELECT disk_location FROM Files WHERE id = ?";
         try {
             String id = map.get("id")[0];
-            DatabaseUtils.each(fileSql, new Object[]{id}, rs -> {
+            DatabaseUtils.each(fileSql, new Object[] {id}, rs -> {
                 String address = rs.getString("disk_location");
                 sendFile(response, new File(address));
             });
@@ -79,5 +78,4 @@ public class DownloadServlet extends HttpServlet {
             out.flush();
         }
     }
-
 }

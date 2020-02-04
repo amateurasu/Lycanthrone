@@ -100,9 +100,7 @@ export default function FixedPlugin(props) {
                             fullWidth
                             href="https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial?ref=mdr-fixed-plugin"
                             target="_blank"
-                        >
-                            Documentation
-                        </Button>
+                        >Documentation</Button>
                     </li>
                     <li className="adjustments-line"/>
                 </ul>

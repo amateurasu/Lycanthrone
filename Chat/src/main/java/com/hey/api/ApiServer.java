@@ -85,7 +85,7 @@ public final class ApiServer {
         Promise<Void> promise = Promise.promise();
         httpServer = vertx
             .createHttpServer()
-            .requestHandler(router::accept)
+            .requestHandler(router::handle)
             .exceptionHandler(exHandler -> log.error("Error", exHandler))
             .listen(PropertiesUtils.getInstance().getIntValue("api.port"), ar -> {
                 if (ar.succeeded()) {

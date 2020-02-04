@@ -13,7 +13,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks";
-import RTLNavbarLinks from "../Navbars/RTLNavbarLinks";
 
 import styles from "./SidebarStyle";
 
@@ -29,8 +28,8 @@ export default function Sidebar(props) {
     const links = (
         <List className={classes.list}>
             {routes.map((prop, key) => {
-                var activePro = " ";
-                var listItemClasses;
+                let activePro = " ";
+                let listItemClasses;
                 if (prop.path === "/upgrade-to-pro") {
                     activePro = `${classes.activePro} `;
                     listItemClasses = classNames({
@@ -49,15 +48,12 @@ export default function Sidebar(props) {
                         to={prop.layout + prop.path}
                         className={activePro + classes.item}
                         activeClassName="active"
-                        key={key}
-                    >
+                        key={key}>
                         <ListItem button className={classes.itemLink + listItemClasses}>
                             {typeof prop.icon === "string" ? (
-                                <Icon
-                                    className={classNames(classes.itemIcon, whiteFontClasses, {
-                                        [classes.itemIconRTL]: props.rtlActive
-                                    })}
-                                >
+                                <Icon className={classNames(classes.itemIcon, whiteFontClasses, {
+                                    [classes.itemIconRTL]: props.rtlActive
+                                })}>
                                     {prop.icon}
                                 </Icon>
                             ) : (
@@ -82,12 +78,10 @@ export default function Sidebar(props) {
     );
     const brand = (
         <div className={classes.logo}>
-            <a href="#?ref=mdr-sidebar"
+            <a href="#?ref=mdr-sidebar" target="_blank"
                 className={classNames(classes.logoLink, {
                     [classes.logoLinkRTL]: props.rtlActive
-                })}
-                target="_blank"
-            >
+                })}>
                 <div className={classes.logoImage}>
                     <img src={logo} alt="logo" className={classes.img}/>
                 </div>
@@ -100,7 +94,7 @@ export default function Sidebar(props) {
             <Hidden mdUp implementation="css">
                 <Drawer
                     variant="temporary"
-                    anchor={props.rtlActive ? "left" : "right"}
+                    anchor="right"
                     open={props.open}
                     classes={{
                         paper: classNames(classes.drawerPaper, {
@@ -114,7 +108,7 @@ export default function Sidebar(props) {
                 >
                     {brand}
                     <div className={classes.sidebarWrapper}>
-                        {props.rtlActive ? <RTLNavbarLinks/> : <AdminNavbarLinks/>}
+                        <AdminNavbarLinks/>
                         {links}
                     </div>
                     {image !== undefined && (
@@ -124,7 +118,7 @@ export default function Sidebar(props) {
             </Hidden>
             <Hidden smDown implementation="css">
                 <Drawer
-                    anchor={props.rtlActive ? "right" : "left"} variant="permanent" open
+                    anchor="left" variant="permanent" open
                     classes={{
                         paper: classNames(classes.drawerPaper, {
                             [classes.drawerPaperRTL]: props.rtlActive

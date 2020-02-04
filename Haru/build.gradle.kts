@@ -39,13 +39,14 @@ dependencies {
     annotationProcessor("$springBoot:spring-boot-configuration-processor:$springBootV")
 
     val jacksonV = "2.10.1"
+    implementation("com.jayway.jsonpath:json-path:2.4.0")
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonV")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonV")
+
     implementation("com.h2database:h2:1.4.199")
     implementation("com.google.guava:guava:26.0-jre")
-    // implementation("com.graphql-java:graphql-java:11.0")
-    implementation("com.jayway.jsonpath:json-path:2.4.0")
-    // implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
+    implementation("com.graphql-java:graphql-java:11.0")
+    implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.4.RELEASE")
     implementation("com.github.tomakehurst:wiremock:2.24.1")
 

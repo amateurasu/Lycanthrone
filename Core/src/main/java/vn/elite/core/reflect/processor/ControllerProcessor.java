@@ -17,44 +17,42 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ControllerProcessor extends AbstractProcessor {
 
-    private Filer filer;
     private Messager messager;
 
     @Override
     public void init(ProcessingEnvironment env) {
-        filer = env.getFiler();
         messager = env.getMessager();
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-        log.info("#process(...) in {}", this.getClass().getSimpleName());
+        log.trace("#process(...) in {}", this.getClass().getSimpleName());
 
         for (TypeElement ann : annotations) {
-            log.info("TypeElement ann = {}", ann);
+            log.trace("TypeElement ann = {}", ann);
 
             List<? extends Element> es = ann.getEnclosedElements();
-            log.info("ann.getEnclosedElements() count = {}", es.size());
+            log.trace("ann.getEnclosedElements() count = {}", es.size());
 
-            es.forEach(e -> log.info("EnclosedElement: {}", e));
+            es.forEach(e -> log.trace("EnclosedElement: {}", e));
 
             Element enclosingElement = ann.getEnclosingElement();
-            log.info("ann.getEnclosingElement() = {}", enclosingElement);
+            log.trace("ann.getEnclosingElement() = {}", enclosingElement);
 
             ElementKind kind = ann.getKind();
-            log.info("ann.getKind() = {}", kind);
+            log.trace("ann.getKind() = {}", kind);
 
             Set<? extends Element> annotated = env.getElementsAnnotatedWith(ann);
-            log.info("env.getElementsAnnotatedWith(ann) count = {}", annotated.size());
+            log.trace("env.getElementsAnnotatedWith(ann) count = {}", annotated.size());
 
             annotated.forEach(e2 -> {
-                log.info("Annotated element: {} {}", e2.getKind().name().toLowerCase(), e2);
+                log.trace("Annotated element: {} {}", e2.getKind().name().toLowerCase(), e2);
                 String className = e2.getSimpleName().toString();
 
                 if (className.endsWith("Controller")) return;
 
                 String msg = "Class using @Controller must have suffix Controller";
-                log.info(msg);
+                log.trace(msg);
                 messager.printMessage(ERROR, msg, e2);
             });
         }

@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
+public class RmiServer extends UnicastRemoteObject implements IRmiServer {
     public static final String MESSAGE = "Hello World";
 
     public RmiServer() throws RemoteException {
