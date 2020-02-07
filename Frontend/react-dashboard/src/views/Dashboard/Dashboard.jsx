@@ -3,7 +3,7 @@ import React from "react";
 import ChartistGraph from "react-chartist";
 
 import {makeStyles} from "@material-ui/core/styles";
-import {Icon} from "@material-ui/core";
+import {Button, Icon} from "@material-ui/core";
 
 import {
     Accessibility,
@@ -43,6 +43,10 @@ export default function Dashboard() {
     const classes = useStyles();
     return (
         <div>
+            <Button variant="contained" component="label">
+                Upload File
+                <input type="file" style={{display: "none"}}/>
+            </Button>
             <GridContainer>
                 <GridItem xs={12} sm={6} md={3}>
                     <Card>

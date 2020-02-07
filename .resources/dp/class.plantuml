@@ -1,0 +1,132 @@
+@startuml
+
+' definitions
+' package "com.ztools.textlineprocessor"
+interface ILineProcessor
+class Main
+class TLPer
+' end package
+
+' package "com.ztools.textlineprocessor.def"
+class Plantuml
+class PrintLine
+class GroupMediaFile
+class WordSplit
+class EnglishExamination
+class EnglishTest
+' end package
+
+' content
+
+' TLPer:
+TLPer --> "*" ILineProcessor
+TLPer : void read(InputStream, Object)
+TLPer : void read(InputStream, String, Object)
+TLPer : void read(InputStream)
+TLPer : void read(File)
+TLPer : void read(String)
+
+' EnglishTest:
+ILineProcessor <|.. EnglishTest
+EnglishTest : void beforeRead()
+EnglishTest : void process(String, Object)
+EnglishTest : void afterRead()
+
+' Plantuml:
+ILineProcessor <|.. Plantuml
+Plantuml : void beforeRead()
+Plantuml : void process(String, Object)
+Plantuml : void afterRead()
+
+' WordSplit:
+ILineProcessor <|.. WordSplit
+WordSplit : void beforeRead()
+WordSplit : void process(String, Object)
+WordSplit : void afterRead()
+
+' GroupMediaFile:
+ILineProcessor <|.. GroupMediaFile
+GroupMediaFile : void beforeRead()
+GroupMediaFile : void process(String, Object)
+GroupMediaFile : void afterRead()
+
+' Main:
+Main : void main(String)
+
+' PrintLine:
+PrintLine .up.|> ILineProcessor
+PrintLine : void process(String s, Object)
+PrintLine : void beforeRead()
+PrintLine : void afterRead()
+
+' ILineProcessor:
+ILineProcessor : void process(String, Object)
+ILineProcessor : void beforeRead()
+ILineProcessor : void afterRead()
+
+' EnglishExamination:
+ILineProcessor <|.. EnglishExamination
+EnglishExamination : void beforeRead()
+EnglishExamination : void process(String, Object)
+EnglishExamination : void afterRead()
+
+' --------------------
+package foo1.foo2{
+note "stringstream buffer will be replaced with something \ndifferent. New class RobotBuffer may be." as N0
+
+abstract class SocketServer {
+  #boost::asio::io_service io_service;
+  #tcp::endpoint endpoint;
+  #tcp::iostream socketStream;
+  #tcp::acceptor * acceptor;
+  #stringstream * buffer;
+
+  +SocketServer (string address, unsigned short port, stringstream * buf)
+  +~SocketServer ()
+  +{abstract} void start ()
+}
+
+class SocketServerListener {
+  +void start ()
+}
+
+class SocketServerSender {
+  +void start ()
+}
+
+SocketServer -down-|> SocketServerListener
+SocketServer -down-|> SocketServerSender
+
+note "Difference only in start() function" as N1
+SocketServerListener -- N1
+SocketServerSender -- N1
+
+abstract class SocketClient {
+  #tcp::iostream socketStream;
+  #stringstream * buffer;
+  #string address;
+  #unsigned short port;
+
+  +SocketClient (string address, unsigned short port, stringstream * buf)
+  +{abstract} void start ()
+}
+
+class SocketClientListener {
+  +void start ()
+}
+
+class SocketClientSender {
+  +void start ()
+}
+
+SocketClient -down-|> SocketClientListener
+SocketClient -down-|> SocketClientSender
+
+note "Difference only in start() function" as N2
+SocketClientListener -- N2
+SocketClientSender -- N2
+
+N0 .down. SocketServer
+N0 .down. SocketClient
+}
+@enduml

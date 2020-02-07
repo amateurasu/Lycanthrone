@@ -7,7 +7,6 @@ import {AppBar, Hidden, IconButton, Toolbar} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
 import AdminNavbarLinks from "./AdminNavbarLinks";
-import RTLNavbarLinks from "./RTLNavbarLinks";
 import Button from "../CustomButtons/Button";
 
 import styles from "./HeaderStyle";
