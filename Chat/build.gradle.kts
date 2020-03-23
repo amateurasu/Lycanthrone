@@ -38,7 +38,6 @@ dependencies {
 }
 
 buildscript {
-
     tasks.register<Exec>("buildReact") {
         workingDir = File("$projectDir/src/main/js")
         commandLine(project.extra["npm"], "run", "build", "--scripts-prepend-node-path=auto")

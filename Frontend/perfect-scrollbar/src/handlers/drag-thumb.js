@@ -50,8 +50,7 @@ function bindMouseScrollHandler(
         if (e.touches && e.touches[0]) {
             e[pageY] = e.touches[0].pageY;
         }
-        element[scrollTop] =
-            startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+        element[scrollTop] = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
         addScrollingClass(i, y);
         updateGeometry(i);
 

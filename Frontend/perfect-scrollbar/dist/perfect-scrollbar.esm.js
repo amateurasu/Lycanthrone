@@ -26,8 +26,7 @@ function div(className) {
 
 var elMatches =
     typeof Element !== "undefined" &&
-    (Element.prototype.matches || Element.prototype.webkitMatchesSelector
-     || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector);
+    (Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector);
 
 function matches(element, query) {
     if (!elMatches) {
@@ -203,21 +202,9 @@ var processScrollDiff = function (
 
     var fields;
     if (axis === "top") {
-        fields = [
-            "contentHeight",
-            "containerHeight",
-            "scrollTop",
-            "y",
-            "up",
-            "down"];
+        fields = ["contentHeight", "containerHeight", "scrollTop", "y", "up", "down"];
     } else if (axis === "left") {
-        fields = [
-            "contentWidth",
-            "containerWidth",
-            "scrollLeft",
-            "x",
-            "left",
-            "right"];
+        fields = ["contentWidth", "containerWidth", "scrollLeft", "x", "left", "right"];
     } else {
         throw new Error("A proper axis should be provided");
     }
@@ -225,13 +212,7 @@ var processScrollDiff = function (
     processScrollDiff$1(i, diff, fields, useScrollingClass, forceFireReachEvent);
 };
 
-function processScrollDiff$1(
-    i,
-    diff,
-    ref,
-    useScrollingClass,
-    forceFireReachEvent
-) {
+function processScrollDiff$1(i, diff, ref, useScrollingClass, forceFireReachEvent) {
     var contentHeight = ref[0];
     var containerHeight = ref[1];
     var scrollTop = ref[2];
@@ -1231,9 +1212,7 @@ var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
 };
 
 PerfectScrollbar.prototype.update = function update() {
-    if (!this.isAlive) {
-        return;
-    }
+    if (!this.isAlive) return;
 
     // Recalcuate negative scrollLeft adjustment
     this.negativeScrollAdjustment = this.isNegativeScroll

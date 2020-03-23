@@ -12,12 +12,11 @@ repositories {
     mavenCentral()
 }
 
-
 plugins { java }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 subprojects {
@@ -54,7 +53,7 @@ subprojects {
     }
 
     dependencies {
-        val lombokV = "1.18.10"
+        val lombokV = "1.18.12"
         // implementation(fileTree("/libs"))
 
         implementation("org.slf4j:slf4j-api:1.7.26")
@@ -64,6 +63,7 @@ subprojects {
         compileOnly("org.projectlombok:lombok:$lombokV")
         annotationProcessor("org.projectlombok:lombok:$lombokV")
 
+        testCompileOnly("org.projectlombok:lombok:$lombokV")
         testImplementation("junit:junit:4.12")
         testAnnotationProcessor("org.projectlombok:lombok:$lombokV")
     }

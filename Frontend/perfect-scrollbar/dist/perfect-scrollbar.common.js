@@ -28,8 +28,7 @@ function div(className) {
 
 var elMatches =
     typeof Element !== "undefined" &&
-    (Element.prototype.matches || Element.prototype.webkitMatchesSelector ||
-     Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector);
+    (Element.prototype.matches || Element.prototype.webkitMatchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector);
 
 function matches(element, query) {
     if (!elMatches) {

@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: prod
+    include:
+      - profiles
 
   data:
     rest:
@@ -19,43 +21,14 @@ spring:
 
 server:
   port: 8081
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-password: secret
+    key-password: secret
+    enabled: true
+    protocol: TLS
+  http2:
+    enabled: true
 
 support:
   email: duclmdev@gmail.com
-
----
-spring:
-  mail:
-    host: smtp.gmail.com
-    port: 465
-    protocol: smtps
-    username: USERNAME@gmail.com
-    password: PASSWORD
-    properties:
-      mail:
-        transport:
-          protocol: smtps
-        smtps:
-          auth: true
-          starttls:
-            enable: true
-            timeout: 8000
----
-spring:
-  profiles: test
-conf:
-  name: test-YAML
-  environment: test
-  servers:
-    - www.abc.test.com
-    - www.xyz.test.com
-
----
-spring:
-  profiles: prod
-conf:
-  name: prod-YAML
-  environment: production
-  servers:
-    - www.abc.com
-    - www.xyz.com

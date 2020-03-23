@@ -2,9 +2,7 @@ var ws;
 
 function connect() {
     var username = document.getElementById("username").value;
-
-    var host = document.location.host;
-    var pathname = document.location.pathname;
+    const {host, pathname} = document.location;
 
     var addr = `ws://${host}/Fundamental/chat/${username}`;
     console.log(addr);

@@ -18,7 +18,6 @@ dependencies {
     implementation("org.apache.pdfbox:pdfbox:2.0.16")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("javax.websocket:javax.websocket-api:1.1")
-    implementation("org.elasticsearch.client:transport:7.4.2")
 
     val antlrV = "4.7.2"
     antlr("org.antlr:antlr4:$antlrV")
@@ -42,8 +41,4 @@ val compileKotlin by tasks.getting(KotlinCompile::class) {
 val compileTestKotlin by tasks.getting(KotlinCompile::class) {
     kotlinOptions.jvmTarget = "1.8"
     doLast { print("Finished compiling Kotlin source code for testing") }
-}
-
-task("ideaProject") {
-
 }

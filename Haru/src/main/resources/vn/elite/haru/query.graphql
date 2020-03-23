@@ -1,9 +1,0 @@
-{
-    book(id: "book-1") {
-        name
-        author {
-            firstName
-            lastName
-        }
-    }
-}

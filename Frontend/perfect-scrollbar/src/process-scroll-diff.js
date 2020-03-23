@@ -19,23 +19,9 @@ export default function (
 ) {
     let fields;
     if (axis === "top") {
-        fields = [
-            "contentHeight",
-            "containerHeight",
-            "scrollTop",
-            "y",
-            "up",
-            "down"
-        ];
+        fields = ["contentHeight", "containerHeight", "scrollTop", "y", "up", "down"];
     } else if (axis === "left") {
-        fields = [
-            "contentWidth",
-            "containerWidth",
-            "scrollLeft",
-            "x",
-            "left",
-            "right"
-        ];
+        fields = ["contentWidth", "containerWidth", "scrollLeft", "x", "left", "right"];
     } else {
         throw new Error("A proper axis should be provided");
     }

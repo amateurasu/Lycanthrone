@@ -4,12 +4,11 @@ export function div(className) {
     return div;
 }
 
-const elMatches =
-    typeof Element !== "undefined" &&
-    (Element.prototype.matches ||
-     Element.prototype.webkitMatchesSelector ||
-     Element.prototype.mozMatchesSelector ||
-     Element.prototype.msMatchesSelector);
+const elMatches = typeof Element !== "undefined"
+    && (Element.prototype.matches
+        || Element.prototype.webkitMatchesSelector
+        || Element.prototype.mozMatchesSelector
+        || Element.prototype.msMatchesSelector);
 
 export function matches(element, query) {
     if (!elMatches) {

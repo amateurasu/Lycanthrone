@@ -39,6 +39,7 @@ public class NonBlockingClient {
         Iterator<SelectionKey> iterator = readySet.iterator();
         while (iterator.hasNext()) {
             key = iterator.next();
+            System.out.println(key);
             iterator.remove();
         }
 

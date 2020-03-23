@@ -2,7 +2,6 @@ package vn.elite.snatcher.manga;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import lombok.var;
 
 import javax.swing.*;
 import java.io.File;
@@ -14,10 +13,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static vn.elite.core.utils.FileUtils.byteCount;
+
 @Slf4j
 public class HttpDownload extends SwingWorker<Boolean, Void> {
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        + "(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
     private static HttpDownload instance = new HttpDownload();
 
     private boolean setTarget = false;
@@ -40,17 +42,6 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
     }
 
     private String pattern;
-
-    public static String byteCount(long bytes, boolean si) {
-        int unit = si ? 1000 : 1024;
-        if (bytes < unit) {
-            return bytes + " B";
-        }
-
-        int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
-        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
-    }
 
     public HttpDownload setFile(String file) {
         setFile = true;
@@ -132,7 +123,8 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
         for (String link : list) {
             try {
                 download(link, target);
-            } catch (IOException ignored) { }
+            } catch (IOException ignored) {
+            }
         }
         return true;
     }
@@ -152,7 +144,7 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
             val buffer = new byte[2048];
             int length;
             int downloaded = 0;
-            var oldPercent = 0_000d;
+            double oldPercent = 0_000d;
             // Looping until server finishes
             while ((length = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, length);
@@ -172,7 +164,8 @@ public class HttpDownload extends SwingWorker<Boolean, Void> {
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
-        // String s = "https://cdn.hentai.cafe/manga/content/comics/sameda-koban-offline-banger_5cd58f565e371/1-0_5cd58f6327146/%02d.jpg";
+        // String s = "https://cdn.hentai.cafe/manga/content/comics/sameda-koban-offline-banger_5cd58f565e371/1
+        // -0_5cd58f6327146/%02d.jpg";
         // String mangaName = "[Sameda Koban] Offline Banger";
         // String target = "E:/Pictures/697d0f2554859c3e95577f0d9e9373e7/_Manga/@New/";
         // HttpDownload.getDownloader().setRange(s, 19, 24).setTarget(target + mangaName).doInBackground();
