@@ -1,4 +1,4 @@
-package vn.elite.gapi.drive;
+package vn.elite.fundamental.gapi.drive;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -59,7 +59,7 @@ public class DriveUtils {
         }
 
         val in = new FileInputStream(clientSecret);
-        val clientSecrets = load(JSON_FACTORY, new InputStreamReader(in));
+        val clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         val flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setDataStoreFactory(new FileDataStoreFactory(folder)).setAccessType("offline").build();
 
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");

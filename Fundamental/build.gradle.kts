@@ -23,9 +23,13 @@ dependencies {
     antlr("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4-runtime:$antlrV")
-
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0-M2")
+    implementation("com.google.apis:google-api-services-drive:v3-rev165-1.25.0")
+
+    val googleApiV = "1.30.1"
+    implementation("com.google.api-client:google-api-client:$googleApiV")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:$googleApiV")
 }
 
 tasks.generateGrammarSource {
