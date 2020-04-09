@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Changing Screen Orientation with Javascript : Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no">
+    <style type="text/css">
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0px;
+            background-color: #336699;
+            height: 100%;
+            width: 100%;
+        }
+
+        #container:fullscreen {
+            width: 100%;
+            height: 100%;
+            background-color: green;
+        }
+
+        #container:-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+            background-color: green;
+        }
+
+        #orientation-status {
+            text-align: center;
+            margin: 30px 0;
+            color: white;
+        }
+
+        button {
+            background-color: white;
+            border: 1px solid #336699;
+            color: #336699;
+            width: 300px;
+            padding: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 700;
+            outline: none;
+        }
+
+        #unlock-button {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+    <p id="orientation-status"></p>
+    <div id="buttons-container">
+        <button id="lock-landscape-button">Lock to Landscape Mode</button>
+        <button id="unlock-button">Unlock</button>
+    </div>
+</div>
+
+<script>
+
+    const _LOCK_BUTTON = document.querySelector("#lock-landscape-button");
+    const _UNLOCK_BUTTON = document.querySelector("#unlock-button");
+    const _STATUS = document.querySelector("#orientation-status");
+
+    if ("orientation" in screen) {
+
+        _STATUS.innerHTML = screen.orientation.type + " mode";
+
+        // upon lock to landscape-primary mode
+        document.querySelector("#lock-landscape-button")
+            .addEventListener("click", () => {
+                if (document.documentElement.requestFullscreen) {
+                    document.querySelector("#container").requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullScreen) {
+                    document.querySelector("#container").webkitRequestFullScreen();
+                }
+
+                screen.orientation.lock("landscape-primary")
+                    .then(() => {
+                        _LOCK_BUTTON.style.display = "none";
+                        _UNLOCK_BUTTON.style.display = "block";
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            });
+
+        // upon unlock
+        document.querySelector("#unlock-button").addEventListener("click", () => {
+            screen.orientation.unlock();
+
+            _LOCK_BUTTON.style.display = "block";
+            _UNLOCK_BUTTON.style.display = "none";
+        });
+
+        // when screen orientation changes
+        screen.orientation.addEventListener("change", () => {
+            _STATUS.innerHTML = screen.orientation.type + " mode";
+        });
+
+        // on exiting full-screen lock is automatically released
+        document.addEventListener("fullscreenchange", () => {
+            _LOCK_BUTTON.style.display = "block";
+            _UNLOCK_BUTTON.style.display = "none";
+        });
+
+        document.addEventListener("webkitfullscreenchange", () => {
+            _LOCK_BUTTON.style.display = "block";
+            _UNLOCK_BUTTON.style.display = "none";
+        });
+    }
+</script>
+
+</body>
+</html>

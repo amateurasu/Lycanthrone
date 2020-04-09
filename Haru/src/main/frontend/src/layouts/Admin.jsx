@@ -2,7 +2,6 @@ import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 
 import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import {makeStyles} from "@material-ui/core/styles";
 

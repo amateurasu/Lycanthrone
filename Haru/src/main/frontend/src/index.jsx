@@ -1,6 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import {createBrowserHistory} from "history";
+import {Redirect, Route, Router, Switch} from "react-router-dom";
 
-ReactDOM.render(<App/>, document.getElementById("root"));
+import Admin from "./layouts/Admin";
+
+const hist = createBrowserHistory();
+
+const router = (
+    <Router history={hist}>
+        <Switch>
+            <Route path="/admin" component={Admin}/>
+            <Redirect from="/" to="/admin/dashboard"/>
+        </Switch>
+    </Router>
+);
+
+ReactDOM.render(router, document.getElementById("root"));

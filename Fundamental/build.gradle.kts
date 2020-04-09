@@ -20,7 +20,7 @@ dependencies {
     implementation("javax.websocket:javax.websocket-api:1.1")
 
     val antlrV = "4.7.2"
-    antlr("org.antlr:antlr4:$antlrV")
+    `antlr`("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4-runtime:$antlrV")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
