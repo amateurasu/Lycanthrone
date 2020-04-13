@@ -7,6 +7,6 @@ extra["os"] = os
 extra["npm"] = if (os.isWindows) {
     "C:\\Program Files\\nodejs\\npm.cmd"
 } else {
-    ""
+    "npm"
 }
 

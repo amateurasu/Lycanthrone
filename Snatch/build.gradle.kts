@@ -17,6 +17,7 @@ dependencies {
 
     implementation("net.java.dev.jna:jna:5.4.0")
     implementation("net.java.dev.jna:jna-platform:5.4.0")
+    implementation("org.openjfx:javafx-controls:14")
 
     val springV = "5.2.2.RELEASE"
     val springBootV = "2.2.2.RELEASE"

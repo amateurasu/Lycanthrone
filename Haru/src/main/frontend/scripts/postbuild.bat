@@ -1,0 +1,1 @@
+move build ../resources/public

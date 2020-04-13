@@ -21,7 +21,7 @@ dependencies {
     implementation(group = "org.snmp4j", name = "snmp4j", version = "3.4.0")
 
     val antlrV = "4.7.2"
-    antlr("org.antlr:antlr4:$antlrV")
+    `antlr`("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4:$antlrV")
     implementation("org.antlr:antlr4-runtime:$antlrV")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

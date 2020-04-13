@@ -1,29 +1,35 @@
 {
-    "name": "material-dashboard",
+    "name": "frontend",
     "version": "1.8.0",
     "description": "Material Dashboard",
     "private": false,
     "main": "dist/index.jsx",
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.9.0",
+        "@babel/plugin-syntax-jsx": "^7.8.3 "
+    },
     "dependencies": {
-        "@material-ui/core": "^4.7.2",
-        "@material-ui/icons": "^4.5.1",
+        "@material-ui/core": "^4.9.9",
+        "@material-ui/icons": "^4.9.1",
         "chartist": "^0.11.4",
         "classnames": "^2.2.6",
         "components": "^0.1.0",
         "history": "^4.10.1",
-        "perfect-scrollbar": "^1.4.0",
+        "perfect-scrollbar": "^1.5.0",
         "prop-types": "^15.7.2",
-        "react": "^16.12.0",
-        "react-chartist": "^0.14.2",
-        "react-dom": "^16.12.0",
+        "react": "^16.13.1",
+        "react-chartist": "^0.14.3",
+        "react-dom": "^16.13.1",
         "react-google-maps": "^9.4.5",
         "react-router-dom": "^5.1.2",
-        "react-scripts": "^3.3.0",
-        "react-swipeable-views": "^0.13.3"
+        "react-scripts": "^3.4.1",
+        "react-swipeable-views": "^0.13.9"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
+        "postbuild": "./scripts/postbuild",
         "serve": "react-scripts build && serve -s build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
@@ -50,10 +56,5 @@
             "not op_mini all"
         ],
         "development": []
-    },
-    "devDependencies": {
-        "@babel/cli": "^7.7.4",
-        "@babel/core": "^7.7.4",
-        "@babel/plugin-syntax-jsx": "^7.7.4"
     }
 }

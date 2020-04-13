@@ -33,6 +33,7 @@ public class TestBuilder {
             TestBuilder person = new TestBuilderBuilder().setAge(25).setName("John").build();
             System.out.println(person.age);
             System.out.println(person.name);
+            System.out.println(PublicFinalTest.ABC);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

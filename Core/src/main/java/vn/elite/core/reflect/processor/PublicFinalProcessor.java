@@ -15,10 +15,12 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class PublicFinalProcessor extends AbstractProcessor {
 
+    private Filer filer;
     private Messager messager;
 
     @Override
     public void init(ProcessingEnvironment env) {
+        filer = env.getFiler();
         messager = env.getMessager();
     }
 
