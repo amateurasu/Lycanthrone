@@ -13,11 +13,12 @@ dependencies {
     implementation(project(":Core"))
     annotationProcessor(project(":Core"))
 
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
+   implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("com.rabbitmq:amqp-client:5.7.1")
     implementation("org.apache.pdfbox:pdfbox:2.0.16")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("javax.websocket:javax.websocket-api:1.1")
+    implementation(group = "org.snmp4j", name = "snmp4j", version = "3.4.0")
 
     val antlrV = "4.7.2"
     antlr("org.antlr:antlr4:$antlrV")

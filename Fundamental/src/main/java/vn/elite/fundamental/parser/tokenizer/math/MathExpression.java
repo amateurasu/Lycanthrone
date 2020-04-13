@@ -1,7 +1,6 @@
 package vn.elite.fundamental.parser.tokenizer.math;
 
 import lombok.val;
-import lombok.var;
 import vn.elite.fundamental.parser.tokenizer.Token;
 import vn.elite.fundamental.parser.tokenizer.TokenizeException;
 

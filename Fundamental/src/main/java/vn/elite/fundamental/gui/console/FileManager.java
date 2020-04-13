@@ -1,7 +1,5 @@
 package vn.elite.fundamental.gui.console;
 
-import lombok.var;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

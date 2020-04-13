@@ -1,7 +1,6 @@
 package edu.fpt.comp1640.database;
 
 import lombok.val;
-import lombok.var;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
