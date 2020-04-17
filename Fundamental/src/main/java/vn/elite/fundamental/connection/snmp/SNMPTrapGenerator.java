@@ -7,6 +7,8 @@ import org.snmp4j.security.*;
 import org.snmp4j.smi.*;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
+import java.io.IOException;
+
 public class SNMPTrapGenerator {
 
     private static final String community = "public";      //SET THIS
@@ -15,9 +17,7 @@ public class SNMPTrapGenerator {
     private static final int port = 162;
 
     public static void main(String[] args) {
-
         // PICK THE VERSION(S) YOU WANT TO SEND
-
         sendSnmpV1V2Trap(SnmpConstants.version1);
         sendSnmpV1V2Trap(SnmpConstants.version2c);
         sendSnmpV3Trap();
@@ -31,22 +31,20 @@ public class SNMPTrapGenerator {
     }
 
     private static PDU createPdu(int snmpVersion) {
-
         PDU pdu;
         if (snmpVersion == SnmpConstants.version1) {
-
-            PDUv1 pdu1 = new PDUv1();
-            pdu1.setType(PDU.V1TRAP);
-            pdu1.setEnterprise(new OID("1.3.6.1.4.1.1824"));
-            pdu1.setAgentAddress(new IpAddress("10.0.0.7"));     //SET THIS. This is the sender address
-            pdu1.setSpecificTrap(5);
-            pdu1.setGenericTrap(23);
-            pdu = pdu1;
+            PDUv1 _pdu = new PDUv1();
+            _pdu.setType(PDU.V1TRAP);
+            _pdu.setEnterprise(new OID("1.3.6.1.4.1.1824"));
+            _pdu.setAgentAddress(new IpAddress("10.0.0.7"));     //SET THIS. This is the sender address
+            _pdu.setSpecificTrap(5);
+            _pdu.setGenericTrap(23);
+            pdu = _pdu;
         } else {
-            PDU pdu2 = new PDU();
-            pdu2.setType(PDU.TRAP);
-            pdu2.setRequestID(new Integer32(123));
-            pdu = pdu2;
+            PDU _pdu = new PDU();
+            _pdu.setType(PDU.TRAP);
+            _pdu.setRequestID(new Integer32(123));
+            pdu = _pdu;
         }
 
         pdu.add(new VariableBinding(SnmpConstants.sysUpTime));
@@ -65,7 +63,7 @@ public class SNMPTrapGenerator {
             TransportMapping<?> transport = new DefaultUdpTransportMapping();
 
             // Create Target
-            CommunityTarget comtarget = new CommunityTarget();
+            CommunityTarget<UdpAddress> comtarget = new CommunityTarget<>();
             comtarget.setCommunity(new OctetString(community));
             comtarget.setVersion(snmpVersion);
             comtarget.setAddress(new UdpAddress(ipAddress + "/" + port));
@@ -87,10 +85,8 @@ public class SNMPTrapGenerator {
      * Sends the v3 trap
      */
     private static void sendSnmpV3Trap() {
-        try {
-            Address targetAddress = GenericAddress.parse("udp:" + ipAddress + "/" + port);
-            TransportMapping<?> transport = new DefaultUdpTransportMapping();
-            Snmp snmp = new Snmp(transport);
+        Address targetAddress = GenericAddress.parse("udp:" + ipAddress + "/" + port);
+        try (Snmp snmp = new Snmp(new DefaultUdpTransportMapping())) {
 
             USM usm = new USM(SecurityProtocols.getInstance().addDefaultProtocols(),
                 new OctetString(MPv3.createLocalEngineID()), 0);
@@ -111,7 +107,7 @@ public class SNMPTrapGenerator {
                     new OctetString(privacypassphrase)));
 
             // Create Target
-            UserTarget target = new UserTarget();
+            var target = new UserTarget<>();
             target.setAddress(targetAddress);
             target.setRetries(1);
             target.setTimeout(11500);
@@ -130,14 +126,9 @@ public class SNMPTrapGenerator {
             // Send the PDU
             snmp.send(pdu, target);
             System.out.println("Sending Trap to (IP:Port)=> " + ipAddress + ":" + port);
-            snmp.addCommandResponder(new CommandResponder() {
-                public void processPdu(CommandResponderEvent arg0) {
-                    System.out.println(arg0);
-                }
-            });
-            snmp.close();
-        } catch (Exception e) {
-            System.err.println("Error in Sending Trap to (IP:Port)=> " + ipAddress + ":" + port);
+            snmp.addCommandResponder(System.out::println);
+        } catch (IOException e) {
+            System.err.println("Error in Sending Trap to " + ipAddress + ":" + port);
             System.err.println("Exception Message = " + e.getMessage());
         }
     }

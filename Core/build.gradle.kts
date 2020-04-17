@@ -1,7 +1,6 @@
 dependencies {
     implementation("org.apache.avro:avro:1.9.1")
     implementation("org.ow2.asm:asm:7.2")
-    // implementation("org.mangosdk.spi:spi:0.2.4")
 
     val jmhV = "1.22"
     testImplementation("org.slf4j:slf4j-nop:1.7.29")
